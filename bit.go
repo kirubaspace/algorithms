@@ -8,7 +8,6 @@ func countSetBits(n int) int {
     }
     return count
 }
-/* ----------------------------------------- */
 
 2. Reverse bits set in an integer
 
@@ -22,7 +21,6 @@ func reverseBits(n uint32) uint32 {
     return result
 }
 
-/* ----------------------------------------- */
 
 3. Tell if 20th bit set is on
 
@@ -40,7 +38,6 @@ func main() {
     }
 }
 
-/* ----------------------------------------- */
 
 4. Flip bits
 
@@ -48,7 +45,6 @@ int32_t swapBits(int32_t n) {
     return ~n; // Inverts all bits
 }
 
-/* ----------------------------------------- */
 
 5. Swap odd and even bits
 
@@ -76,4 +72,24 @@ func isPowerOfTwo(n int) bool {
     return n > 0 && (n&(n-1)) == 0
 }
 
+8. Question: Given an array containing n distinct numbers taken from 0, 1, 2, ..., n, find the one that is missing from the array.
 
+func missingNumber(nums []int) int {
+    missing := len(nums)
+    for i, num := range nums {
+        missing ^= i ^ num
+    }
+    return missing
+}
+
+9. Question: Calculate the Hamming distance between two integers (the number of positions at which the corresponding bits are different).
+
+func hammingDistance(x, y int) int {
+    xor := x ^ y
+    count := 0
+    for xor != 0 {
+        count += xor & 1
+        xor >>= 1
+    }
+    return count
+}

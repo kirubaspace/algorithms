@@ -1,0 +1,154 @@
+1. Find the Duplicate Number: Given an array containing n+1 integers where each integer is between 1 and n (inclusive), prove that at least one duplicate number must exist. Assume that there is only one duplicate number, find the duplicate one.
+
+int findDuplicate(vector<int>& nums) {
+    int slow = nums[0];
+    int fast = nums[0];
+    do {
+        slow = nums[slow];
+        fast = nums[nums[fast]];
+    } while (slow != fast);
+    fast = nums[0];
+    while (slow != fast) {
+        slow = nums[slow];
+        fast = nums[fast];
+    }
+    return slow;
+}
+
+
+
+2. Merge Intervals: Given a collection of intervals, merge all overlapping intervals.
+
+vector<vector<int>> merge(vector<vector<int>>& intervals) {
+    if (intervals.empty()) return {};
+    sort(intervals.begin(), intervals.end());
+    vector<vector<int>> merged;
+    for (auto& interval : intervals) {
+        if (merged.empty() || merged.back()[1] < interval[0]) {
+            merged.push_back(interval);
+        } else {
+            merged.back()[1] = max(merged.back()[1], interval[1]);
+        }
+    }
+    return merged;
+}
+
+3. Maximum Subarray: Find the contiguous subarray within an array (containing at least one number) which has the largest sum.
+
+int maxSubArray(vector<int>& nums) {
+    int maxSum = nums[0], currentSum = nums[0];
+    for (int i = 1; i < nums.size(); i++) {
+        currentSum = max(nums[i], currentSum + nums[i]);
+        maxSum = max(maxSum, currentSum);
+    }
+    return maxSum;
+}
+
+4. Two Sum: Given an array of integers, return indices of the two numbers such that they add up to a specific target.
+
+vector<int> twoSum(vector<int>& nums, int target) {
+    unordered_map<int, int> numMap;
+    for (int i = 0; i < nums.size(); i++) {
+        int complement = target - nums[i];
+        if (numMap.find(complement) != numMap.end()) {
+            return {numMap[complement], i};
+        }
+        numMap[nums[i]] = i;
+    }
+    return {};
+}
+
+5. Rotate Array: Rotate an array to the right by k steps, where k is non-negative.
+
+void rotate(vector<int>& nums, int k) {
+    k %= nums.size();
+    reverse(nums.begin(), nums.end());
+    reverse(nums.begin(), nums.begin() + k);
+    reverse(nums.begin() + k, nums.end());
+}
+
+6. Spiral Matrix: Given a matrix of m x n elements (m rows, n columns), return all elements of the matrix in spiral order.
+
+vector<int> spiralOrder(vector<vector<int>>& matrix) {
+    vector<int> result;
+    if (matrix.empty()) return result;
+    int rowBegin = 0, rowEnd = matrix.size() - 1;
+    int colBegin = 0, colEnd = matrix[0].size() - 1;
+    while (rowBegin <= rowEnd && colBegin <= colEnd) {
+        for (int j = colBegin; j <= colEnd; j++) result.push_back(matrix[rowBegin][j]);
+        rowBegin++;
+        for (int i = rowBegin; i <= rowEnd; i++) result.push_back(matrix[i][colEnd]);
+        colEnd--;
+        if (rowBegin <= rowEnd) {
+            for (int j = colEnd; j >= colBegin; j--) result.push_back(matrix[rowEnd][j]);
+            rowEnd--;
+        }
+        if (colBegin <= colEnd) {
+            for (int i = rowEnd; i >= rowBegin; i--) result.push_back(matrix[i][colBegin]);
+            colBegin++;
+        }
+    }
+    return result;
+}
+
+7. First Missing Positive: Given an unsorted integer array, find the smallest missing positive integer.
+
+int firstMissingPositive(vector<int>& nums) {
+    int n = nums.size();
+    for (int i = 0; i < n; i++) {
+        while (nums[i] > 0 && nums[i] <= n && nums[nums[i] - 1] != nums[i]) {
+            swap(nums[i], nums[nums[i] - 1]);
+        }
+    }
+    for (int i = 0; i < n; i++) {
+        if (nums[i] != i + 1) return i + 1;
+    }
+    return n + 1;
+}
+
+8. Product of Array Except Self: Given an array nums of n integers where n > 1, return an array output such that output[i] is equal to the product of all the elements of nums except nums[i].
+
+vector<int> productExceptSelf(vector<int>& nums) {
+    int n = nums.size();
+    vector<int> output(n, 1);
+    int left = 1, right = 1;
+    for (int i = 0; i < n; i++) {
+        output[i] *= left;
+        left *= nums[i];
+        output[n - 1 - i] *= right;
+        right *= nums[n - 1 - i];
+    }
+    return output;
+}
+
+9. Longest Consecutive Sequence: Given an unsorted array of integers, find the length of the longest consecutive elements sequence.
+
+int longestConsecutive(vector<int>& nums) {
+    unordered_set<int> numSet(nums.begin(), nums.end());
+    int longestStreak = 0;
+    for (int num : nums) {
+        if (!numSet.count(num - 1)) {
+            int currentNum = num;
+            int currentStreak = 1;
+            while (numSet.count(currentNum + 1)) {
+                currentNum += 1;
+                currentStreak += 1;
+            }
+            longestStreak = max(longestStreak, currentStreak);
+        }
+    }
+    return longestStreak;
+}
+
+10. Jump Game: Given an array of non-negative integers, you are initially positioned at the first index of the array. Each element in the array represents your maximum jump length at that position. 
+Determine if you are able to reach the last index.
+
+bool canJump(vector<int>& nums) {
+    int lastPos = nums.size() - 1;
+    for (int i = nums.size() - 1; i >= 0; i--) {
+        if (i + nums[i] >= lastPos) {
+            lastPos = i;
+        }
+    }
+    return lastPos == 0;
+}

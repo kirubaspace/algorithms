@@ -1,0 +1,91 @@
+1. Valid Parentheses: Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid. An input string is valid if open brackets are closed by the same type of brackets and in the correct order.
+
+bool isValid(string s) {
+    stack<char> stk;
+    for (char c : s) {
+        if (c == '(') stk.push(')');
+        else if (c == '{') stk.push('}');
+        else if (c == '[') stk.push(']');
+        else if (stk.empty() || stk.top() != c) return false;
+        else stk.pop();
+    }
+    return stk.empty();
+}
+
+2. Min Stack: Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
+
+class MinStack {
+private:
+    stack<int> s1;
+    stack<int> s2;
+
+public:
+    void push(int x) {
+        s1.push(x);
+        if (s2.empty() || x <= getMin()) s2.push(x);
+    }
+
+    void pop() {
+        if (s1.top() == getMin()) s2.pop();
+        s1.pop();
+    }
+
+    int top() {
+        return s1.top();
+    }
+
+    int getMin() {
+        return s2.top();
+    }
+};
+
+3. Evaluate Reverse Polish Notation: Evaluate the value of an arithmetic expression in Reverse Polish Notation (postfix expression).
+
+int evalRPN(vector<string>& tokens) {
+    stack<int> stk;
+    for (string& token : tokens) {
+        if (token == "+" || token == "-" || token == "*" || token == "/") {
+            int num2 = stk.top(); stk.pop();
+            int num1 = stk.top(); stk.pop();
+            if (token == "+") stk.push(num1 + num2);
+            else if (token == "-") stk.push(num1 - num2);
+            else if (token == "*") stk.push(num1 * num2);
+            else if (token == "/") stk.push(num1 / num2);
+        } else {
+            stk.push(stoi(token));
+        }
+    }
+    return stk.top();
+}
+
+4. Next Greater Element I: Given an array, print the Next Greater Element (NGE) for every element. The Next Greater Element for an element x is the first greater element on the right side of x in the array.
+
+vector<int> nextGreaterElement(vector<int>& nums) {
+    stack<int> s;
+    unordered_map<int, int> m;
+    for (int n : nums) {
+        while (!s.empty() && s.top() < n) {
+            m[s.top()] = n; s.pop();
+        }
+        s.push(n);
+    }
+    vector<int> ans;
+    for (int n : nums) ans.push_back(m.count(n) ? m[n] : -1);
+    return ans;
+}
+
+5. Simplify Path: Given an absolute path for a file (Unix-style), simplify it. (e.g., "/home/" -> "/home", "/a/./b/../../c/" -> "/c")
+
+string simplifyPath(string path) {
+    vector<string> dirs;
+    stringstream ss(path);
+    string dir, res;
+    while (getline(ss, dir, '/')) {
+        if (dir == "" || dir == ".") continue;
+        if (dir == ".." && !dirs.empty()) dirs.pop_back();
+        else if (dir != "..") dirs.push_back(dir);
+    }
+    for (string dir : dirs) res += "/" + dir;
+    return res.empty() ? "/" : res;
+}
+

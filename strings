@@ -1,0 +1,154 @@
+1. Reverse a String: Write a function to reverse a string. Can you do it without using built-in methods?
+
+void reverseString(string& s) {
+    int i = 0, j = s.length() - 1;
+    while (i < j) {
+        swap(s[i++], s[j--]);
+    }
+}
+
+2. Check for Palindrome: Determine if a given string is a palindrome (reads the same backward as forward).
+
+bool isPalindrome(string s) {
+    int i = 0, j = s.length() - 1;
+    while (i < j) {
+        if (s[i++] != s[j--]) return false;
+    }
+    return true;
+}
+
+3. Anagram Check: Write a method to check if two strings are anagrams of each other (contain the same letters in a different order).
+
+bool isAnagram(string s, string t) {
+    if (s.length() != t.length()) return false;
+    int count[256] = {0};
+    for (int i = 0; i < s.length(); i++) {
+        count[s[i]]++;
+        count[t[i]]--;
+    }
+    for (int c : count) {
+        if (c != 0) return false;
+    }
+    return true;
+}
+
+
+4. Find the First Non-Repeated Character: In a string, find the first character that does not repeat itself.
+
+int firstUniqChar(string s) {
+    int count[256] = {0};
+    for (char c : s) count[c]++;
+    for (int i = 0; i < s.length(); i++) {
+        if (count[s[i]] == 1) return i;
+    }
+    return -1;
+}
+
+5. String to Integer (atoi): Implement a function that converts a string to an integer, handling possible edge cases (like invalid input or overflow).
+
+int myAtoi(string str) {
+    int i = 0, sign = 1;
+    long long result = 0;
+    while (i < str.size() && str[i] == ' ') i++;
+    if (i < str.size() && (str[i] == '+' || str[i] == '-')) 
+        sign = (str[i++] == '+') ? 1 : -1;
+    while (i < str.size() && isdigit(str[i])) {
+        result = result * 10 + (str[i++] - '0');
+        if (result * sign >= INT_MAX) return INT_MAX;
+        if (result * sign <= INT_MIN) return INT_MIN;
+    }
+    return result * sign;
+}
+
+6. Longest Substring Without Repeating Characters: Find the length of the longest substring in a given string that does not have repeating characters.
+
+int lengthOfLongestSubstring(string s) {
+    vector<int> charIndex(256, -1);
+    int longest = 0, start = -1;
+    for (int i = 0; i < s.length(); i++) {
+        if (charIndex[s[i]] > start) 
+            start = charIndex[s[i]];
+        charIndex[s[i]] = i;
+        longest = max(longest, i - start);
+    }
+    return longest;
+}
+
+7. Longest Palindromic Substring: Find the longest substring in a given string which is a palindrome.
+
+string longestPalindrome(string s) {
+    if (s.empty()) return "";
+    int start = 0, end = 0;
+    for (int i = 0; i < s.size(); i++) {
+        int len1 = expandFromCenter(s, i, i);
+        int len2 = expandFromCenter(s, i, i + 1);
+        int len = max(len1, len2);
+        if (len > end - start) {
+            start = i - (len - 1) / 2;
+            end = i + len / 2;
+        }
+    }
+    return s.substr(start, end - start + 1);
+}
+
+int expandFromCenter(string& s, int left, int right) {
+    while (left >= 0 && right < s.size() && s[left] == s[right]) {
+        left--;
+        right++;
+    }
+    return right - left - 1;
+}
+
+8. Count and Say: Implement the 'count and say' sequence. For example, the sequence begins 1, 11, 21, 1211, 111221, ...
+
+string countAndSay(int n) {
+    if (n == 1) return "1";
+    string prev = countAndSay(n - 1), result = "";
+    for (int i = 0; i < prev.length(); i++) {
+        int count = 1;
+        while (i + 1 < prev.length() && prev[i] == prev[i + 1]) {
+            count++;
+            i++;
+        }
+        result += to_string(count) + prev[i];
+    }
+    return result;
+}
+
+9. Valid Parentheses: Given a string containing characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid. An input string is valid if open brackets are closed by the same type of brackets and in the correct order.
+
+bool isValid(string s) {
+    stack<char> st;
+    for (char c : s) {
+        if (c == '(' || c == '{' || c == '[') {
+            st.push(c);
+        } else {
+            if (st.empty() || (c == ')' && st.top() != '(') || 
+                (c == '}' && st.top() != '{') || (c == ']' && st.top() != '[')) {
+                return false;
+            }
+            st.pop();
+        }
+    }
+    return st.empty();
+}
+
+10. String Compression: Implement a method to perform basic string compression using the counts of repeated characters. For example, the string "aabcccccaaa" would become "a2b1c5a3". 
+If the "compressed" string would not become smaller than the original string, your method should return the original string.
+
+int compress(vector<char>& chars) {
+    int i = 0, count = 1;
+    for (int j = 1; j <= chars.size(); j++) {
+        if (j < chars.size() && chars[j] == chars[j - 1]) {
+            count++;
+        } else {
+            chars[i++] = chars[j - 1];
+            if (count > 1) {
+                for (char c : to_string(count)) 
+                    chars[i++] = c;
+                count = 1;
+            }
+        }
+    }
+    return i;
+}

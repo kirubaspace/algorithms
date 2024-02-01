@@ -1,0 +1,166 @@
+1. Validate Binary Search Tree: Check if a binary tree is a valid binary search tree (BST).
+
+bool isValidBST(TreeNode* root) {
+    return validate(root, LONG_MIN, LONG_MAX);
+}
+
+bool validate(TreeNode* node, long minVal, long maxVal) {
+    if (!node) return true;
+    if (node->val <= minVal || node->val >= maxVal) return false;
+    return validate(node->left, minVal, node->val) && validate(node->right, node->val, maxVal);
+}
+
+
+2. Kth Smallest Element in a BST: Find the kth smallest element in a BST.
+
+int kthSmallest(TreeNode* root, int k) {
+    int count = 0;
+    int result = INT_MIN;
+    inorder(root, count, k, result);
+    return result;
+}
+
+void inorder(TreeNode* node, int& count, int k, int& result) {
+    if (!node || count >= k) return;
+    inorder(node->left, count, k, result);
+    if (++count == k) result = node->val;
+    inorder(node->right, count, k, result);
+}
+
+3. Lowest Common Ancestor of a BST: Find the lowest common ancestor (LCA) in a BST.
+
+TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+    if (!root) return NULL;
+    if (root->val > p->val && root->val > q->val) 
+        return lowestCommonAncestor(root->left, p, q);
+    if (root->val < p->val && root->val < q->val) 
+        return lowestCommonAncestor(root->right, p, q);
+    return root;
+}
+
+4. Insert into a Binary Search Tree: Insert an element into a binary search tree.
+
+TreeNode* insertIntoBST(TreeNode* root, int val) {
+    if (!root) return new TreeNode(val);
+    if (val < root->val) root->left = insertIntoBST(root->left, val);
+    else root->right = insertIntoBST(root->right, val);
+    return root;
+}
+
+5. Delete Node in a BST: Given a root node reference of a BST and a key, delete the node with the given key in the BST.
+
+TreeNode* deleteNode(TreeNode* root, int key) {
+    if (!root) return NULL;
+    if (key < root->val) root->left = deleteNode(root->left, key);
+    else if (key > root->val) root->right = deleteNode(root->right, key);
+    else {
+        if (!root->left) return root->right;
+        else if (!root->right) return root->left;
+        TreeNode* minNode = findMin(root->right);
+        root->val = minNode->val;
+        root->right = deleteNode(root->right, root->val);
+    }
+    return root;
+}
+
+TreeNode* findMin(TreeNode* node) {
+    while (node->left) node = node->left;
+    return node;
+}
+
+6. Binary Search Tree Iterator: Implement an iterator over a BST with the functions next() and hasNext(). It should iterate the BST in ascending order.
+
+class BSTIterator {
+private:
+    stack<TreeNode*> st;
+    void pushAll(TreeNode* node) {
+        for (; node != NULL; st.push(node), node = node->left);
+    }
+
+public:
+    BSTIterator(TreeNode* root) {
+        pushAll(root);
+    }
+    
+    int next() {
+        TreeNode* tmpNode = st.top();
+        st.pop();
+        pushAll(tmpNode->right);
+        return tmpNode->val;
+    }
+    
+    bool hasNext() {
+        return !st.empty();
+    }
+};
+
+7. Range Sum of BST: Given the root node of a BST and two numbers, return the sum of values of all nodes with a value in the range.
+
+int rangeSumBST(TreeNode* root, int low, int high) {
+    if (!root) return 0;
+    if (root->val < low) return rangeSumBST(root->right, low, high);
+    if (root->val > high) return rangeSumBST(root->left, low, high);
+    return root->val + rangeSumBST(root->left, low, high) + rangeSumBST(root->right, low, high);
+}
+
+8. BST to Greater Sum Tree: Convert a BST into a Greater Tree where every key of the original BST is changed to the original key plus the sum of all keys greater than the original key in BST.
+
+TreeNode* bstToGst(TreeNode* root) {
+    int sum = 0;
+    inorderReverse(root, sum);
+    return root;
+}
+
+void inorderReverse(TreeNode* node, int& sum) {
+    if (!node) return;
+    inorderReverse(node->right, sum);
+    sum += node->val;
+    node->val = sum;
+    inorderReverse(node->left, sum);
+}
+
+9. Recover Binary Search Tree: Two elements of a BST are swapped by mistake. Recover the tree without changing its structure.
+
+void recoverTree(TreeNode* root) {
+    TreeNode *first = NULL, *second = NULL, *prev = NULL;
+    inorder(root, first, second, prev);
+    swap(first->val, second->val);
+}
+
+void inorder(TreeNode* root, TreeNode*& first, TreeNode*& second, TreeNode*& prev) {
+    if (!root) return;
+    inorder(root->left, first, second, prev);
+    if (prev && prev->val > root->val) {
+        if (!first) first = prev;
+        second = root;
+    }
+    prev = root;
+    inorder(root->right, first, second, prev);
+}
+
+10. Find Mode in Binary Search Tree: Find all the modes (the most frequently occurring element) in the BST
+
+vector<int> findMode(TreeNode* root) {
+    vector<int> modes;
+    int maxCount = 0, currentCount = 0, currentVal = 0;
+    inorder(root, modes, maxCount, currentCount, currentVal);
+    return modes;
+}
+
+void inorder(TreeNode* root, vector<int>& modes, int& maxCount, int& currentCount, int& currentVal) {
+    if (!root) return;
+    inorder(root->left, modes, maxCount, currentCount, currentVal);
+    if (root->val != currentVal) {
+        currentVal = root->val;
+        currentCount = 0;
+    }
+    currentCount++;
+    if (currentCount > maxCount) {
+        maxCount = currentCount;
+        modes.clear();
+        modes.push_back(currentVal);
+    } else if (currentCount == maxCount) {
+        modes.push_back(currentVal);
+    }
+    inorder(root->right, modes, maxCount, currentCount, currentVal);
+}

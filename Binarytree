@@ -1,0 +1,153 @@
+1. Maximum Depth of Binary Tree: Find the maximum depth (or height) of a binary tree.
+
+int maxDepth(TreeNode* root) {
+    if (!root) return 0;
+    return 1 + max(maxDepth(root->left), maxDepth(root->right));
+}
+
+2. Level Order Traversal: Perform level order traversal on a binary tree.
+
+vector<vector<int>> levelOrder(TreeNode* root) {
+    vector<vector<int>> result;
+    if (!root) return result;
+    queue<TreeNode*> q;
+    q.push(root);
+    while (!q.empty()) {
+        int size = q.size();
+        vector<int> currentLevel;
+        for (int i = 0; i < size; i++) {
+            TreeNode* node = q.front(); q.pop();
+            currentLevel.push_back(node->val);
+            if (node->left) q.push(node->left);
+            if (node->right) q.push(node->right);
+        }
+        result.push_back(currentLevel);
+    }
+    return result;
+}
+
+3. Symmetric Tree: Check whether a binary tree is a mirror of itself (i.e., symmetric around its center).
+
+bool isSymmetric(TreeNode* root) {
+    return root == NULL || isMirror(root->left, root->right);
+}
+
+bool isMirror(TreeNode* t1, TreeNode* t2) {
+    if (t1 == NULL || t2 == NULL) return t1 == t2;
+    return (t1->val == t2->val)
+        && isMirror(t1->right, t2->left)
+        && isMirror(t1->left, t2->right);
+}
+
+4. Path Sum: Given a binary tree and a sum, determine if the tree has a root-to-leaf path such that adding up all the values along the path equals the given sum.
+
+bool hasPathSum(TreeNode* root, int sum) {
+    if (!root) return false;
+    sum -= root->val;
+    if (!root->left && !root->right) return sum == 0;
+    return hasPathSum(root->left, sum) || hasPathSum(root->right, sum);
+}
+
+
+5. Construct Binary Tree from Preorder and Inorder Traversal: Given preorder and inorder traversal of a tree, construct the binary tree.
+
+TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+    return build(preorder, 0, preorder.size() - 1, inorder, 0, inorder.size() - 1);
+}
+
+TreeNode* build(vector<int>& preorder, int pStart, int pEnd, vector<int>& inorder, int iStart, int iEnd) {
+    if (pStart > pEnd || iStart > iEnd) return NULL;
+    TreeNode* root = new TreeNode(preorder[pStart]);
+    int iIndex;
+    for (iIndex = iStart; iIndex <= iEnd; iIndex++) {
+        if (inorder[iIndex] == root->val) break;
+    }
+    root->left = build(preorder, pStart + 1, pStart + iIndex - iStart, inorder, iStart, iIndex - 1);
+    root->right = build(preorder, pStart + iIndex - iStart + 1, pEnd, inorder, iIndex + 1, iEnd);
+    return root;
+}
+
+6. Lowest Common Ancestor of a Binary Tree: Find the lowest common ancestor (LCA) of two given nodes in the binary tree.
+
+TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+    if (!root || root == p || root == q) return root;
+    TreeNode* left = lowestCommonAncestor(root->left, p, q);
+    TreeNode* right = lowestCommonAncestor(root->right, p, q);
+    if (left && right) return root;
+    return left ? left : right;
+}
+
+7. Binary Tree Maximum Path Sum: Find the maximum path sum in a binary tree. The path may start and end at any node in the tree.
+
+int maxPathSum(TreeNode* root) {
+    int maxSum = INT_MIN;
+    pathSum(root, maxSum);
+    return maxSum;
+}
+
+int pathSum(TreeNode* node, int& maxSum) {
+    if (!node) return 0;
+    int left = max(0, pathSum(node->left, maxSum));
+    int right = max(0, pathSum(node->right, maxSum));
+    maxSum = max(maxSum, left + right + node->val);
+    return max(left, right) + node->val;
+}
+
+8. Serialize and Deserialize Binary Tree: Design an algorithm to serialize and deserialize a binary tree into a string and vice versa.
+
+// Serialization
+string serialize(TreeNode* root) {
+    if (!root) return "null,";
+    return to_string(root->val) + "," + serialize(root->left) + serialize(root->right);
+}
+
+// Deserialization
+TreeNode* deserialize(string data) {
+    queue<string> q;
+    stringstream s(data);
+    string str;
+    while (getline(s, str, ',')) {
+        q.push(str);
+    }
+    return buildTree(q);
+}
+
+TreeNode* buildTree(queue<string>& q) {
+    string val = q.front(); q.pop();
+    if (val == "null") return NULL;
+    TreeNode* root = new TreeNode(stoi(val));
+    root->left = buildTree(q);
+    root->right = buildTree(q);
+    return root;
+}
+
+9. Balanced Binary Tree: Determine if a binary tree is height-balanced.
+
+bool isBalanced(TreeNode* root) {
+    return dfsHeight(root) != -1;
+}
+
+int dfsHeight(TreeNode* root) {
+    if (!root) return 0;
+    int leftHeight = dfsHeight(root->left);
+    if (leftHeight == -1) return -1;
+    int rightHeight = dfsHeight(root->right);
+    if (rightHeight == -1) return -1;
+    if (abs(leftHeight - rightHeight) > 1) return -1;
+    return max(leftHeight, rightHeight) + 1;
+}
+
+10. Binary Tree Right Side View: Given a binary tree, imagine yourself standing on the right side of it, return the values of the nodes you can see ordered from top to bottom
+
+vector<int> rightSideView(TreeNode* root) {
+    vector<int> view;
+    rightView(root, view, 0);
+    return view;
+}
+
+void rightView(TreeNode* curr, vector<int>& view, int currDepth) {
+    if (!curr) return;
+    if (currDepth == view.size()) view.push_back(curr->val);
+    rightView(curr->right, view, currDepth + 1);
+    rightView(curr->left, view, currDepth + 1);
+}

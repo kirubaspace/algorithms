@@ -1,0 +1,172 @@
+1. Reverse a Linked List: Implement a function to reverse a linked list. Can you do it iteratively and recursively?
+
+ListNode* reverseList(ListNode* head) {
+    ListNode *prev = nullptr, *curr = head, *next = nullptr;
+    while (curr) {
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+    return prev;
+}
+
+ListNode* reverseListRecursive(ListNode* head) {
+    if (!head || !head->next) return head;
+    ListNode* rest = reverseListRecursive(head->next);
+    head->next->next = head;
+    head->next = nullptr;
+    return rest;
+}
+
+
+2. Detect Cycle in a Linked List: Write a program to detect a cycle in a linked list.
+
+bool hasCycle(ListNode *head) {
+    ListNode *slow = head, *fast = head;
+    while (fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+        if (slow == fast) return true;
+    }
+    return false;
+}
+
+
+3. Merge Two Sorted Lists: Merge two sorted linked lists into one sorted linked list.
+
+ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
+    if (!l1) return l2;
+    if (!l2) return l1;
+    if (l1->val < l2->val) {
+        l1->next = mergeTwoLists(l1->next, l2);
+        return l1;
+    } else {
+        l2->next = mergeTwoLists(l1, l2->next);
+        return l2;
+    }
+}
+
+4. Remove Nth Node From End of List: Given a linked list, remove the n-th node from the end of the list.
+
+ListNode* removeNthFromEnd(ListNode* head, int n) {
+    ListNode *dummy = new ListNode(0);
+    dummy->next = head;
+    ListNode *first = dummy, *second = dummy;
+    for (int i = 1; i <= n + 1; i++) {
+        first = first->next;
+    }
+    while (first) {
+        first = first->next;
+        second = second->next;
+    }
+    second->next = second->next->next;
+    return dummy->next;
+}
+
+5. Intersection of Two Linked Lists: Find the node at which the intersection of two singly linked lists begins.
+
+ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+    ListNode *a = headA, *b = headB;
+    while (a != b) {
+        a = a ? a->next : headB;
+        b = b ? b->next : headA;
+    }
+    return a;
+}
+
+6. Linked List Cycle II: Given a linked list, return the node where the cycle begins. If there is no cycle, return null.
+
+ListNode *detectCycle(ListNode *head) {
+    ListNode *slow = head, *fast = head;
+    while (fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+        if (slow == fast) {
+            ListNode *ptr = head;
+            while (ptr != slow) {
+                ptr = ptr->next;
+                slow = slow->next;
+            }
+            return ptr;
+        }
+    }
+    return nullptr;
+}
+
+7. Remove Duplicates from Sorted List: Write a function to delete all duplicates such that each element appears only once in a sorted linked list.
+
+ListNode* deleteDuplicates(ListNode* head) {
+    ListNode *current = head;
+    while (current && current->next) {
+        if (current->val == current->next->val) {
+            current->next = current->next->next;
+        } else {
+            current = current->next;
+        }
+    }
+    return head;
+}
+
+8. Palindrome Linked List: Check if a singly linked list is a palindrome.
+
+bool isPalindrome(ListNode* head) {
+    ListNode *slow = head, *fast = head, *prev = nullptr, *temp;
+    while (fast && fast->next) {
+        fast = fast->next->next;
+        temp = slow->next;
+        slow->next = prev;
+        prev = slow;
+        slow = temp;
+    }
+    if (fast) slow = slow->next;
+    while (slow) {
+        if (slow->val != prev->val) return false;
+        slow = slow->next;
+        prev = prev->next;
+    }
+    return true;
+}
+
+9. Add Two Numbers: You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.
+
+ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+    ListNode *dummy = new ListNode(0);
+    ListNode *temp = dummy;
+    int carry = 0;
+    while (l1 || l2 || carry) {
+        int sum = 0;
+        if (l1) {
+            sum += l1->val;
+            l1 = l1->next;
+        }
+        if (l2) {
+            sum += l2->val;
+            l2 = l2->next;
+        }
+        sum += carry;
+        carry = sum / 10;
+        temp->next = new ListNode(sum % 10);
+        temp = temp->next;
+    }
+    return dummy->next;
+}
+
+10. Rotate List: Given a linked list, rotate the list to the right by k places, where k is non-negative.
+
+ListNode* rotateRight(ListNode* head, int k) {
+    if (!head || !head->next || k == 0) return head;
+    ListNode *current = head;
+    int len = 1;
+    while (current->next) {
+        len++;
+        current = current->next;
+    }
+    current->next = head;
+    k = k % len;
+    k = len - k;
+    while (k--) current = current->next;
+    head = current->next;
+    current->next = nullptr;
+    return head;
+}

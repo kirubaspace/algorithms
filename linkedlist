@@ -110,21 +110,40 @@ ListNode* deleteDuplicates(ListNode* head) {
 
 8. Palindrome Linked List: Check if a singly linked list is a palindrome.
 
+// Helper function to reverse a linked list (iteratively)
+ListNode* reverseList(ListNode* head) {
+    ListNode *prev = nullptr, *next = nullptr;
+    while (head) {
+        next = head->next;
+        head->next = prev;
+        prev = head;
+        head = next;
+    }
+    return prev;
+}
+
 bool isPalindrome(ListNode* head) {
-    ListNode *slow = head, *fast = head, *prev = nullptr, *temp;
-    while (fast && fast->next) {
-        fast = fast->next->next;
-        temp = slow->next;
-        slow->next = prev;
-        prev = slow;
-        slow = temp;
-    }
-    if (fast) slow = slow->next;
-    while (slow) {
-        if (slow->val != prev->val) return false;
+    if (!head || !head->next) return true;
+
+    // Find the middle node using two-pointer technique
+    ListNode *slow = head, *fast = head;
+    while (fast->next && fast->next->next) {
         slow = slow->next;
-        prev = prev->next;
+        fast = fast->next->next;
     }
+
+    // Reverse the second half of the list
+    ListNode *middle = slow->next;
+    slow->next = nullptr; // Split the list into two halves
+    ListNode *reverse = reverseList(middle);
+
+    // Compare the values in the two halves
+    while (head && reverse) {
+        if (head->val != reverse->val) return false;
+        head = head->next;
+        reverse = reverse->next;
+    }
+
     return true;
 }
 

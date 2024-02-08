@@ -58,12 +58,12 @@ func swapOddEvenBits(x uint32) uint32 {
 
 6. Find the single number ( Given an array of integers where every element appears twice except for one, find that single one )
 
-int findSingle(const std::vector<int>& nums) {
-    int result = 0;
-    for (int num : nums) {
-        result ^= num;
+func findSingle(nums []int) int {
+    result := 0
+    for _, num := range nums {
+        result ^= num
     }
-    return result;
+    return result
 }
 
 7. Check if the number is power of 2
@@ -74,22 +74,22 @@ func isPowerOfTwo(n int) bool {
 
 8. Question: Given an array containing n distinct numbers taken from 0, 1, 2, ..., n, find the one that is missing from the array.
 
-func missingNumber(nums []int) int {
-    missing := len(nums)
-    for i, num := range nums {
-        missing ^= i ^ num
+int missingNumber(const std::vector<int>& nums) {
+    int missing = nums.size();
+    for (int i = 0; i < nums.size(); ++i) {
+        missing ^= i ^ nums[i];
     }
-    return missing
+    return missing;
 }
 
 9. Question: Calculate the Hamming distance between two integers (the number of positions at which the corresponding bits are different).
 
-func hammingDistance(x, y int) int {
-    xor := x ^ y
-    count := 0
-    for xor != 0 {
-        count += xor & 1
-        xor >>= 1
+int hammingDistance(int x, int y) {
+    int xorVal = x ^ y;
+    int count = 0;
+    while (xorVal != 0) {
+        count += xorVal & 1;
+        xorVal >>= 1;
     }
-    return count
+    return count;
 }

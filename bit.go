@@ -58,12 +58,12 @@ func swapOddEvenBits(x uint32) uint32 {
 
 6. Find the single number ( Given an array of integers where every element appears twice except for one, find that single one )
 
-func findSingle(nums []int) int {
-    result := 0
-    for _, num := range nums {
-        result ^= num
+int findSingle(const std::vector<int>& nums) {
+    int result = 0;
+    for (int num : nums) {
+        result ^= num;
     }
-    return result
+    return result;
 }
 
 7. Check if the number is power of 2

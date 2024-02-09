@@ -151,3 +151,34 @@ void rightView(TreeNode* curr, vector<int>& view, int currDepth) {
     rightView(curr->right, view, currDepth + 1);
     rightView(curr->left, view, currDepth + 1);
 }
+
+11. Implement in-order, pre-order and post-order traversal
+
+void inorderTraversal(Node* root) {
+    if (root == nullptr) { 
+        return;
+    }
+    inorderTraversal(root->left);  // Recur on left subtree
+    std::cout << root->data << " ";  // Process the root node
+    inorderTraversal(root->right); // Recur on right subtree
+}
+
+void preorderTraversal(Node* root) {
+    if (root == nullptr) {
+        return; 
+    }
+    std::cout << root->data << " "; // Process the root node
+    preorderTraversal(root->left);  // Recur on left subtree
+    preorderTraversal(root->right); // Recur on right subtree
+}
+
+void postorderTraversal(Node* root) {
+    if (root == nullptr) {
+        return;
+    }
+    postorderTraversal(root->left);  // Recur on left subtree
+    postorderTraversal(root->right); // Recur on right subtree
+    std::cout << root->data << " "; // Process the root node
+}
+
+12. Implement DFS traversal 

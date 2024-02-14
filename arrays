@@ -111,13 +111,21 @@ int firstMissingPositive(vector<int>& nums) {
 vector<int> productExceptSelf(vector<int>& nums) {
     int n = nums.size();
     vector<int> output(n, 1);
-    int left = 1, right = 1;
+
+    // Calculate prefix products
+    int prefix = 1;
     for (int i = 0; i < n; i++) {
-        output[i] *= left;
-        left *= nums[i];
-        output[n - 1 - i] *= right;
-        right *= nums[n - 1 - i];
+        output[i] = prefix;
+        prefix *= nums[i];
     }
+
+    // Calculate suffix products (from the right)
+    int suffix = 1;
+    for (int i = n - 1; i >= 0; i--) {
+        output[i] *= suffix;
+        suffix *= nums[i];
+    }
+
     return output;
 }
 

@@ -8,22 +8,21 @@ int maxDepth(TreeNode* root) {
 2. Level Order Traversal: Perform level order traversal on a binary tree.
 
 vector<vector<int>> levelOrder(TreeNode* root) {
-    vector<vector<int>> result;
-    if (!root) return result;
-    queue<TreeNode*> q;
-    q.push(root);
-    while (!q.empty()) {
-        int size = q.size();
-        vector<int> currentLevel;
-        for (int i = 0; i < size; i++) {
-            TreeNode* node = q.front(); q.pop();
-            currentLevel.push_back(node->val);
-            if (node->left) q.push(node->left);
-            if (node->right) q.push(node->right);
-        }
-        result.push_back(currentLevel);
+  vector<vector<int>> result;
+  if (!root) return result;
+  queue<TreeNode*> q;
+  q.push(root);
+  while (!q.empty()) {
+    vector<int> currentLevel(q.size());
+    int i = 0;
+    for (TreeNode* node : q) {
+      currentLevel[i++] = node->val;
+      if (node->left) q.push(node->left);
+      if (node->right) q.push(node->right);
     }
-    return result;
+    result.push_back(currentLevel);
+  }
+  return result;
 }
 
 3. Symmetric Tree: Check whether a binary tree is a mirror of itself (i.e., symmetric around its center).

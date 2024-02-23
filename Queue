@@ -95,3 +95,68 @@ vector<int> maxSlidingWindow(vector<int>& nums, int k) {
     }
     return ans;
 }
+
+6. Implement queue through array
+
+#define MAX_SIZE 100
+
+int queue[MAX_SIZE];
+int front = -1, rear = -1;
+
+// Enqueue (add item)
+void enqueue(int data) {
+    if (rear == MAX_SIZE - 1) {
+        printf("Queue Overflow\n");
+        return;
+    }
+    if (front == -1) front = 0; 
+    rear++;
+    queue[rear] = data;
+}
+
+// Dequeue (remove item)
+int dequeue() {
+    if (front == -1 || front > rear) {
+        printf("Queue Underflow\n");
+        return -1; 
+    }
+    return queue[front++];
+}
+
+// Check if queue is empty 
+bool isEmpty() {
+    return front == -1 || front > rear;
+}
+
+7. Implement queue through linked list
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+struct Node *front = NULL, *rear = NULL;
+
+void enqueue(int data) {
+    struct Node* temp = (struct Node*)malloc(sizeof(struct Node));
+    temp->data = data;
+    temp->next = NULL;
+    if (rear == NULL) {  // Empty queue
+        front = rear = temp;
+    } else {
+        rear->next = temp;
+        rear = temp;
+    }
+}
+
+int dequeue() {
+    if (front == NULL) {
+        printf("Queue Underflow\n");
+        return -1;
+    }
+    struct Node* temp = front;
+    int data = front->data;
+    front = front->next;
+    free(temp);
+    return data;
+}

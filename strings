@@ -150,5 +150,22 @@ int compress(vector<char>& chars) {
             }
         }
     }
+
+11. Remove duplicates from a string in C
+
+char *remove_duplicates(char *str) {
+    int len = strlen(str);
+    int hash[256] = {0}; // Assuming ASCII characters
+    int index = 0;
+
+    for (int i = 0; i < len; i++) {
+        if (hash[str[i]] == 0) {
+            str[index++] = str[i];
+            hash[str[i]] = 1;
+        }
+    }
+    str[index] = '\0'; // Terminate the modified string
+    return str;
+}
     return i;
 }

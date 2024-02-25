@@ -189,3 +189,48 @@ ListNode* rotateRight(ListNode* head, int k) {
     current->next = nullptr;
     return head;
 }
+
+11. Find middle of linked list
+
+/* Function to find the middle of a linked list */
+struct Node *findMiddle(struct Node *head) {
+    struct Node *slow_ptr = head;
+    struct Node *fast_ptr = head;
+
+    if (head == NULL) {
+        return NULL; // Handle empty list case
+    }
+
+    while (fast_ptr != NULL && fast_ptr->next != NULL) {
+        slow_ptr = slow_ptr->next;          // Move slow pointer one node at a time
+        fast_ptr = fast_ptr->next->next;    // Move fast pointer two nodes at a time
+    }
+
+    return slow_ptr;  // When fast_ptr reaches the end, slow_ptr will be at the middle
+}
+
+12. You have two linked list merging at some point. Return the merging point of the linked list
+
+LinkedList* mergingLinkedLists(
+  LinkedList* linkedListOne, LinkedList* linkedListTwo
+) 
+{
+  LinkedList* curr = linkedListOne;
+  LinkedList* curr2 = linkedListTwo;
+
+  while (curr != curr2) {
+      if (curr == nullptr) {
+        curr = linkedListTwo;
+      } else {
+        curr = curr->next;
+      }
+
+      if (curr2 == nullptr){
+        curr2 = linkedListOne;
+      } else {
+        curr2 = curr2->next;
+      }
+      
+    }
+    return curr;
+}

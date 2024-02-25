@@ -169,3 +169,34 @@ char *remove_duplicates(char *str) {
 }
     return i;
 }
+
+12. reverse a string in c
+
+void reverse_string(char *str) {
+    int len = strlen(str);
+    char temp[len + 1]; // +1 for the null terminator
+
+    int i;
+    for (i = 0; i < len; i++) {
+        temp[i] = str[len - 1 - i];
+    }
+    temp[len] = '\0'; 
+
+    strcpy(str, temp); // Copy back to the original string
+}
+
+13. reverse a sentence 
+
+std::string reverse_sentence(const std::string& sentence) {
+    std::string result = sentence;
+
+    // Reverse each individual word
+    int wordStart = 0;
+    for (int i = 0; i <= result.size(); i++) {
+        if (result[i] == ' ' || i == result.size()) {
+            std::reverse(result.begin() + wordStart, result.begin() + i);
+            wordStart = i + 1; // Update start of the next word
+        }
+    }
+    return result;
+}

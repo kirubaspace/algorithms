@@ -1,4 +1,140 @@
-1. Valid Parentheses: Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid. An input string is valid if open brackets are closed by the same type of brackets and in the correct order.
+1. Implementation of Stack
+
+#include <iostream> 
+
+#define MAX_SIZE 100
+
+class Stack {
+    int top;
+    int arr[MAX_SIZE]; 
+
+public:
+    Stack() { top = -1; }
+    bool push(int x);
+    int pop();
+    int peek();
+    bool isEmpty();
+};
+
+bool Stack::push(int x) {
+    if (top >= MAX_SIZE - 1) {
+        std::cout << "Stack Overflow\n";
+        return false;
+    }
+    arr[++top] = x;
+    return true;
+}
+
+int Stack::pop() {
+    if (top < 0) {
+        std::cout << "Stack Underflow\n";
+        return -1; 
+    }
+    return arr[top--];
+}
+
+int Stack::peek() {
+    if (top < 0) {
+        std::cout << "Stack is Empty\n";
+        return -1; 
+    }
+    return arr[top];
+}
+
+bool Stack::isEmpty() {
+    return (top < 0);
+}
+
+int main() {
+    // Example Usage...
+}
+
+2. Balanced Parentheses Problem
+
+#include <iostream>
+#include <stack>
+using namespace std;
+
+bool areParenthesesBalanced(string expr) {
+    stack<char> s;
+    char x;
+
+    for (int i = 0; i < expr.length(); i++) {
+        if (expr[i] == '(' || expr[i] == '[' || expr[i] == '{') {
+            s.push(expr[i]);
+            continue;
+        }
+
+        if (s.empty())
+            return false;
+
+        switch (expr[i]) {
+            case ')':
+                x = s.top();
+                s.pop();
+                if (x == '{' || x == '[')
+                    return false;
+                break;
+            case '}':
+                x = s.top();
+                s.pop();
+                if (x == '(' || x == '[')
+                    return false;
+                break;
+            case ']':
+                x = s.top();
+                s.pop();
+                if (x == '(' || x == '{')
+                    return false;
+                break;
+        }
+    }
+
+    return (s.empty());
+}
+
+// Test the function
+int main() {
+    string expr = "{()}[]";
+
+    if (areParenthesesBalanced(expr))
+        cout << "Balanced";
+    else
+        cout << "Not Balanced";
+
+    return 0;
+}
+
+3. Reverse a String using Stack
+
+#include <iostream>
+#include <stack>
+using namespace std;
+
+void reverseString(string &str) {
+    stack<char> s;
+
+    for (char c : str) {
+        s.push(c);
+    }
+
+    for (int i = 0; i < str.length(); i++) {
+        str[i] = s.top();
+        s.pop();
+    }
+}
+
+// Test the function
+int main() {
+    string str = "Hello, World!";
+    reverseString(str);
+    cout << "Reversed string: " << str << endl;
+
+    return 0;
+}
+
+
+4. Valid Parentheses: Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid. An input string is valid if open brackets are closed by the same type of brackets and in the correct order.
 
 bool isValid(string s) {
     stack<char> stk;
@@ -11,81 +147,3 @@ bool isValid(string s) {
     }
     return stk.empty();
 }
-
-2. Min Stack: Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
-
-class MinStack {
-private:
-    stack<int> s1;
-    stack<int> s2;
-
-public:
-    void push(int x) {
-        s1.push(x);
-        if (s2.empty() || x <= getMin()) s2.push(x);
-    }
-
-    void pop() {
-        if (s1.top() == getMin()) s2.pop();
-        s1.pop();
-    }
-
-    int top() {
-        return s1.top();
-    }
-
-    int getMin() {
-        return s2.top();
-    }
-};
-
-3. Evaluate Reverse Polish Notation: Evaluate the value of an arithmetic expression in Reverse Polish Notation (postfix expression).
-
-int evalRPN(vector<string>& tokens) {
-    stack<int> stk;
-    for (string& token : tokens) {
-        if (token == "+" || token == "-" || token == "*" || token == "/") {
-            int num2 = stk.top(); stk.pop();
-            int num1 = stk.top(); stk.pop();
-            if (token == "+") stk.push(num1 + num2);
-            else if (token == "-") stk.push(num1 - num2);
-            else if (token == "*") stk.push(num1 * num2);
-            else if (token == "/") stk.push(num1 / num2);
-        } else {
-            stk.push(stoi(token));
-        }
-    }
-    return stk.top();
-}
-
-4. Next Greater Element I: Given an array, print the Next Greater Element (NGE) for every element. The Next Greater Element for an element x is the first greater element on the right side of x in the array.
-
-vector<int> nextGreaterElement(vector<int>& nums) {
-    stack<int> s;
-    unordered_map<int, int> m;
-    for (int n : nums) {
-        while (!s.empty() && s.top() < n) {
-            m[s.top()] = n; s.pop();
-        }
-        s.push(n);
-    }
-    vector<int> ans;
-    for (int n : nums) ans.push_back(m.count(n) ? m[n] : -1);
-    return ans;
-}
-
-5. Simplify Path: Given an absolute path for a file (Unix-style), simplify it. (e.g., "/home/" -> "/home", "/a/./b/../../c/" -> "/c")
-
-string simplifyPath(string path) {
-    vector<string> dirs;
-    stringstream ss(path);
-    string dir, res;
-    while (getline(ss, dir, '/')) {
-        if (dir == "" || dir == ".") continue;
-        if (dir == ".." && !dirs.empty()) dirs.pop_back();
-        else if (dir != "..") dirs.push_back(dir);
-    }
-    for (string dir : dirs) res += "/" + dir;
-    return res.empty() ? "/" : res;
-}
-

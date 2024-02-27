@@ -147,3 +147,88 @@ bool isValid(string s) {
     }
     return stk.empty();
 }
+
+5. Implementation of stack using linked list 
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define the node structure for the linked list
+typedef struct Node {
+    int data;
+    struct Node* next;
+} Node;
+
+// Define the stack structure
+typedef struct Stack {
+    Node* top;
+} Stack;
+
+// Function to create a new node
+Node* createNode(int data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    if (!newNode) {
+        printf("Heap overflow\n");
+        exit(0);
+    }
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Initialize the stack
+void initStack(Stack* stack) {
+    stack->top = NULL;
+}
+
+// Check if the stack is empty
+int isEmpty(Stack* stack) {
+    return stack->top == NULL;
+}
+
+// Push an element onto the stack
+void push(Stack* stack, int data) {
+    Node* newNode = createNode(data);
+    newNode->next = stack->top;
+    stack->top = newNode;
+    printf("%d pushed to stack\n", data);
+}
+
+// Pop an element from the stack
+int pop(Stack* stack) {
+    if (isEmpty(stack)) {
+        printf("Stack underflow\n");
+        return -1;
+    }
+    Node* temp = stack->top;
+    int popped = temp->data;
+    stack->top = temp->next;
+    free(temp);
+    return popped;
+}
+
+// Peek at the top element of the stack
+int peek(Stack* stack) {
+    if (isEmpty(stack)) {
+        printf("Stack is empty\n");
+        return -1;
+    }
+    return stack->top->data;
+}
+
+// Main function to demonstrate stack operations
+int main() {
+    Stack stack;
+    initStack(&stack);
+
+    push(&stack, 10);
+    push(&stack, 20);
+    push(&stack, 30);
+
+    printf("%d popped from stack\n", pop(&stack));
+    printf("Top element is %d\n", peek(&stack));
+
+    return 0;
+}
+

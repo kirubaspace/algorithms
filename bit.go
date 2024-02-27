@@ -99,3 +99,36 @@ int hammingDistance(int x, int y) {
     }
     return count;
 }
+
+10. Set a bit in a position
+
+unsigned int setBit(unsigned int num, int n) {
+    // Create a mask with a 1 at the nth position
+    unsigned int mask = 1 << n;
+    
+    // Set the nth bit of 'num' using the bitwise OR operator
+    return num | mask;
+}
+
+11. Clear a bit 
+
+unsigned int clearBit(unsigned int num, int n) {
+    // Create a mask with a 1 at the nth position
+    unsigned int mask = 1 << n;
+    
+    // Invert the mask so all bits are 1 except the nth bit
+    mask = ~mask;
+    
+    // Clear the nth bit of 'num' using the bitwise AND operator
+    return num & mask;
+}
+
+12. toggle a particular bit
+
+unsigned int toggleBit(unsigned int num, int n) {
+    // Create a mask with a 1 at the nth position
+    unsigned int mask = 1 << n;
+    
+    // Toggle the nth bit of 'num' using the bitwise XOR operator
+    return num ^ mask;
+}

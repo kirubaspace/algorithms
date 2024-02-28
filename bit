@@ -132,3 +132,43 @@ unsigned int toggleBit(unsigned int num, int n) {
     // Toggle the nth bit of 'num' using the bitwise XOR operator
     return num ^ mask;
 }
+
+13. How do you swap number using bitwise operator
+
+#include <stdio.h>
+
+int main() {
+    int a = 5, b = 9;
+
+    printf("Before swapping: a = %d, b = %d\n", a, b);
+
+    // Swapping the numbers using bitwise XOR operator
+    a = a ^ b;
+    b = a ^ b;
+    a = a ^ b;
+
+    printf("After swapping: a = %d, b = %d\n", a, b);
+
+    return 0;
+}
+
+14. How do you rotate the bits 
+
+#include <stdio.h>
+
+unsigned char rotate_bits_right(unsigned char num, unsigned int positions) {
+    positions = positions % 8; // Keep positions within the 0-8 range
+    return (num >> positions) | (num << (8 - positions));
+}
+
+int main() {
+    unsigned char num = 0xE7; // 11100111 in binary
+    unsigned int positions = 3;
+
+    unsigned char rotated_num = rotate_bits_right(num, positions);
+    
+    printf("Original number: %2X\n", num);
+    printf("Rotated number:  %2X\n", rotated_num);
+
+    return 0;
+}

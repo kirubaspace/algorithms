@@ -230,7 +230,151 @@ LinkedList* mergingLinkedLists(
       } else {
         curr2 = curr2->next;
       }
-      
     }
     return curr;
+}
+
+13. Implement stack through linked list
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *next;
+};
+
+// Initially, the stack is empty, top is NULL
+struct Node* top = NULL; 
+
+// Stack operations 
+void push(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->next = top;
+    top = newNode;
+}
+
+int pop() {
+    if (isEmpty()) return -1; // Or handle error differently
+    struct Node *temp = top;
+    int result = temp->data;
+    top = top->next;
+    free(temp);
+    return result;
+}
+
+int topElement() {  // Better name than 'top' to avoid confusion
+    if (isEmpty()) return -1; // Or handle error differently
+    return top->data;
+}
+
+bool isEmpty() {
+    return top == NULL;
+}
+
+int main() {
+    // Example usage of the stack
+    push(10);
+    push(20);
+    push(30);
+
+    while (!isEmpty()) {
+        printf("%d ", pop());
+    }
+
+    return 0;
+}
+
+14. Detect and remove loop in linked list
+
+void removeLoop(struct Node* head) {
+    struct Node *slow = head, *fast = head;
+
+    while (fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+        if (slow == fast) break; 
+    }
+
+    if (slow != fast) return;  // No loop
+
+    // Reset slow to start of the list
+    slow = head;
+    while (slow->next != fast->next) {
+        slow = slow->next;
+        fast = fast->next;
+    }
+    fast->next = NULL; // Remove the loop
+}
+
+15. flatten list
+
+ 1 -> 2 -> 7 -> 8 -> 10 -> 12
+     |         |
+     3 -> 4 -> 5 -> 6
+              |
+              9
+
+1 -> 3 -> 4 -> 5 -> 6 -> 2 -> 7 -> 9 -> 8 -> 10 -> 12 
+
+struct Node* flatten(struct Node* head) {
+    if (!head) return head;
+
+    struct Node* curr = head; 
+    while (curr) {
+        // If current node has a child
+        if (curr->child) {
+            struct Node* temp = curr->next;  // Store the next node
+
+            // Find the tail of the child list to connect
+            struct Node* childTail = curr->child;
+            while (childTail->next) {
+                childTail = childTail->next; 
+            }
+
+            // Connect child list to current's next
+            curr->child->next = curr->next; 
+            curr->next = curr->child; 
+
+            // Remove child pointer 
+            curr->child = NULL; 
+
+            // Connect tail of the child list to the stored next node
+            childTail->next = temp; 
+        }
+        curr = curr->next; 
+    }
+    return head;
+}
+
+16. rotate linked list
+
+struct Node* rotateList(struct Node* head, int k) {
+    if (!head || !head->next || k == 0) return head; 
+
+    // Find the length and tail of the list
+    struct Node *tail = head;
+    int len = 1;
+    while (tail->next) {
+        tail = tail->next;
+        len++;
+    }
+
+    k = k % len;  // Handle rotations greater than the list length 
+    if (k == 0) return head;
+
+    // Connect tail to the head to form a cycle
+    tail->next = head; 
+
+    // Find the new tail (k nodes before the current head)
+    for (int i = 0; i < len - k; i++) { 
+        head = head->next;
+    }
+
+    // Break the cycle at the new tail
+    tail = head->next;  
+    head->next = NULL;
+
+    return tail; // Return the new head
 }

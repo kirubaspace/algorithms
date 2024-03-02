@@ -378,3 +378,146 @@ struct Node* rotateList(struct Node* head, int k) {
 
     return tail; // Return the new head
 }
+
+17. Reverse double linked list in c 
+
+// Function to reverse a doubly linked list
+struct Node* reverseList(struct Node *head) {
+    struct Node *temp = NULL;
+    struct Node *current = head;
+
+    /* Swap the 'next' and 'prev' pointers of each node */
+    while (current != NULL) {
+        temp = current->prev;   // Store the previous node
+        current->prev = current->next;  // Swap: Make 'next' the new 'prev'
+        current->next = temp;           // Swap: Make the old 'prev' the new 'next'
+        current = current->prev;        // Move to the 'new' previous node 
+    }
+
+    /* The 'prev' of the old head should now be the new head */
+    if (temp != NULL) {
+        head = temp->prev;
+    }
+
+    return head;
+}
+
+18. Given only a pointer to a node to be deleted in a singly linked list, how do you delete it? 
+
+void deleteNode(Node* node) {
+    Node* temp = node->next;
+    if (temp == NULL) {
+        // Edge case: The node to be deleted is the last node. 
+        // We cannot delete the last node using this method.
+        printf("The node to be deleted is the last node, which cannot be deleted using this method.\n");
+        return;
+    }
+    node->data = temp->data; // Copy data from the next node to the current node
+    node->next = temp->next; // Link current node to the next of next node
+    free(temp); // Delete the next node
+}
+
+19. How do you sort a linked list
+
+bubblesort
+
+void bubbleSort(struct Node **headRef) {
+    struct Node *current, **ptr;
+    int swapped;
+
+    do {
+        swapped = 0;
+        current = *headRef;
+
+        while (current->next != NULL) {
+            ptr = &current->next;
+            if (current->data > (*ptr)->data) {
+                swap(current, current->next);
+                swapped = 1;
+            }
+            current = *ptr; 
+        }
+    } while (swapped);
+}
+
+// Swaps data of two nodes
+void swap(struct Node *a, struct Node *b) {
+    int temp = a->data;
+    a->data = b->data;
+    b->data = temp;
+}
+
+20. Compare linked list
+
+int compare_linked_lists(struct node *q, struct node *r)
+{
+ static int flag;
+
+ if((q==NULL ) && (r==NULL))
+ {
+ flag=1;
+ }
+ else
+ {
+ if(q==NULL || r==NULL)
+ {
+ flag=0;
+ }
+ if(q->data!=r->data)
+ {
+ flag=0;
+ }
+ else
+ {
+ compare_linked_lists(q->link,r->link);
+ }
+ }
+ return(flag);
+}
+
+21. copy of a linked list
+
+copy_linked_lists(struct node *q, struct node **s)
+{
+ if(q!=NULL)
+ {
+ *s=malloc(sizeof(struct node));
+ (*s)->data=q->data;
+ (*s)->link=NULL;
+ copy_linked_list(q->link, &((*s)->link));
+ }
+} 
+
+22. Free the nodes of a linked list
+
+struct list *listptr, *nextptr;
+for(listptr = head; listptr != NULL; listptr = nextptr)
+{
+ nextptr = listptr->next;
+ free(listptr);
+}
+head = NULL; 
+
+23. Write a C program to insert nodes into a linked list in a sorted fashion 
+
+void linkedListInsertSorted(struct node** headReference, struct node* newNode)
+{
+ // Special case for the head end
+	 if (*headReference == NULL || (*headReference)->data >= newNode->data)
+	 {
+		 newNode->next = *headReference;
+		 *headReference = newNode;
+	 }
+	 else
+	 {
+
+		 // Locate the node before which the insertion is to happen!
+		 struct node* current = *headReference;
+		 while (current->next!=NULL && current->next->data < newNode->data)
+		 {
+		 	current = current->next;
+		 }
+		 newNode->next = current->next;
+		 current->next = newNode;
+	 }
+} 

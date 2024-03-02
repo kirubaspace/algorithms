@@ -172,3 +172,27 @@ int main() {
 
     return 0;
 }
+
+15. How to find little endian or big endian
+
+int num = 1;
+if(*(char *)&num == 1)
+{ 
+ printf("\nLittle-Endian\n");
+}
+else
+{
+ printf("Big-Endian\n");
+} 
+
+16. Convert from one endian to another
+
+int myreversefunc(int num)
+{
+ int byte0, byte1, byte2, byte3;
+ byte0 = (num & x000000FF) >> 0 ;
+ byte1 = (num & x0000FF00) >> 8 ;
+ byte2 = (num & x00FF0000) >> 16 ;
+ byte3 = (num & xFF000000) >> 24 ;
+ return((byte0 << 24) | (byte1 << 16) | (byte2 << 8) | (byte3 << 0));
+} 

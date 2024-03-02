@@ -197,3 +197,13 @@ int main()
  printf("\nSIZE : [%d]\nSIZE : [%d]\n", size);
  return 0;
 } 
+
+13. Sum of a number
+
+void main()
+{
+ int num=123456;
+ int sum=0;
+ for(;num>0;sum+=num%10,num/=10); // This is the "single line".
+ printf("\nsum = [%d]\n", sum);
+} 

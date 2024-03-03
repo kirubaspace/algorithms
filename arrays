@@ -207,3 +207,6 @@ void main()
  for(;num>0;sum+=num%10,num/=10); // This is the "single line".
  printf("\nsum = [%d]\n", sum);
 } 
+
+
+

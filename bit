@@ -9,6 +9,12 @@ int countSetBits(int n) {
     return count;
 }
 
+while(num)
+{
+    num = num & num-1;
+    count++;
+}
+
 2. Reverse bits set in an integer
 
 uint32_t reverseBits(uint32_t n) {
@@ -187,15 +193,13 @@ else
 
 16. Convert from one endian to another
 
-int myreversefunc(int num)
-{
- int byte0, byte1, byte2, byte3;
- byte0 = (num & x000000FF) >> 0 ;
- byte1 = (num & x0000FF00) >> 8 ;
- byte2 = (num & x00FF0000) >> 16 ;
- byte3 = (num & xFF000000) >> 24 ;
- return((byte0 << 24) | (byte1 << 16) | (byte2 << 8) | (byte3 << 0));
-} 
+unsigned int reverse_endian(unsigned int num) {
+    return (num >> 24) | 
+           ((num << 8) & 0x00FF0000) | 
+           ((num >> 8) & 0x0000FF00) | 
+           (num << 24);
+}
+
 
 17. Decimal to binary
 

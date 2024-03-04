@@ -521,3 +521,21 @@ void linkedListInsertSorted(struct node** headReference, struct node* newNode)
 		 current->next = newNode;
 	 }
 } 
+
+24. Print reverse order linked list in C
+
+Node* createNode(int data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Function to print the linked list in reverse order
+void printReverse(Node *head) {
+    if (head == NULL) return; // Base case
+
+    printReverse(head->next); // Recursively traverse till the end
+
+    printf("%d ", head->data); // Print current node data while backtracking
+}

@@ -437,13 +437,15 @@ copy_linked_lists(struct node *q, struct node **s)
 
 22. Free the nodes of a linked list
 
-struct list *listptr, *nextptr;
-for(listptr = head; listptr != NULL; listptr = nextptr)
-{
- nextptr = listptr->next;
- free(listptr);
+void freeList(struct Node *head) {
+    struct Node *temp;
+
+    while (head != NULL) {
+        temp = head;          // Store the current node 
+        head = head->next;    // Advance to the next node
+        free(temp);           // Free the previous node
+    }
 }
-head = NULL; 
 
 23. Write a C program to insert nodes into a linked list in a sorted fashion 
 

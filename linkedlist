@@ -209,30 +209,7 @@ struct Node *findMiddle(struct Node *head) {
     return slow_ptr;  // When fast_ptr reaches the end, slow_ptr will be at the middle
 }
 
-12. You have two linked list merging at some point. Return the merging point of the linked list
 
-LinkedList* mergingLinkedLists(
-  LinkedList* linkedListOne, LinkedList* linkedListTwo
-) 
-{
-  LinkedList* curr = linkedListOne;
-  LinkedList* curr2 = linkedListTwo;
-
-  while (curr != curr2) {
-      if (curr == nullptr) {
-        curr = linkedListTwo;
-      } else {
-        curr = curr->next;
-      }
-
-      if (curr2 == nullptr){
-        curr2 = linkedListOne;
-      } else {
-        curr2 = curr2->next;
-      }
-    }
-    return curr;
-}
 
 13. Implement stack through linked list
 
@@ -348,36 +325,6 @@ struct Node* flatten(struct Node* head) {
     return head;
 }
 
-16. rotate linked list
-
-struct Node* rotateList(struct Node* head, int k) {
-    if (!head || !head->next || k == 0) return head; 
-
-    // Find the length and tail of the list
-    struct Node *tail = head;
-    int len = 1;
-    while (tail->next) {
-        tail = tail->next;
-        len++;
-    }
-
-    k = k % len;  // Handle rotations greater than the list length 
-    if (k == 0) return head;
-
-    // Connect tail to the head to form a cycle
-    tail->next = head; 
-
-    // Find the new tail (k nodes before the current head)
-    for (int i = 0; i < len - k; i++) { 
-        head = head->next;
-    }
-
-    // Break the cycle at the new tail
-    tail = head->next;  
-    head->next = NULL;
-
-    return tail; // Return the new head
-}
 
 17. Reverse double linked list in c 
 

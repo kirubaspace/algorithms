@@ -175,48 +175,6 @@ int main() {
 
 =============
 
-select
-
-
-When to use select
-
-The select system call is primarily used in scenarios where you need to monitor multiple sockets for activity. This is crucial when:
-
-Handling Multiple Clients: A server needs to handle connections from multiple clients concurrently. You can't rely on blocking calls like read or recv since they would wait for only one client at a time.
-
-Non-Blocking Operations: You want to perform non-blocking I/O on sockets. A socket that's not ready for reading or writing would normally cause read/write operations to block. select lets you check if data is available before attempting to read or write.
-
-Timeouts: You want to implement timeouts when waiting for data to arrive at a socket.
-
-Why use select
-
-Here's why select is valuable in these situations:
-
-Efficiency:  Instead of constantly checking each socket to see if it's ready (polling), select allows your process to sleep until one or more sockets become ready, reducing unnecessary CPU usage.
-
-Scalability:   select helps manage many socket connections simultaneously, especially crucial for servers.
-
-How select Works (Simplified)
-
-File Descriptor Sets: You create sets of file descriptors (sockets in this case) that you want to monitor:
-
-readfds: Sockets to monitor for read readiness (data available)
-writefds: Sockets to monitor for write readiness (can send data)
-exceptfds: Sockets to monitor for exceptions
-Calling select: You call select(), providing the file descriptor sets and a timeout:
-
-C
-int select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struct timeval *timeout);
-Use code with caution.
-Return Value: select returns the total number of sockets that are ready. It also modifies the file descriptor sets to indicate specifically which sockets have activity.
-
-Handling Ready Sockets:  You iterate through the modified sets to see which sockets are ready and perform the appropriate actions (read, write, or handle errors).
-
-Caveat: While select is powerful, it has a limitation on the maximum number of file descriptors it can handle.  More modern solutions like epoll or kqueue often provide better scalability for applications handling a very large number of connections.
-
-===========
-
-
 4. select sockets
 
 

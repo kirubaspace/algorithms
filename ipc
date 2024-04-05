@@ -1,0 +1,308 @@
+1. shared memory
+
+// Writer
+
+int main() {
+    key_t key;
+    int shmid;
+    char *data;
+
+    // Generate a key for the shared memory segment
+    key = ftok("path/to/file", 'R'); 
+
+    // Create the shared memory segment
+    shmid = shmget(key, SHM_SIZE, 0644 | IPC_CREAT);
+
+    // Attach the shared memory segment
+    data = shmat(shmid, NULL, 0);
+
+    // Write data into the shared memory
+    strcpy(data, "Message from the parent process.");
+
+    // Wait for a while before detaching (to let the child read)
+    sleep(5); 
+
+    // Detach the shared memory segment
+    shmdt(data);
+
+    return 0;
+}
+
+// Reader
+
+int main() {
+    key_t key;
+    int shmid;
+    char *data;
+
+    // Use the same key as the parent process
+    key = ftok("path/to/file", 'R'); 
+
+    // Get the ID of the existing shared memory segment
+    shmid = shmget(key, SHM_SIZE, 0644);
+
+    // Attach the shared memory segment
+    data = shmat(shmid, NULL, 0);
+
+    // Read data from the shared memory
+    printf("Data from the parent process: %s\n", data);
+
+    // Detach the shared memory segment
+    shmdt(data);
+
+    return 0;
+}
+
+2. message queue
+
+// sender
+
+int main() {
+    key_t key;
+    int msgqid;
+    struct msgbuf message;
+
+    // Generate a key for the message queue
+    key = ftok("path/to/file", 'R');
+
+    // Create the message queue
+    msgqid = msgget(key, 0644 | IPC_CREAT);
+
+    // Set up the message structure
+    message.mtype = 1; // Message type can be any suitable value
+    strcpy(message.mtext, "Message from the parent process.");
+
+    // Send the message
+    msgsnd(msgqid, &message, sizeof(message.mtext), 0);
+
+    printf("Message sent!\n");
+
+    return 0;
+}
+
+// receiver
+
+int main() {
+    key_t key;
+    int msgqid;
+    struct msgbuf message;
+
+    // Use the same key as the parent process
+    key = ftok("path/to/file", 'R');
+
+    // Get the ID of the existing message queue
+    msgqid = msgget(key, 0644);
+
+    // Receive the message
+    msgrcv(msgqid, &message, sizeof(message.mtext), 1, 0);
+
+    printf("Message received: %s\n", message.mtext);
+
+    return 0;
+}
+
+3. socket
+
+// server
+
+int main() {
+    int server_fd, client_fd;
+    struct sockaddr_in address; 
+    char buffer[1024] = {0};
+
+     // Create a socket
+    server_fd = socket(AF_INET, SOCK_STREAM, 0);
+
+    // Configure the address structure
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = INADDR_ANY; // Listen on all interfaces
+    address.sin_port = htons(PORT); 
+
+    // Bind the socket to the address and port
+    bind(server_fd, (struct sockaddr *)&address, sizeof(address));
+
+    // Listen for connections
+    listen(server_fd, 5); // Backlog of 5 pending connections
+
+    // Accept a connection
+    client_fd = accept(server_fd, NULL, NULL); 
+
+    // Receive data from the client
+    recv(client_fd, buffer, sizeof(buffer), 0);
+    printf("Data received from client: %s\n", buffer);
+
+    // Send a response back
+    send(client_fd, "Message from the server!\n", 25, 0); 
+
+    // Close the sockets
+    close(client_fd);
+    close(server_fd);
+
+    return 0;
+}
+
+// receiver
+
+int main() {
+    int client_fd;
+    struct sockaddr_in address; 
+    char buffer[1024] = {0};
+
+     // Create a socket
+    client_fd = socket(AF_INET, SOCK_STREAM, 0);
+
+    // Configure the address structure
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = inet_addr("127.0.0.1"); // Connect to localhost
+    address.sin_port = htons(PORT); 
+
+    // Connect to the server
+    connect(client_fd, (struct sockaddr *)&address, sizeof(address)); 
+
+    // Send data to the server
+    send(client_fd, "Message from the client!\n", 25, 0); 
+
+    // Receive a response from the server
+    recv(client_fd, buffer, sizeof(buffer), 0);
+    printf("Data received from server: %s\n", buffer);
+
+    // Close the socket
+    close(client_fd);
+
+    return 0;
+}
+
+
+=============
+
+select
+
+
+When to use select
+
+The select system call is primarily used in scenarios where you need to monitor multiple sockets for activity. This is crucial when:
+
+Handling Multiple Clients: A server needs to handle connections from multiple clients concurrently. You can't rely on blocking calls like read or recv since they would wait for only one client at a time.
+
+Non-Blocking Operations: You want to perform non-blocking I/O on sockets. A socket that's not ready for reading or writing would normally cause read/write operations to block. select lets you check if data is available before attempting to read or write.
+
+Timeouts: You want to implement timeouts when waiting for data to arrive at a socket.
+
+Why use select
+
+Here's why select is valuable in these situations:
+
+Efficiency:  Instead of constantly checking each socket to see if it's ready (polling), select allows your process to sleep until one or more sockets become ready, reducing unnecessary CPU usage.
+
+Scalability:   select helps manage many socket connections simultaneously, especially crucial for servers.
+
+How select Works (Simplified)
+
+File Descriptor Sets: You create sets of file descriptors (sockets in this case) that you want to monitor:
+
+readfds: Sockets to monitor for read readiness (data available)
+writefds: Sockets to monitor for write readiness (can send data)
+exceptfds: Sockets to monitor for exceptions
+Calling select: You call select(), providing the file descriptor sets and a timeout:
+
+C
+int select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struct timeval *timeout);
+Use code with caution.
+Return Value: select returns the total number of sockets that are ready. It also modifies the file descriptor sets to indicate specifically which sockets have activity.
+
+Handling Ready Sockets:  You iterate through the modified sets to see which sockets are ready and perform the appropriate actions (read, write, or handle errors).
+
+Caveat: While select is powerful, it has a limitation on the maximum number of file descriptors it can handle.  More modern solutions like epoll or kqueue often provide better scalability for applications handling a very large number of connections.
+
+===========
+
+
+4. select sockets
+
+
+client
+
+int main() {
+    int client_fd;
+    struct sockaddr_in address; 
+    char buffer[1024];
+
+    // Create a socket
+    client_fd = socket(AF_INET, SOCK_STREAM, 0);
+
+    // Configure address structure
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = inet_addr("127.0.0.1");
+    address.sin_port = htons(PORT); 
+
+    // Connect to the server
+    connect(client_fd, (struct sockaddr *)&address, sizeof(address));
+    // Send and receive data to/from the server (implementation omitted)
+
+    close(client_fd);
+    return 0;
+}
+
+
+server
+
+int main() {
+    int server_fd, client_fd, max_fd, i, activity;
+    struct sockaddr_in address; 
+    char buffer[1024]; 
+    fd_set readfds;
+
+    // Create a socket
+    server_fd = socket(AF_INET, SOCK_STREAM, 0);
+
+    // Configure the address structure
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = INADDR_ANY;
+    address.sin_port = htons(PORT); 
+
+    // Bind the socket
+    bind(server_fd, (struct sockaddr *)&address, sizeof(address));
+
+    // Listen for connections
+    listen(server_fd, MAX_CLIENTS); 
+
+    printf("Server listening on port %d\n", PORT);
+
+    while (1) {
+        // Clear the socket set
+        FD_ZERO(&readfds); 
+
+        // Add the server socket to the set
+        FD_SET(server_fd, &readfds); 
+        max_fd = server_fd;
+
+        // Add existing client sockets to the set
+        for (i = 0; i < MAX_CLIENTS; i++) {
+            client_fd = clients[i];
+            if (client_fd > 0) {
+                FD_SET(client_fd, &readfds);
+            }
+            max_fd = (client_fd > max_fd) ? client_fd : max_fd;
+        }
+
+        // Wait for activity on any of the sockets
+        activity = select(max_fd + 1, &readfds, NULL, NULL, NULL);
+
+        // Check if it's a new connection request
+        if (FD_ISSET(server_fd, &readfds)) {
+            client_fd = accept(server_fd, NULL, NULL);
+            // Add new client to the array of clients (implementation omitted for brevity)
+            printf("New client connected.\n");
+        }
+
+        // Handle data from existing clients
+        for (i = 0; i < MAX_CLIENTS; i++) {
+            client_fd = clients[i];
+            if (FD_ISSET(client_fd, &readfds)) {
+                // Handle data from this client (implementation omitted)
+            }
+        }
+    }
+
+    return 0;
+}

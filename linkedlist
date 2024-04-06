@@ -488,3 +488,32 @@ void printReverse(Node *head) {
 
     printf("%d ", head->data); // Print current node data while backtracking
 }
+
+25. Given only a pointer to node, how do you delete it 
+
+void deleteNode(ListNode* nodeToDelete) {
+    // Make sure it's not the last node
+    if (nodeToDelete == nullptr || nodeToDelete->next == nullptr) {
+        return;  // Cannot delete  
+    }
+
+    // Copy data from the next node
+    nodeToDelete->val = nodeToDelete->next->val;
+
+    // Skip over the node we're essentially deleting
+    ListNode* temp = nodeToDelete->next;
+    nodeToDelete->next = nodeToDelete->next->next;
+
+    // Free the memory  
+    free(temp); 
+}
+
+26. Free the nodes of a linked list
+
+struct list *listptr, *nextptr;
+for(listptr = head; listptr != NULL; listptr = nextptr)
+{
+	nextptr = listptr->next;
+	free(listptr);
+}
+head = NULL;

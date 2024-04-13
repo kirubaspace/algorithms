@@ -182,6 +182,25 @@ void postorderTraversal(Node* root) {
 
 12. Implement DFS traversal 
 
+// Structure to represent a graph node
+struct Node {
+    int data;
+    vector<Node*> neighbors;
+};
+
+// DFS traversal function (recursive)
+void DFS_recursive(Node* node, bool visited[]) {
+    visited[node->data] = true;
+    cout << node->data << " ";
+
+    // Recursively visit all unvisited neighbors
+    for (Node* neighbor : node->neighbors) {
+        if (!visited[neighbor->data]) {
+            DFS_recursive(neighbor, visited);
+        }
+    }
+}
+
 13. implement binary search algorithm
 
 int binarySearch(int arr[],int size, int item)
@@ -208,3 +227,34 @@ int binarySearch(int arr[],int size, int item)
  }
  return(-1);
 } 
+
+14. Implement BFS 
+
+// Structure to represent a graph node
+struct Node {
+    int data;
+    vector<Node*> neighbors;
+};
+
+// BFS traversal function
+void BFS(Node* start) {
+    vector<bool> visited;  // Keep track of visited nodes (initialization left for clarity)
+    queue<Node*> nodeQueue;
+    visited[start->data] = true;
+    nodeQueue.push(start);
+
+    while (!nodeQueue.empty()) {
+        Node* current = nodeQueue.front();
+        nodeQueue.pop();
+
+        cout << current->data << " ";
+
+        // Enqueue unvisited neighbors
+        for (Node* neighbor : current->neighbors) {
+            if (!visited[neighbor->data]) {
+                visited[neighbor->data] = true; 
+                nodeQueue.push(neighbor);
+            }
+        }
+    }
+}

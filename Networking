@@ -72,31 +72,42 @@ Reduced Routing Overhead: With fewer routes to manage, routers can operate more 
 ARP
 
 
-You're sitting at your laptop (let's say its IP address is 192.168.1.100) and you want to visit a website hosted on a server with the IP address 203.0.113.1. Your laptop is connected to a switch, which is then connected to a router that provides access to the internet.
+You're sitting at your laptop (let's say its IP address is 192.168.1.100) and you want to visit a website hosted on a server with the IP address 203.0.113.1. 
+Your laptop is connected to a switch, which is then connected to a router that provides access to the internet.
 
 The ARP Process:
 
-ARP Request: Your laptop knows the IP address of the website's server, but it needs to know its MAC (Media Access Control) address to send data over the local network. So, your laptop sends an ARP request broadcast message out of all its network interfaces. This message essentially says, "Who has the IP address 203.0.113.1? Please tell me your MAC address."
+ARP Request: Your laptop knows the IP address of the website's server, but it needs to know its MAC (Media Access Control) address to send data over the local network. 
+So, your laptop sends an ARP request broadcast message out of all its network interfaces. This message essentially says, "Who has the IP address 203.0.113.1?
+Please tell me your MAC address."
 
-ARP Response: The router, which is responsible for forwarding traffic to the internet, sees the ARP request. It recognizes the IP address 203.0.113.1 as belonging to a device on the internet, and it has its own MAC address associated with its external interface. The router sends an ARP response directly back to your laptop, saying, "I have 203.0.113.1, and my MAC address is XX:XX:XX:XX:XX:XX" (replace XX with the actual MAC address of the router's external interface).
+ARP Response: The router, which is responsible for forwarding traffic to the internet, sees the ARP request. It recognizes the IP address 203.0.113.1 as belonging to 
+a device on the internet, and it has its own MAC address associated with its external interface. The router sends an ARP response directly back to your laptop, 
+saying, "I have 203.0.113.1, and my MAC address is XX:XX:XX:XX:XX:XX" (replace XX with the actual MAC address of the router's external interface).
 
-ARP Cache Update: Your laptop receives the ARP response and stores this information in its ARP cache – a temporary table that maps IP addresses to MAC addresses. Now, your laptop knows both the IP address and the MAC address of the router's external interface.
+ARP Cache Update: Your laptop receives the ARP response and stores this information in its ARP cache – a temporary table that maps IP addresses to MAC addresses. 
+Now, your laptop knows both the IP address and the MAC address of the router's external interface.
 
-Data Transmission: Your laptop can now encapsulate the data packet destined for the website's server with the router's MAC address in the Ethernet frame header. It sends this frame out to the switch.
+Data Transmission: Your laptop can now encapsulate the data packet destined for the website's server with the router's MAC address in the Ethernet frame header. 
+It sends this frame out to the switch.
 
 Switching: The switch examines the destination MAC address in the frame and determines that it needs to forward the frame to the router. It sends the frame out of the appropriate port connected to the router.   
 
-Routing: The router receives the frame, removes the Ethernet header, and examines the IP header. It determines that the packet needs to be forwarded to the internet, and it does so using its routing table and external interface.
+Routing: The router receives the frame, removes the Ethernet header, and examines the IP header. It determines that the packet needs to be forwarded to the 
+internet, and it does so using its routing table and external interface.
 
 ------------------------------------------
 
 Reverse arp
 
-Reverse ARP (RARP) is a network protocol that performs the opposite function of ARP (Address Resolution Protocol). While ARP is used to find a device's MAC address given its IP address, RARP is used to determine a device's IP address given its MAC address.   
+Reverse ARP (RARP) is a network protocol that performs the opposite function of ARP (Address Resolution Protocol). While ARP is used to find a device's MAC address
+given its IP address, RARP is used to determine a device's IP address given its MAC address.   
 
 Why RARP was Used (Historically):
 
-RARP was developed in the early days of computer networking to address a specific challenge: diskless workstations. These workstations didn't have hard drives to store their configuration, including their IP address. When they booted up, they only knew their MAC address (a unique hardware identifier). RARP allowed them to request their IP address from a server on the network.   
+RARP was developed in the early days of computer networking to address a specific challenge: diskless workstations. These workstations didn't have hard drives to
+store their configuration, including their IP address. When they booted up, they only knew their MAC address (a unique hardware identifier). RARP allowed them to 
+request their IP address from a server on the network.   
 
 How RARP Worked:
 

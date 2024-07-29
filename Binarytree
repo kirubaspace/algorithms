@@ -7,21 +7,24 @@ int maxDepth(TreeNode* root) {
 
 2. Breadth First Search (BFS) of a tree
 
-vector<vector<int>> levelOrder(TreeNode* root) {
-    vector<vector<int>> result;
-    if (!root) return result;
+void BFS(struct Node *root) {
+    if (root == NULL) return;
 
-    queue<TreeNode*> q({root}); // Initialize queue directly with root
-    while (!q.empty()) {
-        result.push_back({}); // Add a new level vector
-        for (int i = q.size(); i > 0; --i) {
-            TreeNode* node = q.front(); q.pop();
-            result.back().push_back(node->val); // Add to the last level vector
-            if (node->left)  q.push(node->left);
-            if (node->right) q.push(node->right);
-        }
+    struct Node *queue[100];   
+  // Assuming a max tree size for simplicity
+    int front = 0, rear = 0;
+    queue[rear++] = root;    
+
+    while (front != rear) {
+        struct Node *current = queue[front++];
+        printf("%d ", current->data);
+
+        if (current->left)   
+ 		queue[rear++] = current->left;
+        if (current->right) 
+		queue[rear++] = current->right;   
+
     }
-    return result;
 }
 
 

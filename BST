@@ -177,4 +177,16 @@ current = current->left;
 return(current->data);
 }
 
-
+12.Write C code to check if a given binary tree is a binary search tree or not?
+Here is a C program which checks if a given tree is a Binary Search Tree or not...
+int isThisABST(struct node* mynode)
+{
+if (mynode==NULL) return(true);
+if (node->left!=NULL && maxValue(mynode->left) > mynode->data)
+return(false);
+if (node->right!=NULL && minValue(mynode->right) <= mynode->data)
+return(false);
+if (!isThisABST(node->left) || !isThisABST(node->right))
+return(false);
+return(true);
+}

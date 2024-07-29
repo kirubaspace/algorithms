@@ -228,33 +228,3 @@ int binarySearch(int arr[],int size, int item)
  return(-1);
 } 
 
-14. Implement BFS 
-
-// Structure to represent a graph node
-struct Node {
-    int data;
-    vector<Node*> neighbors;
-};
-
-// BFS traversal function
-void BFS(Node* start) {
-    vector<bool> visited;  // Keep track of visited nodes (initialization left for clarity)
-    queue<Node*> nodeQueue;
-    visited[start->data] = true;
-    nodeQueue.push(start);
-
-    while (!nodeQueue.empty()) {
-        Node* current = nodeQueue.front();
-        nodeQueue.pop();
-
-        cout << current->data << " ";
-
-        // Enqueue unvisited neighbors
-        for (Node* neighbor : current->neighbors) {
-            if (!visited[neighbor->data]) {
-                visited[neighbor->data] = true; 
-                nodeQueue.push(neighbor);
-            }
-        }
-    }
-}

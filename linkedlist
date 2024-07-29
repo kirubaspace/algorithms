@@ -396,30 +396,22 @@ void swap(struct Node *a, struct Node *b) {
 
 20. Compare linked list
 
-int compare_linked_lists(struct node *q, struct node *r)
-{
- static int flag;
+bool compareLinkedLists(struct Node* head1, struct Node* head2) {
+    // Base cases: both lists empty or one list ends before the other
+    if (head1 == NULL && head2 == NULL) {
+        return true; // Both lists are empty, considered equal
+    }
+    if (head1 == NULL || head2 == NULL) {
+        return false; // One list is empty, not equal
+    }
 
- if((q==NULL ) && (r==NULL))
- {
- flag=1;
- }
- else
- {
- if(q==NULL || r==NULL)
- {
- flag=0;
- }
- if(q->data!=r->data)
- {
- flag=0;
- }
- else
- {
- compare_linked_lists(q->link,r->link);
- }
- }
- return(flag);
+    // Compare data in current nodes
+    if (head1->data != head2->data) {
+        return false; // Data mismatch
+    }
+
+    // Recursively compare rest of the lists
+    return compareLinkedLists(head1->link, head2->link);
 }
 
 21. copy of a linked list

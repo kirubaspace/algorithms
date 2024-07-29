@@ -106,6 +106,24 @@ int firstMissingPositive(vector<int>& nums) {
     return n + 1;
 }
 
+alternative
+-----------
+
+int firstMissingPositive(int nums[], int n) {
+    qsort(nums, n, sizeof(int), 
+          (int (*)(const void *, const void *)) &strcmp); // Sort the array (assumes strcmp works for comparing integers)
+
+    int missing = 1;
+    for (int i = 0; i < n; i++) {
+        if (nums[i] == missing) { // Found the next expected positive
+            missing++;
+        } else if (nums[i] > missing) { // Reached a number greater than expected
+            return missing;
+        }
+    }
+    return missing; // If all positive numbers from 1 to n are present
+}
+
 8. Product of Array Except Self: Given an array nums of n integers where n > 1, return an array output such that output[i] is equal to the product of all the elements of nums except nums[i].
 
 vector<int> productExceptSelf(vector<int>& nums) {
@@ -131,21 +149,24 @@ vector<int> productExceptSelf(vector<int>& nums) {
 
 9. Longest Consecutive Sequence: Given an unsorted array of integers, find the length of the longest consecutive elements sequence.
 
-int longestConsecutive(vector<int>& nums) {
-    unordered_set<int> numSet(nums.begin(), nums.end());
-    int longestStreak = 0;
-    for (int num : nums) {
-        if (!numSet.count(num - 1)) {
-            int currentNum = num;
-            int currentStreak = 1;
-            while (numSet.count(currentNum + 1)) {
-                currentNum += 1;
-                currentStreak += 1;
-            }
-            longestStreak = max(longestStreak, currentStreak);
+int longestConsecutive(int arr[], int n) {
+    int longest = 0; 
+
+    for (int i = 0; i < n; i++) {
+        int currentNum = arr[i];
+        int currentStreak = 1;
+
+        // Keep checking for consecutive numbers
+        while (currentNum + 1 == arr[i + currentStreak]) { 
+            currentStreak++;
+        }
+
+        // Update longest streak if needed
+        if (currentStreak > longest) {
+            longest = currentStreak;
         }
     }
-    return longestStreak;
+    return longest;
 }
 
 10. Jump Game: Given an array of non-negative integers, you are initially positioned at the first index of the array. Each element in the array represents your maximum jump length at that position. 
@@ -200,13 +221,12 @@ int main()
 
 13. Sum of a number
 
-void main()
-{
- int num=123456;
- int sum=0;
- for(;num>0;sum+=num%10,num/=10); // This is the "single line".
- printf("\nsum = [%d]\n", sum);
-} 
+    while (num > 0) {  // Continue as long as 'num' has digits
+        sum = sum + (num % 10); // Extract the last digit and add it to the sum
+        num = num / 10;        // Remove the last digit from the number
+    }
+
+    printf("\nSum = [%d]\n", sum);
 
 
 

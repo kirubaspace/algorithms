@@ -54,16 +54,18 @@ int maxSubArray(vector<int>& nums) {
 
 4. Two Sum: Given an array of integers, return indices of the two numbers such that they add up to a specific target.
 
-vector<int> twoSum(vector<int>& nums, int target) {
-    unordered_map<int, int> numMap;
-    for (int i = 0; i < nums.size(); i++) {
-        int complement = target - nums[i];
-        if (numMap.find(complement) != numMap.end()) {
-            return {numMap[complement], i};
-        }
-        numMap[nums[i]] = i;
+vector<int> twoNumberSum(vector<int> array, int targetSum) {
+  set<int> nums;
+
+  for (int num : array){
+    int potential = targetSum - num;
+    if (nums.find(potential) != nums.end()){
+      return vector<int>{potential, num};
+    } else {
+      nums.insert(num);
     }
-    return {};
+  }
+  return {};
 }
 
 5. Rotate Array: Rotate an array to the right by k steps, where k is non-negative.

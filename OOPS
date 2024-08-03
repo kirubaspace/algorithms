@@ -1,0 +1,122 @@
+What is OOP?
+
+Answer: Object-Oriented Programming (OOP) is a programming paradigm that organizes code around objects, which are instances of classes. Objects encapsulate data (attributes) and behaviors (methods) related to real-world entities.   
+What are the four main pillars of OOP?
+
+Answer: Abstraction, Encapsulation, Inheritance, and Polymorphism.
+Define a class and an object.
+
+Answer: A class is a blueprint or template that defines the properties and behaviors of objects. An object is a concrete instance of a class.
+Explain encapsulation.
+
+Answer: Encapsulation is the bundling of data and methods within an object. It controls access to an object's internal state through public, private, and protected access specifiers.
+
+What is a constructor?
+
+Answer: A constructor is a special method called when an object of a class is created. It initializes the object's attributes.
+Medium Level
+
+What is inheritance?
+
+Answer: Inheritance is a mechanism that allows one class (derived class) to inherit properties and behaviors from another class (base class). It promotes code reusability and establishes an "is-a" relationship.
+
+Explain polymorphism.
+
+Answer: Polymorphism is the ability of objects of different classes to be treated as objects of a common base class. It enables the use of a single interface to represent multiple forms of objects.   
+What are virtual functions and pure virtual functions?
+
+Answer: A virtual function is a member function declared in the base class and can be redefined (overridden) in derived classes. A pure virtual function is a virtual function with no implementation in the base class, making the base class abstract.
+What is function overloading?
+
+Answer: Function overloading allows multiple functions with the same name but different parameters (types, number, or order) to exist in the same scope.
+Differentiate between static and dynamic binding.
+
+Answer: Static binding (or early binding) happens at compile time, while dynamic binding (or late binding) happens at runtime. Virtual functions use dynamic binding to determine which overridden function to call based on the object's actual type.
+Hard Level
+
+What is the diamond problem in multiple inheritance, and how is it resolved?
+
+Answer: The diamond problem occurs when a derived class inherits from two or more base classes that have a common ancestor. It leads to ambiguity in accessing members of the common ancestor. Virtual inheritance is used to resolve this issue by creating a single instance of the common ancestor.
+Explain the concepts of shallow copy and deep copy in C++.
+
+Answer: A shallow copy creates a new object that shares the same data members as the original object. A deep copy creates a new object and recursively duplicates all data members, including those dynamically allocated.
+What is the Rule of Three (and Rule of Five) in C++?
+
+Answer: The Rule of Three states that if a class defines a destructor, copy constructor, or copy assignment operator, it should likely define all three. The Rule of Five extends this to move constructors and move assignment operators, introduced in C++11.
+What are smart pointers, and how do they help in memory management?
+
+Answer: Smart pointers (e.g., unique_ptr, shared_ptr, weak_ptr) are objects that manage the lifetime of dynamically allocated objects. They automatically deallocate memory when it's no longer needed, preventing memory leaks.
+What is the difference between composition and aggregation in OOP?
+
+Answer: Both are forms of object relationships. Composition implies a strong "has-a" relationship where the lifetime of the contained object is tied to the container object. Aggregation represents a weaker "has-a" relationship where the contained object can exist independently.
+
+What is the difference between a friend function and a friend class in C++?
+
+Answer: A friend function is a non-member function that has access to the private and protected members of a class. A friend class is a class whose member functions are granted access to the private and protected members of another class.
+Explain the concept of RAII (Resource Acquisition Is Initialization) in C++.
+
+Answer: RAII is a C++ programming idiom where resource acquisition is tied to object initialization, and resource release is tied to object destruction. This ensures that resources are properly managed throughout their lifetime, preventing leaks.
+What is the difference between an abstract class and an interface in C++?
+
+Answer: An abstract class can have both pure virtual functions and concrete member functions. An interface (achieved through pure abstract classes) can only have pure virtual functions. A class can inherit from multiple interfaces but only one abstract class.
+Explain the concept of CRTP (Curiously Recurring Template Pattern) in C++.
+
+Answer: CRTP is a template pattern where a class derives from a template instantiation of itself. This allows static polymorphism and customization of base class behavior in derived classes without the overhead of virtual functions.
+What are some common design patterns used in C++ OOP?
+
+Answer: Singleton, Factory Method, Observer, Strategy, Decorator, and many others. Each design pattern provides a solution to a recurring problem in software design.
+Challenging Level
+
+Discuss the concept of SFINAE (Substitution Failure Is Not An Error) in C++.
+
+Answer: SFINAE is a template metaprogramming technique that leverages template argument deduction to selectively enable or disable template specializations based on the validity of type substitutions.
+Explain the concept of type erasure in C++.
+
+Answer: Type erasure is a technique used to hide the concrete type of an object behind a common interface, allowing objects of different types to be treated interchangeably. This is often used in template libraries.
+What are some potential issues with using exceptions in C++?
+
+Answer: Exceptions can introduce runtime overhead and can be difficult to reason about in complex code. They can also lead to unexpected control flow if not handled properly.
+Explain the concept of move semantics and how it improves performance in C++11 and later.
+
+Answer: Move semantics allow the efficient transfer of resources (e.g., dynamically allocated memory) from one object to another without copying. This avoids unnecessary copying and can significantly improve the performance of operations like passing or returning large objects.
+Discuss the pros and cons of using multiple inheritance in C++.
+
+Answer:
+Pros: Increased flexibility and code reuse, modeling complex relationships.
+Cons: Potential for the diamond problem, increased complexity, and potential for name clashes.
+
+What is the difference between a class template and a template class in C++?
+
+Answer: A class template is a blueprint for creating template classes. A template class is a specific instantiation of a class template with a particular set of template arguments (types or values).
+Explain the concept of template specialization in C++.
+
+Answer: Template specialization allows you to provide a custom implementation for a template when specific template arguments are used. This lets you tailor the behavior of a template to handle particular cases differently.
+Discuss the difference between the new and malloc operators in C++.
+
+Answer: new is a C++ operator that allocates memory on the heap and calls the constructor of the object being created. malloc is a C function that allocates a raw block of memory without calling any constructor.
+Explain the concept of vtables and how they are used to implement virtual functions in C++.
+
+Answer: A vtable (virtual table) is a lookup table used to resolve calls to virtual functions at runtime. Each object with virtual functions has a pointer to its class's vtable. When a virtual function is called, the vtable is consulted to determine which implementation of the function to execute based on the object's dynamic type.
+Discuss the trade-offs between using inheritance and composition in C++ object-oriented design.
+
+Answer:
+Inheritance: Promotes code reuse, establishes "is-a" relationships, but can lead to tight coupling and inflexible designs.
+Composition: Allows for greater flexibility, promotes loose coupling, and enables the creation of more modular designs, but can sometimes lead to slightly more complex code.
+Expert Level
+
+What is the role of the this pointer in C++, and how is it used?
+
+Answer: The this pointer is an implicit pointer that points to the object on which a member function is being called. It's used to access the object's members within the function.
+Explain the concept of mixins in C++.
+
+Answer: A mixin is a class that provides a specific set of functionalities that can be added to other classes through multiple inheritance. It's a way to reuse code and create classes with specific combinations of features.
+Discuss the concept of the pimpl (pointer to implementation) idiom in C++.
+
+Answer: The pimpl idiom is a technique used to reduce compilation dependencies and improve build times. It involves separating the interface of a class from its implementation by placing the implementation details behind a private pointer to a forward-declared structure or class.
+Explain the concept of metaclasses in C++.
+
+Answer: A metaclass is a class whose instances are themselves classes. It's a way to control the creation and behavior of classes at a higher level of abstraction. Metaclasses are typically implemented using template metaprogramming.
+Discuss the challenges and potential solutions for implementing reflection in C++.
+
+Answer: Reflection is the ability of a program to examine and modify its own structure and behavior at runtime. Implementing reflection in C++ is challenging due to the language's focus on static typing and compilation-time optimization. Potential solutions involve using metaprogramming techniques, external libraries, or even compiler extensions.
+

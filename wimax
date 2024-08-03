@@ -1,0 +1,75 @@
+What is WiMAX?
+
+WiMAX stands for Worldwide Interoperability for Microwave Access. It's a wireless broadband technology based on the IEEE 802.16 standard, designed to provide high-speed internet access over long distances.
+What are the two main types of WiMAX?
+
+Fixed WiMAX: Used for stationary applications like home internet, offering point-to-multipoint connectivity.
+Mobile WiMAX: Designed for mobile devices, providing wider coverage and roaming capabilities.
+What are the key advantages of WiMAX over other wireless technologies?
+
+Greater range compared to Wi-Fi
+Higher data rates compared to cellular technologies (at the time of its development)
+Support for Quality of Service (QoS), which is important for real-time applications like voice and video
+Scalability to handle a large number of users
+WiMAX Technical Details
+
+Explain the WiMAX network architecture.
+
+WiMAX network consists of:
+Base Stations (BS): Transmit and receive signals, manage subscriber connections.
+Subscriber Stations (SS): User devices like modems or mobile phones.
+Access Service Network (ASN): Handles authentication, authorization, and QoS management.
+Connectivity Service Network (CSN): Connects the WiMAX network to the internet or other networks.
+What are the frequency bands used by WiMAX?
+
+WiMAX operates in various licensed and unlicensed bands, typically in the 2-11 GHz range.
+Explain the different modulation schemes used in WiMAX.
+
+WiMAX uses various modulation schemes like BPSK, QPSK, 16-QAM, and 64-QAM to adapt to different channel conditions and provide higher data rates when possible.
+What is OFDM, and how is it used in WiMAX?
+
+OFDM (Orthogonal Frequency Division Multiplexing) is a technique used in WiMAX to divide the available spectrum into multiple subcarriers. This helps to mitigate the effects of multipath fading and interference.
+What is MIMO, and how does it improve WiMAX performance?
+
+MIMO (Multiple-Input Multiple-Output) uses multiple antennas at both the transmitter and receiver to improve signal quality, increase data rates, and extend the range of WiMAX.
+WiMAX Protocols and Layers
+
+Explain the role of the MAC layer in WiMAX.
+
+The MAC (Media Access Control) layer controls access to the shared wireless medium, schedules data transmission, and manages QoS for different types of traffic.
+What are the different scheduling algorithms used in WiMAX?
+
+WiMAX uses both contention-based (e.g., Distributed Reservation Multiple Access) and scheduled-based (e.g., Uplink/Downlink Burst Profiles) scheduling for efficient resource allocation.
+What are the security features in WiMAX?
+
+WiMAX uses various security mechanisms like authentication, encryption (AES), and key management to protect data and user privacy.
+
+What is the difference between OFDM and OFDMA, and how are they used in WiMAX?
+
+OFDM: Orthogonal Frequency Division Multiplexing. It divides the available bandwidth into multiple subcarriers, improving resistance to fading and interference. Used in fixed WiMAX (802.16d).
+OFDMA: Orthogonal Frequency Division Multiple Access. It's an extension of OFDM that allows multiple users to share the same channel by assigning different subcarriers to different users. Used in mobile WiMAX (802.16e).
+Explain the concept of Adaptive Modulation and Coding (AMC) in WiMAX.
+
+AMC is a technique used in WiMAX to dynamically adjust the modulation scheme (e.g., BPSK, QPSK, 16-QAM) and the coding rate based on the quality of the wireless channel. This allows WiMAX to maximize throughput in good conditions and maintain a reliable connection in poor conditions.
+What is Handover in WiMAX, and how does it work?
+
+Handover is the process of transferring a user's connection from one base station to another as they move within the network. WiMAX supports both hard handovers (brief interruption in service) and soft handovers (seamless transition) depending on network conditions and user mobility.
+What is the role of the ASN-GW (ASN Gateway) in WiMAX?
+
+The ASN-GW acts as a central point of control for the Access Service Network. It handles user authentication, authorization, IP address assignment, QoS policy enforcement, and handovers between base stations.
+What are the different QoS classes defined in WiMAX?
+
+WiMAX defines five QoS classes:
+UGS (Unsolicited Grant Service): For real-time applications with strict delay requirements (e.g., VoIP).
+rtPS (Real-time Polling Service): For real-time applications with less strict delay requirements (e.g., streaming video).
+nrtPS (Non-real-time Polling Service): For applications with no strict delay requirements but requiring guaranteed throughput (e.g., file transfers).
+BE (Best Effort): For applications with no specific QoS requirements (e.g., web browsing).
+ertPS (Extended Real-time Polling Service): Similar to rtPS but with additional features for managing variable bitrate traffic.
+WiMAX and Intel-Specific Questions
+
+What are some of the challenges faced by WiMAX technology?
+Competition from LTE and 5G technologies, limited spectrum availability in some regions, and the need for significant infrastructure investment for widespread deployment.
+How do you think WiMAX can be used in the future, especially with the rise of 5G?
+WiMAX could potentially complement 5G networks by providing backhaul connectivity for 5G base stations or serving as a cost-effective option for fixed wireless broadband in areas where fiber deployment is not feasible.
+(If applicable) Describe any experience you have with Intel's WiMAX products or solutions.
+This is where you would highlight any relevant work experience or projects involving Intel's WiMAX chips, platforms, or software tools.

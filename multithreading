@@ -1,0 +1,258 @@
+What is multithreading? How does it differ from multiprocessing?
+
+Multithreading: Involves multiple threads of execution within a single process, sharing the same memory space. This allows for concurrency within the process, potentially improving responsiveness and performance on multi-core systems.
+Multiprocessing: Involves multiple processes running independently, each with its own memory space. Communication between processes is typically more complex than between threads.
+Why use multithreading in C? Advantages and challenges?
+
+Advantages:
+Responsiveness: Tasks can run concurrently, preventing one task from blocking the entire application.
+Performance: On multi-core CPUs, threads can run on different cores, utilizing parallelism.
+Resource Sharing: Threads share memory, making data exchange easier.
+Reduced Overhead: Thread creation is generally lighter than process creation.
+Challenges:
+Synchronization: Need to carefully manage shared data to avoid race conditions and ensure data consistency.
+Deadlocks: Potential for threads to get stuck waiting on each other indefinitely.
+Debugging Complexity: Multithreaded code can be harder to debug due to unpredictable interleavings.
+Explain the different states a thread can be in.
+
+New: A thread is created but not yet started.
+Runnable: A thread is ready to run and is waiting for its turn on the CPU.
+Running: A thread is currently executing on the CPU.
+Blocked/Waiting: A thread is waiting for an event (e.g., I/O operation, lock acquisition).
+Terminated: A thread has finished execution.
+C Specifics (pthreads library)
+
+What are the key functions in the pthreads library for thread management?
+
+pthread_create(): Creates a new thread.
+pthread_join(): Waits for a thread to finish.
+pthread_exit(): Terminates the calling thread.
+pthread_detach(): Detaches a thread, allowing it to run independently and be cleaned up automatically when it terminates.
+pthread_mutex_init(), pthread_mutex_lock(), pthread_mutex_unlock(), pthread_mutex_destroy(): Functions for mutex (mutual exclusion) lock management.
+pthread_cond_init(), pthread_cond_wait(), pthread_cond_signal(), pthread_cond_broadcast(), pthread_cond_destroy(): Functions for condition variable management.
+How do you prevent race conditions in C multithreading?
+
+Mutex Locks: Ensure only one thread can access a critical section of code at a time.
+Condition Variables: Allow threads to wait for a condition to become true before proceeding.
+Atomic Operations: Perform indivisible operations on shared variables, avoiding partial updates.
+
+Write a C program to create two threads, one printing even numbers and the other printing odd numbers.
+
+#include <stdio.h>
+#include <pthread.h>
+
+#define MAX_NUM 20 // Maximum number to print
+
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; // Mutex for synchronization
+
+void *printEven(void *arg) {
+    for (int i = 2; i <= MAX_NUM; i += 2) {
+        pthread_mutex_lock(&mutex); // Lock before printing
+        printf("Even: %d\n", i);
+        pthread_mutex_unlock(&mutex); // Unlock after printing
+    }
+    pthread_exit(NULL);
+}
+
+void *printOdd(void *arg) {
+    for (int i = 1; i <= MAX_NUM; i += 2) {
+        pthread_mutex_lock(&mutex); 
+        printf("Odd: %d\n", i);
+        pthread_mutex_unlock(&mutex);
+    }
+    pthread_exit(NULL);
+}
+
+int main() {
+    pthread_t t1, t2;
+
+    pthread_create(&t1, NULL, printEven, NULL);
+    pthread_create(&t2, NULL, printOdd, NULL);
+
+    pthread_join(t1, NULL);
+    pthread_join(t2, NULL);
+
+    return 0;
+}
+
+
+Explain how to implement a producer-consumer problem using C threads and semaphores. (Tests understanding of thread coordination and synchronization.)
+
+
+// (Code for this scenario would be quite extensive, so I'll provide a conceptual outline)
+
+// Shared Data
+int buffer[BUFFER_SIZE];
+int count = 0; // Number of items in the buffer
+
+// Semaphores
+sem_t empty; // Counts empty slots in the buffer
+sem_t full;  // Counts full slots in the buffer
+pthread_mutex_t mutex; // Mutex for accessing the buffer
+
+// Producer Thread
+void *producer(void *arg) {
+    for (...) {
+        // ... produce item ...
+
+        sem_wait(&empty); // Wait for an empty slot
+        pthread_mutex_lock(&mutex);
+        // Add item to buffer
+        pthread_mutex_unlock(&mutex);
+        sem_post(&full); // Signal that a slot is full
+    }
+    // ...
+}
+
+// Consumer Thread
+void *consumer(void *arg) {
+    for (...) {
+        sem_wait(&full); // Wait for a full slot
+        pthread_mutex_lock(&mutex);
+        // Remove item from buffer
+        pthread_mutex_unlock(&mutex);
+        sem_post(&empty); // Signal that a slot is empty
+
+        // ... consume item ...
+    }
+    // ...
+}
+
+
+How would you design a thread-safe queue in C? (Assesses ability to apply mutexes and condition variables in a practical scenario.)
+
+// (Conceptual structure - implementation details would be more involved)
+
+struct Node {
+    // ... data ...
+    struct Node *next;
+};
+
+struct Queue {
+    struct Node *head;
+    struct Node *tail;
+    pthread_mutex_t mutex;
+    pthread_cond_t cond;
+};
+
+// Functions
+void enqueue(struct Queue *q, ...) {
+    // ... create node ...
+    pthread_mutex_lock(&q->mutex);
+    // ... add node to queue ...
+    pthread_cond_signal(&q->cond); // Wake up a waiting consumer
+    pthread_mutex_unlock(&q->mutex);
+}
+
+void dequeue(struct Queue *q, ...) {
+    pthread_mutex_lock(&q->mutex);
+    while (q->head == NULL) {
+        pthread_cond_wait(&q->cond, &q->mutex); // Wait for items
+    }
+    // ... remove node from queue ...
+    pthread_mutex_unlock(&q->mutex);
+}
+
+User-Level Threads vs. Kernel-Level Threads:
+
+User-Level Threads (ULTs):
+Managed entirely in user space (by thread libraries like pthreads).
+Faster to create and switch between.
+One ULT blocking can block the entire process.
+Not fully aware of underlying hardware, so they might not exploit multiple cores efficiently.
+Kernel-Level Threads (KLTs):
+Managed by the operating system's kernel.
+Slower to create and switch between due to kernel involvement.
+Blocking of one KLT doesn't affect other KLTs within the process.
+Kernel can schedule KLTs on different cores effectively.
+
+Thread Pools:
+
+A thread pool is a collection of pre-created threads that are available to perform tasks.
+Benefits:
+Reduced overhead of creating and destroying threads for each task.
+Improved responsiveness as threads are readily available.
+Easier management and control over thread usage.
+Common use cases: Web servers, database servers, and applications with many short-lived tasks.
+
+Thread Safety:
+Thread-safe code: Can be executed by multiple threads concurrently without causing errors or unexpected behavior.
+Ensuring thread safety:
+Use mutexes, semaphores, or other synchronization mechanisms to protect shared data.
+Minimize shared state by using thread-local storage where possible.
+Use atomic operations for simple updates to shared variables.
+Design data structures and algorithms that are inherently thread-safe.
+Examples of non-thread-safe functions: strtok, rand
+
+Synchronization Mechanisms (beyond mutexes and semaphores):
+Reader-Writer Locks: Allow multiple readers to access shared data concurrently, but only one writer at a time.
+Barriers: Synchronize multiple threads to reach a common point before proceeding.
+Spinlocks: A lock that waits in a loop (spins) while waiting for the lock to become available. (Use cautiously as they can waste CPU cycles if held for too long.)
+
+Error Handling in Multithreaded C:
+Thread Cancellation: Use pthread_cancel to request a thread to terminate. Implement cleanup handlers (pthread_cleanup_push, pthread_cleanup_pop) to release resources held by canceled threads.
+Exceptions: Handle exceptions using setjmp and longjmp to gracefully unwind the stack and release resources in case of errors.
+
+Debugging Race Conditions and Deadlocks:
+Challenges: Non-deterministic behavior, difficult to reproduce.
+Tools:
+Debuggers with thread awareness.
+Thread sanitizers (e.g., ThreadSanitizer).
+Logging to track thread interactions.
+Code analysis tools to identify potential issues statically.
+
+Performance Optimization:
+Minimize Lock Contention: Use fine-grained locking, lock-free algorithms, or reduce critical section sizes.
+Load Balancing: Distribute tasks evenly among threads.
+Thread Scheduling: Choose appropriate scheduling policies (e.g., round-robin, priority-based) based on application requirements.
+
+
+Thread-Safe Functions
+
+A function is thread-safe if it can be called simultaneously from multiple threads without causing any data races or inconsistencies. This means that the function must:
+
+Protect shared data: If the function accesses shared data (e.g., global variables, static variables), it must use proper synchronization mechanisms like mutexes or semaphores to ensure that only one thread modifies the data at a time.
+Avoid static variables with state: If the function uses static variables to maintain state between calls, it can lead to problems when multiple threads try to update the same static variable simultaneously. Thread-local storage (TLS) can be a safer alternative in such cases.
+
+Non thread safe
+int shared_counter = 0; // Global variable
+
+void increment_counter() {
+    shared_counter++; 
+}
+
+Thread safe
+
+In this example, increment_counter is not thread-safe because multiple threads could try to increment shared_counter simultaneously, leading to unpredictable results.
+
+int shared_counter = 0;
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; 
+
+void increment_counter() {
+    pthread_mutex_lock(&mutex); 
+    shared_counter++; 
+    pthread_mutex_unlock(&mutex); 
+}
+
+
+Reentrant Functions
+
+A function is reentrant if it can be interrupted during execution, called again (re-entered) from the same thread or another thread, and then safely resumed from where it left off. This means the function:
+
+Doesn't use static variables with state: It shouldn't rely on static variables to maintain state between calls.
+Is thread-safe: Since it can be called from multiple threads, it must be thread-safe to ensure correct behavior.
+Uses local variables or parameters: All state information should be stored in local variables or passed as function parameters.
+
+
+int factorial(int n) {
+    if (n == 0) {
+        return 1;
+    } else {
+        return n * factorial(n - 1); // Recursive call
+    }
+}
+
+This factorial function is reentrant because it only uses the stack to store state (through recursive calls), and it doesn't modify any shared data.
+
+
+

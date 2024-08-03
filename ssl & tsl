@@ -1,0 +1,105 @@
+Easy
+
+Q: What does SSL/TLS stand for?A: Secure Sockets Layer (SSL) and its successor, Transport Layer Security (TLS), are cryptographic protocols designed to secure 
+communication over a network.
+
+Q: What's the main difference between SSL and TLS?A: TLS is the newer, more secure version of SSL. While SSL is considered obsolete, the term "SSL" is often used 
+informally to refer to both.
+
+Q: What's a digital certificate?A: A digital certificate is an electronic document used to verify the ownership of a public key. It's issued by a trusted Certificate 
+Authority (CA).
+
+Q: What are the two main types of encryption used in SSL/TLS?A: Symmetric encryption (for bulk data transfer) and asymmetric encryption (for key exchange and digital 
+                                                                                                                                             signatures).
+
+Q: What is a cipher suite?A: A cipher suite is a set of algorithms that define the encryption, authentication, and key exchange mechanisms used in an SSL/TLS connection.
+
+Q: What's the purpose of a handshake in SSL/TLS?A: The handshake is the initial negotiation process between a client and server to establish a secure connection. It includes steps like cipher suite selection and key exchange.
+
+Q: What's a common way to tell if a website is using SSL/TLS?A: The website's URL will start with "https://" and usually display a padlock icon in the browser's address bar.
+
+Q: Explain the process of an SSL/TLS handshake.A: The handshake process involves several steps:
+
+Client Hello: The client sends a message indicating supported versions and cipher suites.
+Server Hello: The server chooses a version and cipher suite, and sends its certificate.
+Certificate Exchange (Optional): Additional certificates might be exchanged for validation.
+Key Exchange: The client and server generate a shared secret key.
+Confirmation Messages: Both parties send messages to verify the handshake's success.
+
+10-steps to ssl/tsl
+
+Client Hello: A web browser (client) initiates a connection to a secure website (server). The client sends a "Client Hello" message, listing its supported TLS versions and cipher suites (sets of encryption algorithms).
+
+Server Hello: The server responds with a "Server Hello" message, selecting the TLS version and cipher suite to use. It also sends its digital certificate.
+
+Certificate Verification: The browser checks the server's certificate. This involves:
+
+Verifying the certificate was issued by a trusted Certificate Authority (CA).
+Checking the certificate's expiration date.
+Ensuring the certificate's domain name matches the website's address.
+Key Exchange: The client and server now agree on a shared secret key. This is often done using the Diffie-Hellman key exchange algorithm, which allows them to establish a secret key over a public channel.
+
+Session Keys Generation: Both the client and server use the shared secret key to generate session keys. These are symmetric keys used for encrypting and decrypting the actual data transmitted during the session.
+
+Client Finished: The client sends a "Finished" message, encrypted with the session keys, confirming that the handshake is complete from its side.
+
+Server Finished: The server responds with its own encrypted "Finished" message, confirming the handshake completion from its side.
+
+Secure Communication Begins: At this point, the handshake is complete, and the secure, encrypted connection (SSL/TLS tunnel) is established. All further communication between the client and server is encrypted and authenticated using the session keys.
+
+Ongoing Data Exchange: The browser and server can now exchange data securely. The session keys are used to encrypt data sent from the browser and decrypt data received from the server, ensuring confidentiality.
+
+Session Termination: When the communication ends, either party can send a "Close Notify" message to signal a graceful termination of the SSL/TLS session.
+
+Q: What's a self-signed certificate, and why is it generally not recommended for public websites?A: A self-signed certificate is not issued by a trusted CA. 
+Browsers will often warn users about the potential risks of trusting such a certificate, as it cannot be independently verified.
+
+Q: What's the difference between a certificate signing request (CSR) and a certificate?A: A CSR is a message sent to a CA to request a digital certificate. 
+It contains information like the public key and the organization's details. A certificate is the signed response from the CA, verifying the public key and other details.
+
+Q: What is a man-in-the-middle (MitM) attack, and how does SSL/TLS protect against it?A: A MitM attack is where an attacker intercepts and potentially alters 
+communication between two parties. SSL/TLS helps prevent this through encryption (making the data unreadable to the attacker) and authentication (ensuring the communication is
+                                                                                                                                                           with the intended parties).
+
+Q: What are some of the vulnerabilities that have been discovered in SSL/TLS in the past (e.g., Heartbleed, POODLE)?A:
+
+Heartbleed: A vulnerability in the OpenSSL implementation that allowed attackers to read sensitive information from a server's memory.
+POODLE: An attack that exploited a weakness in the fallback to older SSL protocols, potentially allowing attackers to decrypt sensitive information.
+
+Q: What is OCSP stapling, and how does it improve performance?A: OCSP (Online Certificate Status Protocol) stapling is a way for web servers to provide clients with the 
+revocation status of their certificate. Instead of the client contacting the CA, the server includes a recent OCSP response in the handshake, reducing the number of requests and improving performance.
+
+Q: What is certificate pinning?A: Certificate pinning is a security mechanism where a client is configured to trust only a specific certificate or set of certificates 
+for a particular website. This helps prevent attackers from using fraudulent certificates, even if they manage to compromise a CA.
+
+
+Q: Describe the process of generating a Diffie-Hellman key exchange.A: The Diffie-Hellman key exchange is a method for two parties to securely establish a shared secret key over a public channel. It involves these steps:
+
+Both parties agree on a prime number (p) and a base (g).
+Each party generates a secret random number (a for Alice, b for Bob).
+They calculate their public keys: A = g^a mod p (for Alice) and B = g^b mod p (for Bob).
+They exchange public keys.
+Each party calculates the shared secret: s = B^a mod p (for Alice) and s = A^b mod p (for Bob). This value 's' is the same for both parties and serves as the shared secret key.
+Q: What is the difference between cipher block chaining (CBC) and Galois/Counter Mode (GCM)?A:
+
+CBC: Each block of plaintext is XORed with the previous ciphertext block before encryption. While this provides confidentiality, an error in one block affects subsequent blocks.
+GCM: Combines counter mode encryption with Galois field authentication. It provides both confidentiality and authenticity, and errors do not propagate between blocks. GCM is generally considered more secure and performant than CBC.
+Q: What is a session ticket, and how does it improve performance during session resumption?A: A session ticket is a small piece of encrypted data that a server sends to a client at the end of an SSL/TLS handshake. This ticket contains information about the established session. When the client reconnects, it can present this ticket to the server, allowing the server to resume the previous session without a full handshake, improving performance.
+
+Q: What is TLS False Start, and why is it considered a performance optimization?A: TLS False Start is an optimization technique where a client starts sending application data immediately after sending the ClientKeyExchange message, without waiting for the full SSL/TLS handshake to complete. This can reduce latency, especially in high-latency networks, as the server can process the application data in parallel with the rest of the handshake.
+
+Q: How does SSL/TLS handle renegotiation, and why is it important?A: Renegotiation is the process of establishing a new set of session keys within an existing SSL/TLS connection. It's important for various reasons:
+
+Key rotation: Changing keys periodically improves security.
+Changing cipher suites: If vulnerabilities are discovered in a cipher suite, renegotiation allows switching to a more secure one.
+Client authentication: Renegotiation can be used to request client authentication during an existing session.
+Q: What is the difference between RSA and ECC (Elliptic Curve Cryptography) certificates?A:
+
+RSA: Based on the factorization of large prime numbers. Offers good security but keys can be large.
+ECC: Based on elliptic curve mathematics. Offers comparable security to RSA with smaller key sizes, resulting in better performance, especially on resource-constrained devices.
+Q: What are the different types of validation that can be performed on a digital certificate?A:
+
+Domain Validation: Verifies ownership of the domain name.
+Organization Validation: Verifies the organization's identity and domain ownership.
+Extended Validation: Requires additional verification steps and provides the highest level of assurance.
+

@@ -1,0 +1,180 @@
+1. Singleton:
+
+Purpose: Ensures that a class has only one instance and provides a global point of access to it. This is crucial when you need a single, centralized control point for a 
+resource (e.g., database connection, configuration settings).
+
+class Logger {
+private:
+    static Logger* instance;
+    Logger() {} // Private constructor
+
+public:
+    static Logger* getInstance() {
+        if (instance == nullptr) {
+            instance = new Logger();
+        }
+        return instance;
+    }
+   // ... logging methods
+};
+
+Logger* Logger::instance = nullptr;
+
+Why it's common: Singletons simplify global access and management of unique resources, making them essential in many applications.
+
+2. Factory Method:
+
+Purpose: Defines an interface for creating objects but lets subclasses decide which class to instantiate. This promotes loose coupling between the creator and the concrete products.
+
+Example:
+
+class Button {
+public:
+    virtual void render() = 0;
+};
+
+class WindowsButton : public Button {
+public:
+    void render() override { /* Windows-specific rendering */ }
+};
+
+class MacButton : public Button {
+public:
+    void render() override { /* Mac-specific rendering */ }
+};
+
+class ButtonFactory {
+public:
+    static Button* createButton() {
+        #ifdef _WIN32
+            return new WindowsButton();
+        #elif __APPLE__
+            return new MacButton();
+        #endif
+    }
+};
+
+Why it's common: Factory methods provide a flexible way to create objects, especially when you need to create platform-specific or context-dependent instances.
+
+3. Observer:
+
+Purpose: Defines a one-to-many dependency between objects so that when one object changes state, all its dependents are notified and updated automatically.   
+
+Example:   
+
+class Subject {
+public:
+    virtual void attach(Observer* o) = 0;
+    virtual void detach(Observer* o) = 0;
+    virtual void notify() = 0;
+};
+
+class ConcreteSubject : public Subject {
+    // ... implementation with state and notification logic
+};
+
+class Observer {
+public:
+    virtual void update(Subject* s) = 0;
+};
+
+Why it's common: The Observer pattern is essential for creating loosely coupled systems where components can react to events without being tightly interconnected. 
+It's widely used in UI frameworks, event handling, and data synchronization scenarios.
+
+4. Strategy:
+
+Purpose:  Defines a family of algorithms, encapsulates each one, and makes them interchangeable. This lets the algorithm vary independently from the clients that use it.   
+
+Example
+
+class SortingStrategy {
+public:
+    virtual void sort(std::vector<int>& data) = 0;
+};
+
+class QuickSort : public SortingStrategy { /* ... */ };
+class MergeSort : public SortingStrategy { /* ... */ };
+
+class Sorter {
+public:
+    void setStrategy(SortingStrategy* strategy) { this->strategy = strategy; }
+    void sort(std::vector<int>& data) { strategy->sort(data); }
+
+private:
+    SortingStrategy* strategy;
+};
+
+Why it's common: The Strategy pattern provides flexibility in choosing algorithms at runtime, making it valuable for scenarios where you need to switch between different behaviors based on context or user preferences.
+
+5. Visitor design pattern
+
+Conceptual Overview
+
+Intent: The Visitor pattern allows you to define a new operation (or set of operations) to be performed on elements of an object structure without modifying the classes of those elements. This separation of concerns promotes flexibility and adherence to the Open/Closed Principle.
+Key Participants:
+Element: Represents an object in the structure you want to operate on.
+Visitor: Declares a visit operation for each concrete Element type.
+ConcreteElement: Implements an accept operation that takes a Visitor as an argument.
+ConcreteVisitor: Implements the visit operations for each concrete Element.
+How It Works:
+Elements "accept" a Visitor.
+The Visitor performs its specific operation on the Element based on its type.
+This allows you to add new operations without changing the Element classes.
+C++ Example: Shape Rendering
+
+#include <iostream>
+#include <vector>
+
+// Element interface
+class Shape {
+public:
+    virtual void accept(class ShapeVisitor& visitor) = 0;
+};
+
+// Concrete elements
+class Circle : public Shape {
+public:
+    void accept(ShapeVisitor& visitor) override { visitor.visitCircle(*this); }
+};
+
+class Rectangle : public Shape {
+public:
+    void accept(ShapeVisitor& visitor) override { visitor.visitRectangle(*this); }
+};
+
+// Visitor interface
+class ShapeVisitor {
+public:
+    virtual void visitCircle(Circle& circle) = 0;
+    virtual void visitRectangle(Rectangle& rectangle) = 0;
+};
+
+// Concrete visitors
+class AreaCalculator : public ShapeVisitor {
+public:
+    void visitCircle(Circle& circle) override { 
+        // Calculate circle area
+        std::cout << "Circle area: " << 3.14 * 5 * 5 << std::endl; 
+    }
+    void visitRectangle(Rectangle& rectangle) override { 
+        // Calculate rectangle area
+        std::cout << "Rectangle area: " << 10 * 8 << std::endl; 
+    }
+};
+
+int main() {
+    std::vector<Shape*> shapes;
+    shapes.push_back(new Circle());
+    shapes.push_back(new Rectangle());
+
+    AreaCalculator areaCalculator;
+    for (Shape* shape : shapes) {
+        shape->accept(areaCalculator);
+    }
+
+    // Clean up (delete shapes)
+    // ...
+    return 0;
+}
+
+

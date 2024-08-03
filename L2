@@ -1,0 +1,197 @@
+1. What is Layer 2 in the OSI model?
+
+Layer 2, the Data Link Layer, handles the reliable transmission of data frames between nodes over a physical medium. 
+It's responsible for MAC addressing, error detection, and flow control.
+
+2. What is a MAC address and its purpose?
+
+A MAC (Media Access Control) address is a unique 48-bit hardware identifier assigned to network interfaces. 
+It's used to identify devices on a local network (LAN) and enable direct communication.
+
+3. Explain the difference between switches and hubs.
+
+Hubs: Simple devices that broadcast incoming data to all connected ports, leading to potential collisions.
+Switches: Intelligent devices that learn MAC addresses and forward data only to the intended recipient's port, reducing collisions and improving network efficiency.
+
+4. What is ARP (Address Resolution Protocol)?
+
+ARP is a protocol used to translate IP addresses into MAC addresses. When a device wants to communicate with another device on the same network, 
+it sends an ARP request to find the MAC address associated with the target IP address.
+
+5. What is the Spanning Tree Protocol (STP)?
+
+STP is a network protocol that prevents loops in Ethernet networks. It works by creating a tree-like topology and blocking redundant links, ensuring a single active path 
+between any two network devices.
+
+6. Explain VLANs (Virtual Local Area Networks) and their benefits.
+
+VLANs are logical groupings of devices on a LAN, independent of their physical location. They enhance network security, improve performance by segmenting traffic, 
+and simplify network management.
+
+7. Describe Ethernet frame structure.
+
+An Ethernet frame includes:
+Preamble: For synchronization
+Destination and Source MAC addresses
+EtherType: Indicates the network layer protocol (e.g., IPv4, IPv6)
+Payload: Data to be transmitted
+CRC: For error detection
+
+8. What is CSMA/CD (Carrier Sense Multiple Access with Collision Detection)?
+
+CSMA/CD is a media access control method used in Ethernet networks. Devices "listen" before transmitting, and if a collision is detected, they back off and retransmit after a 
+random delay.
+
+9. What are the differences between 802.1Q trunking and 802.1D STP?
+
+802.1Q (VLAN trunking): Allows multiple VLANs to be carried over a single physical link, improving bandwidth utilization and simplifying network design.
+802.1D (STP): Prevents loops in Ethernet networks by blocking redundant links, ensuring a single active path between network devices
+
+10. Describe Link Aggregation (LACP).
+- Link Aggregation (LACP) combines multiple physical Ethernet links into a single logical link, increasing bandwidth and providing redundancy.
+
+11. What are some common L2 security issues and mitigation techniques?
+- Issues: MAC spoofing, ARP poisoning, VLAN hopping, CAM table overflow attacks
+- Mitigation: Port security, DHCP snooping, dynamic ARP inspection, storm control, access control lists (ACLs)
+
+Layer 2 is the data link layer in the networking model. It deals with how data is transmitted over physical networks like Ethernet. This layer uses MAC addresses (unique hardware identifiers) to move data between devices within the same network.
+
+Common Layer 2 Security Issues
+
+MAC Spoofing:  An attacker masquerades their device with a different MAC address, potentially gaining unauthorized access to a network or bypassing security measures.
+
+ARP Poisoning: The attacker sends fake ARP (Address Resolution Protocol) messages to associate their MAC address with the IP address of another device (e.g., the default gateway). This allows them to intercept traffic intended for the legitimate device.
+
+VLAN Hopping:  In a network segmented with VLANs (virtual LANs), an attacker tricks a switch into sending traffic to a different VLAN than intended, potentially accessing sensitive data.
+
+CAM Table Overflow Attacks: The CAM (Content Addressable Memory) table in a switch stores MAC address to port mappings. An attacker floods the network with fake MAC addresses, causing the CAM table to overflow and potentially disrupting legitimate traffic.
+
+Mitigation Techniques
+
+Port Security: Configure switches to limit the number of MAC addresses allowed on a specific port. This prevents attackers from spoofing multiple MAC addresses on a single port.
+
+DHCP Snooping: A security feature on switches that filters DHCP traffic to prevent rogue DHCP servers from assigning IP addresses and other network parameters.
+
+Dynamic ARP Inspection (DAI):  DAI validates ARP responses, preventing attackers from injecting false ARP information into the network.
+
+Storm Control: This feature protects against broadcast, multicast, and unknown unicast traffic storms that can overwhelm a switch.
+
+Access Control Lists (ACLs):  ACLs can filter traffic based on MAC addresses, IP addresses, or other criteria, restricting access to specific resources on the network.
+
+Example Scenario: Mitigating ARP Poisoning
+
+Imagine an attacker tries to poison the ARP cache of a victim's computer.
+
+Attack: The attacker sends fake ARP responses to the victim, claiming to be the default gateway.
+Mitigation:
+DHCP Snooping: The switch, configured with DHCP snooping, filters out the rogue ARP responses from the attacker.
+DAI: The switch further validates the ARP responses and discards the fake ones.
+Result: The victim's computer maintains the correct ARP entry for the default gateway, preventing traffic interception.
+Key Points to Remember
+
+Layer 2 security is crucial for protecting the integrity and confidentiality of data within a network.
+Implementing a multi-layered security approach is essential.
+Regularly update and patch your network infrastructure to address vulnerabilities.
+Monitor network traffic for suspicious activity.
+
+12. What is the difference between a broadcast domain and a collision domain?
+* Broadcast Domain: A logical network segment where all devices receive broadcast frames sent by any other device within that segment. It's typically limited by routers.
+* Collision Domain: A segment where simultaneous data transmissions from different devices can collide. Switches break up collision domains, while hubs create a single 
+collision domain.
+
+Broadcast Domain: A switch has a single broadcast domain. This means that a broadcast frame sent from one device connected to the switch will be forwarded to all other devices connected to the switch.   
+Collision Domain: Each port on a switch is a separate collision domain. Collisions (when two devices try to transmit data simultaneously) can only occur within the same port, not between different ports.   
+Router:
+
+Broadcast Domain: Each interface (port) on a router is a separate broadcast domain. A broadcast frame sent on one interface will not be forwarded to other interfaces.   
+Collision Domain: Similar to switches, each interface on a router is a separate collision domain
+
+13. Explain the concept of VTP (VLAN Trunking Protocol).
+* VTP simplifies VLAN management by automatically propagating VLAN information across a network of switches. This eliminates the need to configure VLANs manually on each switch.
+
+14. Describe the differences between STP, RSTP, and MSTP.
+* STP (Spanning Tree Protocol): The original protocol for loop prevention, known for its slower convergence time.
+* RSTP (Rapid Spanning Tree Protocol): An improvement over STP, offering faster convergence when topology changes occur.
+
+15. What is the role of LLDP (Link Layer Discovery Protocol)?
+* LLDP is a vendor-neutral protocol used by network devices to advertise their identity, capabilities, and neighbors. It helps with network topology discovery and 
+troubleshooting.   
+
+16. How does QoS (Quality of Service) work at Layer 2?
+* Layer 2 QoS mechanisms prioritize different types of traffic based on CoS (Class of Service) or 802.1p tags. This ensures that critical applications receive adequate 
+bandwidth and low latency.
+
+17. Explain the concept of Jumbo Frames.
+* Jumbo Frames are Ethernet frames with a payload size larger than the standard 1500 bytes. They can improve network throughput for certain applications, but may not be 
+supported by all devices.
+
+18. What are the challenges of running L2 protocols over long distances?
+* Traditional L2 protocols like STP and Ethernet were designed for LANs. Running them over long distances (e.g., WANs) can introduce issues with convergence time, 
+scalability, and broadcast storms.
+
+19. How does TRILL (Transparent Interconnection of Lots of Links) address the limitations of traditional L2 protocols?
+* TRILL is a protocol designed to overcome the scalability limitations of spanning tree protocols in large data center networks. It provides loop-free topology and 
+better convergence.
+
+20. Describe the concept of VXLAN (Virtual Extensible LAN) and its use cases.
+* VXLAN is an encapsulation protocol that extends Layer 2 networks over Layer 3 infrastructure. It's commonly used in data centers to create overlay networks and improve 
+network scalability.
+
+21. What are the differences between static and dynamic VLANs?
+
+Static VLANs: VLANs manually assigned to ports by the network administrator. They offer more control and security but require more administrative overhead.
+Dynamic VLANs: VLANs assigned automatically based on criteria like MAC address, user authentication, or protocol used. They simplify management but might be less secure.
+
+22. Explain how 802.1X authentication works.
+
+802.1X is a port-based network access control (PNAC) protocol. It allows for authentication of devices before they are granted access to the network. 
+The process involves a Supplicant (the device requesting access), an Authenticator (the switch or access point), and an Authentication Server (RADIUS or LDAP).
+
+23. What is the purpose of the STP BPDU (Bridge Protocol Data Unit)?
+
+BPDU is a special frame used by STP to exchange information about bridge IDs, path costs, and root bridge status. This information helps switches determine the best 
+paths and prevent loops.
+
+24. Describe the differences between port-based and MAC-based VLANs.
+
+Port-based VLANs: VLAN membership is determined by the physical port to which a device is connected.
+MAC-based VLANs: VLAN membership is determined by the MAC address of the device, regardless of which port it's connected to. This offers more flexibility, especially for mobile devices.
+
+25. Explain how to troubleshoot a VLAN mismatch.
+
+VLAN mismatch occurs when devices are on different VLANs but are expected to communicate. Troubleshooting steps include:
+Verify VLAN configuration on switches and connected devices.
+Check for correct VLAN tagging on trunk links.
+Ensure that VLANs are allowed on trunk links.
+Use a packet sniffer to analyze traffic and identify mismatches.
+
+26. What is the difference between a root bridge and a designated bridge in STP?
+
+Root Bridge: The reference point for the spanning tree. It has the lowest bridge ID and all paths in the network are calculated relative to it.
+Designated Bridge: For each network segment, the bridge with the lowest path cost to the root bridge is elected as the designated bridge. It's responsible for forwarding traffic to the root.
+
+27. How does EtherChannel (or port channeling) work?
+
+EtherChannel bundles multiple physical Ethernet links into a single logical link. This increases bandwidth, provides redundancy, and load balances traffic across the links.
+
+28. Explain the concept of QinQ (or double tagging).
+
+QinQ allows for the encapsulation of one 802.1Q VLAN tag within another. This is useful for service providers who need to maintain customer VLANs while transporting them 
+across their network.
+
+29. What are the differences between unicast, multicast, and broadcast traffic at Layer 2?
+
+Unicast: Data sent from one source to a single destination.
+Multicast: Data sent from one source to a group of destinations.
+Broadcast: Data sent from one source to all devices on a network segment.
+
+30. Describe the concept of STP port states (blocking, listening, learning, forwarding, disabled).
+
+These states represent the different stages a switch port goes through during the STP convergence process.
+Blocking: The port doesn't forward traffic but listens to BPDUs.
+Listening: The port still doesn't forward traffic but participates in BPDU exchange.
+Learning: The port learns MAC addresses but doesn't forward traffic.
+Forwarding: The port actively forwards traffic.
+Disabled: The port is administratively shut down.
+
+

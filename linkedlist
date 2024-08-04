@@ -349,21 +349,6 @@ struct Node* reverseList(struct Node *head) {
     return head;
 }
 
-18. Given only a pointer to a node to be deleted in a singly linked list, how do you delete it? 
-
-void deleteNode(Node* node) {
-    Node* temp = node->next;
-    if (temp == NULL) {
-        // Edge case: The node to be deleted is the last node. 
-        // We cannot delete the last node using this method.
-        printf("The node to be deleted is the last node, which cannot be deleted using this method.\n");
-        return;
-    }
-    node->data = temp->data; // Copy data from the next node to the current node
-    node->next = temp->next; // Link current node to the next of next node
-    free(temp); // Delete the next node
-}
-
 19. How do you sort a linked list
 
 bubblesort
@@ -418,13 +403,13 @@ bool compareLinkedLists(struct Node* head1, struct Node* head2) {
 
 copy_linked_lists(struct node *q, struct node **s)
 {
- if(q!=NULL)
- {
- *s=malloc(sizeof(struct node));
- (*s)->data=q->data;
- (*s)->link=NULL;
- copy_linked_list(q->link, &((*s)->link));
- }
+    if(q != NULL)
+    {
+	 *s=malloc(sizeof(struct node));
+	 (*s)->data=q->data;
+	 (*s)->link=NULL;
+	 copy_linked_list(q->link, &((*s)->link));
+    }    
 } 
 
 22. Free the nodes of a linked list
@@ -500,12 +485,4 @@ void deleteNode(ListNode* nodeToDelete) {
     free(temp); 
 }
 
-26. Free the nodes of a linked list
 
-struct list *listptr, *nextptr;
-for(listptr = head; listptr != NULL; listptr = nextptr)
-{
-	nextptr = listptr->next;
-	free(listptr);
-}
-head = NULL;

@@ -231,72 +231,44 @@ int binarySearch(int arr[],int size, int item)
  return(-1);
 } 
 
-14. Write C code to determine if two trees are identical
 
-int identical(struct node* a, struct node* b)
-{
-if (a==NULL && b==NULL){return(true);}
-else if (a!=NULL && b!=NULL)
-{
-	return(a->data == b->data &&
-	identical(a->left, b->left) &&
-	identical(a->right, b->right));
-}
-else return(false);
-}
+14.Write a C program to determine the number of elements (or size) in a tree.
 
-15.Write a C program to determine the number of elements (or size) in a tree.
-Try this C program
 int tree_size(struct node* node)
 {
-if (node==NULL)
-{
-return(0);
-}
-else
-{
-return(tree_size(node->left) + tree_size(node->right) + 1);
-}
+	if (node==NULL)
+	{
+	return(0);
+	}
+	else
+	{
+	return(tree_size(node->left) + tree_size(node->right) + 1);
+	}
 }
 
-16. Write C code to determine if two trees are identical
-Here is a C program using recursion
+15. Write C code to determine if two trees are identical
+
 int identical(struct node* a, struct node* b)
 {
-if (a==NULL && b==NULL){return(true);}
-else if (a!=NULL && b!=NULL)
-{
-return(a->data == b->data &&
-identical(a->left, b->left) &&
-identical(a->right, b->right));
-}
-else return(false);
+	if (a==NULL && b==NULL){return(true);}
+	else if (a!=NULL && b!=NULL)
+	{
+	return(a->data == b->data && identical(a->left, b->left) && identical(a->right, b->right));
+	}
+	else return(false);
 }
 
-17. Write a C program to create a mirror copy of a tree (left nodes become right and right nodes
-become left)!
-This C code will create a new mirror copy tree.
-mynode *copy(mynode *root)
-{
-mynode *temp;
-if(root==NULL)return(NULL);
-temp = (mynode *) malloc(sizeof(mynode));
-temp->value = root->value;
-temp->left = copy(root->right);
-temp->right = copy(root->left);
-return(temp);
-}
 
-18. Write a C program to create a copy of a tree
-Here is a C program which does that...
+16. Write a C program to create a copy of a tree
+
 mynode *copy(mynode *root)
 {
-mynode *temp;
-if(root==NULL)return(NULL);
-temp = (mynode *) malloc(sizeof(mynode));
-temp->value = root->value;
-temp->left = copy(root->left);
-temp->right = copy(root->right);
-return(temp);
+	mynode *temp;
+	if(root==NULL)return(NULL);
+	temp = (mynode *) malloc(sizeof(mynode));
+	temp->value = root->value;
+	temp->left = copy(root->left);
+	temp->right = copy(root->right);
+	return(temp);
 }
 

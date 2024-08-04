@@ -166,14 +166,14 @@ void inorder(TreeNode* root, vector<int>& modes, int& maxCount, int& currentCoun
 }
 
 11. Write a C program to find the mininum value in a binary search tree.
-Here is some sample C code. The idea is to keep on moving till you hit the left most node in the tree
+
 int minValue(struct node* node)
 {
-struct node* current = node;
-while (current->left != NULL)
-{
-current = current->left;
-}
-return(current->data);
+    struct node* current = node;
+    while (current->left != NULL)
+    {
+        current = current->left;
+    }
+    return(current->data);
 }
 

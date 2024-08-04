@@ -1,0 +1,71 @@
+What is the TCP/IP model, and how does it differ from the OSI model?
+Answer: TCP/IP (Transmission Control Protocol/Internet Protocol) is a suite of networking protocols that governs communication over the internet. 
+It has four layers: Application, Transport, Internet, and Network Interface. The OSI (Open Systems Interconnection) model is a theoretical framework with seven layers.
+
+Explain the difference between TCP and UDP protocols.
+Answer: TCP (Transmission Control Protocol) is connection-oriented, providing reliable, ordered delivery of data with error checking and flow control. 
+UDP (User Datagram Protocol) is connectionless, offering faster but less reliable communication.
+
+What are the three-way handshake and four-way handshake in TCP?
+Answer: The three-way handshake (SYN, SYN-ACK, ACK) establishes a TCP connection. The four-way handshake (FIN, ACK, FIN, ACK) gracefully terminates it.
+
+Describe how TCP ensures reliability in data transmission.
+Answer: TCP uses mechanisms like sequence numbers, acknowledgments (ACKs), checksums, retransmission timeouts, and flow control (sliding window) to ensure data is 
+delivered accurately and in order, even in the face of network issues.
+
+What is IP addressing (IPv4 and IPv6), and how does it work?
+Answer: IP addressing is a unique numerical identifier assigned to each device on a network. IPv4 uses 32-bit addresses (e.g., 192.168.1.1), while IPv6 uses 128-bit 
+addresses (e.g., 2001:0db8:85a3:0000:0000:8a2e:0370:7334). These addresses enable routing and delivery of data packets.
+
+Explain the concept of subnetting and its benefits.
+Answer: Subnetting is dividing a network into smaller logical networks. It improves network efficiency, reduces broadcast traffic, and enhances security by creating 
+isolation between subnets.
+
+What are TCP congestion control mechanisms, and how do they work?
+Answer: TCP uses algorithms like slow-start, congestion avoidance, fast retransmit, and fast recovery to manage network congestion. These mechanisms dynamically adjust 
+the amount of data sent to prevent overwhelming the network.
+
+Describe the role of NAT (Network Address Translation) in networking.
+Answer: NAT allows multiple devices on a private network (e.g., home or office) to share a single public IP address. It conserves public IP addresses and provides a 
+layer of security by hiding internal IP addresses from the public internet.
+
+How does TCP handle out-of-order packet delivery and packet loss?
+Answer: TCP uses sequence numbers to reassemble out-of-order packets correctly. When packet loss occurs, the receiver sends a duplicate ACK for the missing packet, 
+triggering the sender to retransmit it.
+
+1. TCP Flow Control: The Sliding Window
+
+Goal: Prevent the sender from overwhelming the receiver with data.
+Mechanism: The receiver advertises its available buffer space (receive window) to the sender. The sender maintains a sending window, which is the amount of data it can 
+transmit without waiting for acknowledgment. This window "slides" forward as the sender receives acknowledgments.
+
+Key Points:
+The receive window dynamically adjusts based on the receiver's buffer availability.
+If the receive window shrinks to zero, the sender must stop transmitting until it receives an acknowledgment with a larger window size.
+Flow control is a per-connection mechanism, ensuring each TCP connection is managed independently.
+
+2. TCP Congestion Control: Adapting to Network Conditions
+
+Goal: Avoid network overload by dynamically adjusting the amount of data sent into the network.
+Mechanism: TCP uses a congestion window, which is another factor (along with the receive window) limiting the amount of unacknowledged data the sender can have in flight. 
+The congestion window grows slowly at first (slow-start) and then more conservatively (congestion avoidance) to probe for available bandwidth.
+Congestion Signals: Packet loss or excessive delays are interpreted as signs of congestion.
+
+Key Congestion Control Algorithms:
+Slow Start: The congestion window starts small and doubles with each round-trip time (RTT) until it reaches a threshold.
+Congestion Avoidance: The window then increases linearly (additive increase), growing by one segment per RTT.
+Fast Retransmit: If the sender receives three duplicate acknowledgments (indicating packet loss), it retransmits the missing segment without waiting for the timeout.
+Fast Recovery: When fast retransmit is triggered, the congestion window is halved, and the congestion avoidance phase begins again
+
+Imagine a water pipe (the network) with a valve at each end (sender and receiver).
+
+Flow Control: The receiver adjusts its valve (receive window) to control how much water the sender can pour in.
+Congestion Control: The sender monitors the pipe's pressure (congestion signals) and adjusts its valve (congestion window) to avoid overflowing the pipe.
+Why It's Important
+
+Understanding flow control and congestion control is crucial for:
+
+Network Engineers: Designing and troubleshooting networks, ensuring efficient and reliable data transfer.
+Software Developers: Building network-aware applications that can adapt to changing network conditions.
+Anyone Interested in Networking: Gaining a deeper understanding of how the internet works.
+

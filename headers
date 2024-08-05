@@ -20,6 +20,60 @@ _____________________________________________________________________________
 |___________________________________________________________________________|
 
 
+1. Version (4 bits):
+
+Indicates the version of the Internet Protocol (IP). For IPv4, this value is always 4.
+2. Internet Header Length (IHL) (4 bits):
+
+Specifies the length of the IP header in 32-bit words (4-byte units). The minimum value is 5 (meaning the header is 20 bytes long), and the maximum is 15 (60 bytes). This allows for optional header fields.
+3. Type of Service (TOS) (8 bits):
+
+Originally designed to prioritize traffic. Now mostly used for Differentiated Services Code Point (DSCP) markings:
+DSCP (6 bits): Prioritizes traffic for quality of service (QoS).
+ECN (2 bits): Used for Explicit Congestion Notification.
+4. Total Length (16 bits):
+
+Specifies the total length of the IP packet (header + data) in bytes. The maximum size of an IPv4 packet is 65,535 bytes.
+5. Identification (16 bits):
+
+A unique number assigned to each IP packet by the sender. Used to reassemble fragmented packets at the destination.
+6. Flags (3 bits):
+
+Control fragmentation:
+Reserved bit (1 bit): Must be zero.
+Don't Fragment (DF) (1 bit): If set, routers cannot fragment the packet.
+More Fragments (MF) (1 bit): If set, indicates more fragments of the original packet follow.
+7. Fragment Offset (13 bits):
+
+Specifies where this fragment belongs in the original packet. Measured in 8-byte units.
+8. Time to Live (TTL) (8 bits):
+
+Limits the packet's lifetime to prevent it from circulating indefinitely. Each router decrements the TTL by 1. When TTL reaches 0, the packet is discarded.
+9. Protocol (8 bits):
+
+Indicates the protocol of the data carried in the packet. Common values include:
+6 for TCP
+17 for UDP
+1 for ICMP
+10. Header Checksum (16 bits):
+
+Used for error detection in the header. The sender calculates the checksum, and the receiver verifies it.
+11. Source IP Address (32 bits):
+
+The IPv4 address of the device that sent the packet.
+12. Destination IP Address (32 bits):
+
+The IPv4 address of the device where the packet is intended to be delivered.
+13. Options (if any) (variable length):
+
+Optional fields used for things like security, routing, and timestamps.
+14. Data (payload) (variable length):
+
+The actual content (data) being transmitted, such as a TCP segment or a UDP datagram.
+
+
+
+
            Ethernet packet
 
 
@@ -32,11 +86,55 @@ _____________________________________________________________________________
 |          FCS (Frame Check Sequence) (32 bits)           |
 |_______________________________________________________|
 
+1. Destination MAC Address (48 bits):
+
+This is the Media Access Control (MAC) address of the network interface card (NIC) on the device that the frame is intended for. It's a unique hardware identifier.
+MAC addresses are written in hexadecimal notation (e.g., AA:BB:CC:DD:EE:FF).
+2. Source MAC Address (48 bits):
+
+The MAC address of the NIC on the device that sent the frame.
+3. EtherType/Length (16 bits):
+
+This field can serve two purposes:
+EtherType: If the value is 1536 or greater, it indicates the type of protocol encapsulated within the frame's data (e.g., 0x0800 for IPv4, 0x0806 for ARP).
+Length: If the value is 1535 or less, it indicates the length of the data field in bytes.
+4. 802.1Q Tag (optional) (32 bits):
+
+This is a VLAN (Virtual LAN) tag, used to separate and isolate traffic within a network. It includes:
+TPID (Tag Protocol Identifier) (16 bits): Always set to 0x8100 to indicate a VLAN tag.
+Priority (3 bits): Specifies the priority of the frame for QoS (Quality of Service) purposes.
+CFI (Canonical Format Indicator) (1 bit): Typically set to 0.
+VLAN Identifier (VID) (12 bits): The VLAN ID to which the frame belongs.
+5. Data (payload) (46-1500 bytes):
+
+This is the actual content being transmitted. It can contain data for various protocols like IP (Internet Protocol), ARP (Address Resolution Protocol), or others. The minimum size is 46 bytes, and the maximum is 1500 bytes (although jumbo frames can be larger).
+6. Frame Check Sequence (FCS) (32 bits):
+
+A cyclic redundancy check (CRC) used for error detection. The sender calculates the FCS and includes it in the frame. The receiver recalculates the FCS and compares it to the received value. If they match, the frame is assumed to be error-free.
+
 vlan tag
 
 | TPID (16 bits) | PCP (3 bits) | DEI (1 bit) | VID (12 bits) |
 |________________|______________|____________|______________|
 
+TPID (Tag Protocol Identifier) (16 bits):
+
+This field always contains the value 0x8100 (in hexadecimal).
+Its purpose is to indicate the presence of an 802.1Q tag in the Ethernet frame.
+PCP (Priority Code Point) (3 bits):
+
+Specifies the frame's priority level, allowing for Quality of Service (QoS) differentiation.
+There are 8 priority levels (0-7), with 7 being the highest.
+This helps network devices prioritize traffic based on application requirements (e.g., voice traffic might have higher priority than file transfers).
+DEI (Drop Eligible Indicator) (1 bit):
+
+Indicates whether the frame is eligible to be dropped during congestion.
+When set to 1, it means the frame can be discarded if necessary to manage network traffic.
+VID (VLAN Identifier) (12 bits):
+
+This is the most critical field in the 802.1Q tag.
+It uniquely identifies the VLAN to which the frame belongs.
+There are 4096 possible VLAN IDs (0-4095), allowing for a large number of virtual networks on a single physical network.
 
 mpls packet header
 
@@ -49,5 +147,29 @@ mpls packet header
 |___________________________________________________________________________|
 
 
+MPLS Label Stack Entry (20 bits):
 
+Label (20 bits):
+This is the core of the MPLS header. It's a short, fixed-length identifier that represents a forwarding equivalence class (FEC).
+An FEC is a group of packets that are treated similarly for routing purposes.
+When a packet enters an MPLS network, a label is assigned to it. Routers then use this label for fast forwarding decisions instead of analyzing the entire IP header.
+Traffic Class (TC) (3 bits):
+
+Similar to the Differentiated Services Code Point (DSCP) in IP, this field is used to classify traffic and provide Quality of Service (QoS).
+It can indicate priorities for different types of traffic, such as voice, video, or data.
+Time to Live (TTL) (8 bits):
+
+Just like in IP, the TTL field prevents packets from looping endlessly in a network.
+It's decremented by 1 at each MPLS router. When it reaches 0, the packet is discarded.
+Bottom of Stack (S) (1 bit):
+
+This flag indicates whether the current label is the last one in the stack.
+If S is set to 1, it means this is the bottom label and the packet will be forwarded based on its IP header after this label is processed.
+Experimental (Exp) (3 bits):
+
+Reserved for experimental purposes and typically set to 0.
+Data (payload) (variable length):
+
+This is the actual content of the packet being carried through the MPLS network.
+It can be an IP packet, an Ethernet frame, or another type of data.
    

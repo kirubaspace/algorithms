@@ -1,0 +1,58 @@
+Q: What is QoS and why is it important in networks?
+
+A: QoS is a set of technologies that manage network traffic to ensure specific performance levels for critical applications or data flows. It's essential for prioritizing voice/video, 
+guaranteeing bandwidth for business apps, and generally providing a better user experience.
+
+Q: How is QoS handled differently in Layer 2 (Data Link) and Layer 3 (Network)?
+
+A:
+
+Layer 2: QoS is implemented using techniques like VLANs (virtual LANs) for traffic separation, and QoS tagging mechanisms like CoS (Class of Service) within Ethernet frames to mark priority.
+Layer 3: QoS mechanisms include IP Precedence/DSCP (Differentiated Services Code Point) within IP headers for packet classification and queuing algorithms like Weighted Fair Queuing (WFQ) or 
+Class-Based Queuing (CBQ) in routers to prioritize traffic.
+
+Q: Explain traffic classification and marking.
+
+A:
+
+Classification: This involves identifying and categorizing network traffic based on various criteria like source/destination IP, port numbers, protocols, or application types.
+Marking: This is the process of adding QoS tags (e.g., CoS, DSCP) to packets based on their classification, so they can be treated differently by network devices.
+Q: What are the different QoS queuing algorithms and how do they work?
+
+A:
+
+FIFO (First-In, First-Out): The simplest method, packets are processed in the order they arrive. Not ideal for QoS as all traffic is treated equally.
+Priority Queuing (PQ): Traffic is divided into priority levels, with higher-priority queues served first. This can lead to starvation of lower-priority traffic.
+Weighted Fair Queuing (WFQ): Allocates a weighted share of bandwidth to different traffic classes, ensuring fairness and preventing starvation.
+Class-Based Queuing (CBQ): A hierarchical queuing system, where classes are defined and assigned to different queues. This offers more flexibility and granularity in traffic management.
+
+
+Q: How would you prioritize VoIP traffic in a network?
+
+A:
+
+Classify: Identify VoIP traffic (e.g., using RTP/UDP port numbers).
+Mark: Mark VoIP packets with high priority (e.g., DSCP EF).
+Queue: Configure routers to use priority queuing or low latency queuing (LLQ) for VoIP traffic.
+Bandwidth: Consider reserving a portion of bandwidth specifically for VoIP.
+Q: What are some challenges in implementing QoS?
+
+A:
+
+Complexity: QoS can be complex to configure, especially in large networks.
+Overhead: QoS mechanisms can introduce some overhead in terms of processing and bandwidth.
+End-to-End QoS: Ensuring QoS across multiple service providers or domains can be difficult.
+
+IP Packet (Layer 3):
+
+DSCP (Differentiated Services Code Point): This is a 6-bit field within the IP header's Traffic Class byte. It's the primary method for marking QoS in IP packets. The DSCP value determines how the packet should be treated (e.g., prioritized, best effort).   
+(Deprecated) IP Precedence: The original QoS field in IP, this 3-bit field is now part of the DSCP. While not used directly anymore, understanding its historical role can be helpful in interview
+
+Ethernet Frame (Layer 2):
+
+CoS (Class of Service): This is a 3-bit field within the 802.1Q VLAN tag (if present).
+
+ It's used to mark QoS for Ethernet traffic on VLAN-enabled network
+
+Mapping: Often, CoS values are mapped to DSCP values when packets move between Layer 2 and Layer 3. This ensures QoS consistency across the network.   
+Other Fields: While DSCP and CoS are the primary fields, other factors like source/destination IP addresses, port numbers, and protocol type can also be used in QoS classification and decision-making.

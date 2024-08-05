@@ -1,6 +1,7 @@
 What is multithreading? How does it differ from multiprocessing?
 
-Multithreading: Involves multiple threads of execution within a single process, sharing the same memory space. This allows for concurrency within the process, potentially improving responsiveness and performance on multi-core systems.
+Multithreading: Involves multiple threads of execution within a single process, sharing the same memory space. This allows for concurrency within the process, potentially improving 
+responsiveness and performance on multi-core systems.
 Multiprocessing: Involves multiple processes running independently, each with its own memory space. Communication between processes is typically more complex than between threads.
 Why use multithreading in C? Advantages and challenges?
 
@@ -21,6 +22,17 @@ Running: A thread is currently executing on the CPU.
 Blocked/Waiting: A thread is waiting for an event (e.g., I/O operation, lock acquisition).
 Terminated: A thread has finished execution.
 C Specifics (pthreads library)
+
+Condidtions to avoid deadlock
+Mutual Exclusion: Resources can only be held by one process at a time. No other process can access the resource until the current process releases it.
+
+Hold and Wait: A process holds at least one resource while waiting to acquire additional resources held by other processes.
+
+No Preemption: Resources cannot be forcibly taken away from a process holding them. They must be released voluntarily by the process itself.   
+
+Circular Wait: There exists a circular chain of two or more processes, where each process is waiting for a resource held by the next process in
+
+ the chain
 
 What are the key functions in the pthreads library for thread management?
 

@@ -1,8 +1,9 @@
 What is WiMAX?
 
-WiMAX stands for Worldwide Interoperability for Microwave Access. It's a wireless broadband technology based on the IEEE 802.16 standard, designed to provide high-speed internet access over long distances.
-What are the two main types of WiMAX?
+WiMAX stands for Worldwide Interoperability for Microwave Access. It's a wireless broadband technology based on the IEEE 802.16 standard, designed to provide 
+high-speed internet access over long distances.
 
+What are the two main types of WiMAX?
 Fixed WiMAX: Used for stationary applications like home internet, offering point-to-multipoint connectivity.
 Mobile WiMAX: Designed for mobile devices, providing wider coverage and roaming capabilities.
 What are the key advantages of WiMAX over other wireless technologies?
@@ -28,10 +29,12 @@ Explain the different modulation schemes used in WiMAX.
 WiMAX uses various modulation schemes like BPSK, QPSK, 16-QAM, and 64-QAM to adapt to different channel conditions and provide higher data rates when possible.
 What is OFDM, and how is it used in WiMAX?
 
-OFDM (Orthogonal Frequency Division Multiplexing) is a technique used in WiMAX to divide the available spectrum into multiple subcarriers. This helps to mitigate the effects of multipath fading and interference.
+OFDM (Orthogonal Frequency Division Multiplexing) is a technique used in WiMAX to divide the available spectrum into multiple subcarriers. This helps to mitigate the 
+effects of multipath fading and interference.
 What is MIMO, and how does it improve WiMAX performance?
 
-MIMO (Multiple-Input Multiple-Output) uses multiple antennas at both the transmitter and receiver to improve signal quality, increase data rates, and extend the range of WiMAX.
+MIMO (Multiple-Input Multiple-Output) uses multiple antennas at both the transmitter and receiver to improve signal quality, increase data rates, and extend the 
+range of WiMAX.
 WiMAX Protocols and Layers
 
 Explain the role of the MAC layer in WiMAX.
@@ -71,5 +74,4 @@ What are some of the challenges faced by WiMAX technology?
 Competition from LTE and 5G technologies, limited spectrum availability in some regions, and the need for significant infrastructure investment for widespread deployment.
 How do you think WiMAX can be used in the future, especially with the rise of 5G?
 WiMAX could potentially complement 5G networks by providing backhaul connectivity for 5G base stations or serving as a cost-effective option for fixed wireless broadband in areas where fiber deployment is not feasible.
-(If applicable) Describe any experience you have with Intel's WiMAX products or solutions.
-This is where you would highlight any relevant work experience or projects involving Intel's WiMAX chips, platforms, or software tools.
+

@@ -18,49 +18,74 @@ BGP: The backbone of the Internet, highly scalable.
 
 
 
-Easy
 
-Question: What is the difference between IPv4 and IPv6?Answer: IPv4 uses 32-bit addresses (e.g., 192.168.1.1) and is widely used but has a limited address space. IPv6 uses 128-bit addresses (e.g., 2001:db8::1), offering a vastly larger address space and improved features like auto-configuration and built-in security.
+Question: What is the difference between IPv4 and IPv6?
+Answer: IPv4 uses 32-bit addresses (e.g., 192.168.1.1) and is widely used but has a limited address space. 
+IPv6 uses 128-bit addresses (e.g., 2001:db8::1), offering a vastly larger address space and improved features like auto-configuration and built-in security.
 
-Question: What is the purpose of ICMP?Answer: The Internet Control Message Protocol (ICMP) is used for network diagnostics, providing tools like ping and traceroute to test connectivity and measure round-trip time. It also delivers error messages (e.g., "Destination Unreachable") when problems occur.
+Question: What is the purpose of ICMP?
+Answer: The Internet Control Message Protocol (ICMP) is used for network diagnostics, providing tools like ping and traceroute to test connectivity and measure 
+round-trip time. It also delivers error messages (e.g., "Destination Unreachable") when problems occur.
 
-Question: Name two interior gateway protocols and explain their key features.Answer:
+Question: Name two interior gateway protocols and explain their key features.
+Answer:
 
-OSPF (Open Shortest Path First): A robust, scalable protocol that uses link-state information to build a complete network topology map. It converges quickly and supports load balancing.
+OSPF (Open Shortest Path First): A robust, scalable protocol that uses link-state information to build a complete network topology map.
+It converges quickly and supports load balancing.
 EIGRP (Enhanced Interior Gateway Routing Protocol): A Cisco proprietary protocol that balances speed and complexity. It uses a hybrid approach, combining distance vector and link-state features.
-Question: What is the role of routing protocols in a network?Answer: Routing protocols are responsible for discovering the best paths for packets to travel between networks. They exchange information about available routes, calculate optimal paths based on metrics like bandwidth and delay, and update routing tables to reflect changes in the network topology.
+Question: What is the role of routing protocols in a network?
+Answer: Routing protocols are responsible for discovering the best paths for packets to travel between networks. 
+They exchange information about available routes, calculate optimal paths based on metrics like bandwidth and delay, and update routing tables to reflect changes 
+in the network topology.
 
-Medium
 
-Question: Explain the difference between static and dynamic routing.Answer: Static routing involves manually configuring routes on a router, while dynamic routing uses protocols (e.g., OSPF, EIGRP) to automatically discover and maintain routes. Static routing is simple but less flexible, while dynamic routing adapts to changes but can be more complex to manage.
 
-Question: Describe the concept of an autonomous system (AS).Answer: An autonomous system (AS) is a collection of networks under a single administrative domain that share a common routing policy. ASes are identified by unique numbers assigned by the Internet Assigned Numbers Authority (IANA).
+Question: Explain the difference between static and dynamic routing.
+Answer: Static routing involves manually configuring routes on a router, 
+while dynamic routing uses protocols (e.g., OSPF, EIGRP) to automatically discover and maintain routes. Static routing is simple but less flexible, 
+while dynamic routing adapts to changes but can be more complex to manage.
+
+Question: Describe the concept of an autonomous system (AS).
+Answer: An autonomous system (AS) is a collection of networks under a single administrative domain that share a common routing policy. 
+ASes are identified by unique numbers assigned by the Internet Assigned Numbers Authority (IANA).
 
 Question: What is the difference between distance vector and link-state routing protocols?Answer:
 
-Distance Vector: These protocols share information about the distance (metric) to reach a destination but not the complete network topology. They can be prone to issues like slow convergence and routing loops. (e.g., RIP)
-Link State: These protocols share detailed information about the network topology, allowing them to calculate the shortest paths efficiently. They converge quickly and offer better scalability. (e.g., OSPF)
-Question: How does BGP ensure loop-free routing between autonomous systems?Answer: BGP uses a combination of attributes like AS_PATH and NEXT_HOP to prevent routing loops. The AS_PATH attribute records the sequence of ASes a route has passed through, ensuring that a packet never returns to an AS it has already visited.
+Distance Vector: These protocols share information about the distance (metric) to reach a destination but not the complete network topology. 
+They can be prone to issues like slow convergence and routing loops. (e.g., RIP)
+Link State: These protocols share detailed information about the network topology, allowing them to calculate the shortest paths efficiently. 
+They converge quickly and offer better scalability. (e.g., OSPF)
+Question: How does BGP ensure loop-free routing between autonomous systems?Answer: BGP uses a combination of attributes like AS_PATH and NEXT_HOP 
+to prevent routing loops. The AS_PATH attribute records the sequence of ASes a route has passed through, ensuring that a packet never returns to an AS it has already visited.
 
-Hard
 
-Question: Explain the concept of IP fragmentation and reassembly.Answer: IP fragmentation occurs when a packet is too large to be transmitted over a network link with a smaller maximum transmission unit (MTU). The packet is divided into smaller fragments, each with its own header, and reassembled at the destination.
+Question: Explain the concept of IP fragmentation and reassembly.
+Answer: IP fragmentation occurs when a packet is too large to be transmitted over a network link with a smaller maximum transmission unit (MTU). 
+The packet is divided into smaller fragments, each with its own header, and reassembled at the destination.
 
 Question: Describe the process of building a routing table.Answer: A routing table is built based on information from various sources:
 
 Directly Connected Routes: Learned automatically from interfaces.
 Static Routes: Manually configured.
-Dynamic Routes: Learned from routing protocols. The router evaluates routes based on administrative distance (trustworthiness) and metric (cost) to determine the best path for each destination.
-Question: How does a router handle an IP packet with a Time to Live (TTL) value of zero?Answer: When a router receives a packet with a TTL of zero, it discards the packet and sends an ICMP Time Exceeded message back to the source. This prevents packets from endlessly looping in a network.
+Dynamic Routes: Learned from routing protocols. The router evaluates routes based on administrative distance (trustworthiness) and metric (cost) to 
+determine the best path for each destination.
 
-Question: Explain the role of Multiprotocol Label Switching (MPLS) in routing.Answer: MPLS is a technology that improves routing performance and scalability by adding labels to packets. These labels are used to forward packets through a network based on pre-established paths, rather than relying on complex IP lookups at each hop.
+Question: How does a router handle an IP packet with a Time to Live (TTL) value of zero?Answer:
+When a router receives a packet with a TTL of zero, it discards the packet and sends an ICMP Time Exceeded message back to the source. 
+This prevents packets from endlessly looping in a network.
+
+Question: Explain the role of Multiprotocol Label Switching (MPLS) in routing.Answer: MPLS is a technology that improves routing performance and scalability by 
+adding labels to packets. These labels are used to forward packets through a network based on pre-established paths, rather than relying on complex IP lookups 
+at each hop.
 
 
-Question: What is the difference between a unicast, broadcast, and multicast address?Answer: Unicast addresses are for individual devices, broadcast addresses reach all devices on a network, and multicast addresses reach a specific group of devices.
+Question: What is the difference between a unicast, broadcast, and multicast address?Answer: Unicast addresses are for individual devices, broadcast addresses 
+reach all devices on a network, and multicast addresses reach a specific group of devices.
 
 Question: What is the purpose of a subnet mask?Answer: A subnet mask defines which part of an IP address identifies the network and which part identifies the host.
 
-Question: What is the default gateway of a network?Answer: The default gateway is the router that a device uses to send packets to destinations outside of its local network.
+Question: What is the default gateway of a network?Answer: The default gateway is the router that a device uses to send packets to destinations outside of its 
+local network.
 
 Question: What does ARP stand for, and what is its purpose?Answer: ARP (Address Resolution Protocol) translates IP addresses to MAC addresses.
 
@@ -68,13 +93,16 @@ Question: What is a route metric?Answer: A route metric is a value assigned to a
 
 Medium
 
-Question: Explain the difference between Classful and Classless IP addressing.Answer: Classful addressing uses fixed-length network IDs, while classless addressing (CIDR) allows for variable-length network IDs.
+Question: Explain the difference between Classful and Classless IP addressing.Answer: Classful addressing uses fixed-length network IDs, while 
+classless addressing (CIDR) allows for variable-length network IDs.
 
 Question: What is the difference between IGP and EGP?Answer: IGPs are used within an AS, while EGPs are used between ASes.
 
-Question: How does OSPF establish neighbor relationships?Answer: OSPF uses a Hello protocol to discover neighbors and exchange information about the network topology.
+Question: How does OSPF establish neighbor relationships?
+Answer: OSPF uses a Hello protocol to discover neighbors and exchange information about the network topology.
 
-Question: What is the purpose of the BGP AS_PATH attribute?Answer: The AS_PATH attribute prevents routing loops by recording the sequence of ASes a route has passed through.
+Question: What is the purpose of the BGP AS_PATH attribute?
+Answer: The AS_PATH attribute prevents routing loops by recording the sequence of ASes a route has passed through.
 
 Question: What are the different types of BGP peering relationships?Answer: The main types are internal peering (iBGP) between routers within an AS and external peering (eBGP) between routers in different ASes.
 

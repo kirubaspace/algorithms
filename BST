@@ -1,30 +1,44 @@
 1. Validate Binary Search Tree: Check if a binary tree is a valid binary search tree (BST).
 
-bool isValidBST(TreeNode* root) {
-    return validate(root, LONG_MIN, LONG_MAX);
-}
+bool isBSTUtil(struct Node *root, int minVal, int maxVal) {
+    // Base case
+    if (root == NULL) {
+        return true;
+    }
 
-bool validate(TreeNode* node, long minVal, long maxVal) {
-    if (!node) return true;
-    if (node->val <= minVal || node->val >= maxVal) return false;
-    return validate(node->left, minVal, node->val) && validate(node->right, node->val, maxVal);
+    // Check if the root's data violates BST property
+    if (root->data <= minVal || root->data >= maxVal) {
+        return false;
+    }
+
+    // Recursively check the left and right subtrees with updated ranges
+    return isBSTUtil(root->left, minVal, root->data) &&
+           isBSTUtil(root->right, root->data, maxVal);
 }
 
 
 2. Kth Smallest Element in a BST: Find the kth smallest element in a BST.
 
-int kthSmallest(TreeNode* root, int k) {
-    int count = 0;
-    int result = INT_MIN;
-    inorder(root, count, k, result);
-    return result;
-}
+int kthSmallestUtil(struct Node *root, int *k) {
+    // Base case
+    if (root == NULL) {
+        return -1; // Not found
+    }
 
-void inorder(TreeNode* node, int& count, int k, int& result) {
-    if (!node || count >= k) return;
-    inorder(node->left, count, k, result);
-    if (++count == k) result = node->val;
-    inorder(node->right, count, k, result);
+    // Search in the left subtree
+    int left = kthSmallestUtil(root->left, k);
+    if (left != -1) {
+        return left; // Found in left subtree
+    }
+
+    // Check if the root is the kth smallest
+    (*k)--;
+    if (*k == 0) {
+        return root->data;
+    }
+
+    // Search in the right subtree
+    return kthSmallestUtil(root->right, k);
 }
 
 3. Lowest Common Ancestor of a BST: Find the lowest common ancestor (LCA) in a BST.

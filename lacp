@@ -1,0 +1,109 @@
+Link Aggregation Control Protocol (LACP) and Link Aggregation Groups (LAGs)
+
+Core Concept:
+LACP and LAGs are networking technologies that combine multiple physical links (ethernet cables, for example) into a single logical link. 
+This provides increased bandwidth, redundancy, and improved network resiliency.
+
+Link Aggregation (LAG):
+
+Purpose: LAGs create a "team" or "bundle" of interfaces. This team appears as a single connection to other devices.
+Benefits:
+Increased Bandwidth: Aggregates the bandwidth of the individual links.
+Redundancy: If one link fails, traffic seamlessly switches to the remaining links.
+Load Balancing: Distributes traffic across the member links.
+Link Aggregation Control Protocol (LACP):
+
+Purpose: LACP is a protocol used to manage and negotiate the LAG configuration between network devices (switches, routers, servers).
+Benefits:
+Automatic Configuration: Dynamically sets up and maintains LAGs, reducing manual configuration.
+Active Negotiation: Devices communicate to ensure compatibility and optimal LAG operation.
+Error Detection: LACP identifies and disables problematic links.
+How LACP Works:
+
+LACP Packets: Devices send LACP packets (using the Slow Protocol subtype of the Link Layer Discovery Protocol - LLDP) to exchange information.
+Negotiation: Devices negotiate parameters like LAG ID, priority, and link status.
+LAG Formation: Compatible devices form an LACP LAG.
+Traffic Distribution: LACP helps determine how traffic is spread across the member links (using hashing algorithms).
+Key Concepts to Understand:
+
+LAG Modes:
+Static (Manual): Requires manual configuration on both sides.
+Dynamic (LACP): Uses LACP for automatic configuration and maintenance.
+Active vs. Passive LACP: Devices can be configured as active (initiates negotiation) or passive (responds to negotiation).
+Hashing Algorithms: Determine how traffic is distributed across links (based on source/destination MAC or IP addresses).
+Interview Tips:
+
+Be prepared to explain:
+The difference between LAG and LACP.
+Why you would use LAGs.
+The benefits of using LACP over static LAGs.
+Be ready to discuss:
+Different LACP modes and how they are used.
+Common troubleshooting scenarios with LACP.
+How hashing algorithms affect traffic distribution in LAGs.
+Example Use Case:
+Connecting a server with multiple network interfaces to a switch using an LACP LAG for increased bandwidth and redundancy.
+
+
+Question 1: What is LACP and why is it used?
+
+Answer: LACP (Link Aggregation Control Protocol) is a networking protocol used to dynamically manage the aggregation of multiple physical Ethernet links into a single logical link. This provides increased bandwidth, redundancy, and improved network resiliency.
+
+Question 2: How does LACP work?
+
+Answer: LACP operates by having devices exchange LACP packets (using LLDP) to negotiate parameters like LAG ID, priority, and link status. Compatible devices then form an LACP LAG, and LACP helps determine how traffic is distributed across the member links using hashing algorithms.
+
+Question 3: What are the different LACP modes, and when would you use each?
+
+Answer:
+
+Active Mode: A device actively initiates LACP negotiation with its partner.
+Passive Mode: A device only responds to LACP negotiation initiated by its partner.
+You would typically use active mode on both sides for optimal LACP functionality.  Passive mode might be used if you have an older device that doesn't fully support LACP but can still participate in a LAG.
+
+Question 4: What is the difference between LACP and static LAG?
+
+Answer:
+
+Static LAG (manual): Requires manual configuration on both sides and doesn't provide the dynamic negotiation and error detection of LACP.
+LACP (dynamic): Automates LAG configuration, actively monitors link health, and can adjust the LAG configuration as needed for optimal performance and reliability.
+LACP is generally preferred unless you have specific compatibility constraints.
+
+Question 5: How does LACP distribute traffic across the links in a LAG?
+
+Answer: LACP uses hashing algorithms to determine which link in the LAG a particular traffic flow should be sent over. This hashing is typically based on source/destination MAC addresses, IP addresses, or a combination of both.
+
+Question 6: What are some common issues you might encounter with LACP, and how would you troubleshoot them?
+
+Answer:
+
+Mismatched Modes: Ensure both ends of the LAG are configured in compatible modes (ideally both active).
+Incorrect LAG ID: Verify that the LAG ID is the same on both ends of the LAG.
+Hardware/Software Incompatibility: Check that both devices fully support LACP and that firmware/software versions are up-to-date.
+Link Issues: Verify physical connectivity and ensure there are no duplex mismatches or other link errors.
+
+
+
+Question 7: What is the role of LACP system ID and system priority?
+
+Answer: The LACP system ID is a unique identifier assigned to each device participating in LACP. It consists of the device's MAC address and a configurable system priority. The system priority determines which device will be the "active" partner in the LACP negotiation. The device with the lower system priority (higher numerical value) will be the active partner. This is important in scenarios where you might want to control which device is responsible for making decisions about the LAG configuration.
+
+Question 8: What is the concept of "hot standby" in LACP, and how does it work?
+
+Answer: In LACP, hot standby refers to a mode where one or more links in a LAG are kept in an inactive state but are ready to take over immediately if an active link fails. This is achieved by setting the LACP priority of the standby link(s) higher than the active links. LACP monitors the health of the active links, and if a failure is detected, the standby link with the highest priority becomes active, ensuring minimal disruption to traffic flow.
+
+Question 9: How does LACP handle load balancing across multiple links?
+
+Answer: LACP uses hashing algorithms to distribute traffic across the links in a LAG. These algorithms can be based on source/destination MAC addresses, IP addresses, or a combination of both. The choice of hashing algorithm can impact the efficiency of load balancing and should be selected based on the traffic patterns in your network.
+
+Question 10: Can LACP be used with different types of Ethernet links, such as copper and fiber?
+
+Answer: Yes, LACP can be used with different types of Ethernet links, as long as the devices at both ends of the LAG support LACP and the same link speeds. However, mixing different link types (e.g., copper and fiber) within the same LAG is generally not recommended, as it can lead to issues with link speed negotiation and compatibility.
+
+Question 11: What are some advanced LACP features you might use in a complex network environment?
+
+Answer: In complex networks, you might encounter features like:
+
+LACP Rate Fast: Reduces the interval at which LACP packets are sent, leading to faster convergence and failover times.
+Multi-Chassis LAG (MC-LAG): Allows you to create a LAG across multiple devices, providing even higher redundancy and flexibility.
+LACP Fallback: Enables a device to fall back to a static LAG configuration if LACP negotiation fails.

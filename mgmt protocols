@@ -1,3 +1,4 @@
+
 Management Protocols: The Cornerstones of Network Operations
 
 In the realm of network management, SNMP (Simple Network Management Protocol), NETCONF (Network Configuration Protocol), and RESTCONF (Representational State Transfer Configuration Protocol) are 
@@ -95,3 +96,18 @@ A resource represents a manageable entity on the device, identified by a URI (Un
 
 How is YANG used in RESTCONF?
 YANG data models are used to define the structure and semantics of resources in RESTCONF. The YANG models guide how data is represented and manipulated using REST operations.
+
+
+How They Work Together
+
+YANG Model: You start by defining your data model in YANG.
+AVDL: The YANG model is translated into AVDL.
+AVSC: Avro schemas are generated from the AVDL for data serialization.
+Schemas: Language-specific schemas are generated from the YANG model.
+ConfD: ConfD loads the schemas, providing a NETCONF/RESTCONF interface to manage configuration data according to the YANG model.
+In Summary
+
+YANG models define the structure of your data.
+AVDL and AVSC provide intermediate formats and serialization.
+Language-specific schemas let you work with the data in your code.
+ConfD brings it all together, using the models and schemas to manage your configuration.

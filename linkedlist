@@ -354,30 +354,20 @@ struct Node* reverseList(struct Node *head) {
 bubblesort
 
 void bubbleSort(struct Node **headRef) {
-    struct Node *current, **ptr;
-    int swapped;
+    struct Node **ptr;
 
-    do {
-        swapped = 0;
-        current = *headRef;
+    for (ptr = headRef; *ptr != NULL; ptr = &(*ptr)->next) { 
+        struct Node **q;
 
-        while (current->next != NULL) {
-            ptr = &current->next;
-            if (current->data > (*ptr)->data) {
-                swap(current, current->next);
-                swapped = 1;
+        for (q = headRef; *q != NULL && (*q)->next != *ptr; q = &(*q)->next) {
+            if ((*q)->data > (*q)->next->data) {
+                // No swap needed, just adjust the outer loop pointer
+                ptr = q;
             }
-            current = *ptr; 
         }
-    } while (swapped);
+    }
 }
 
-// Swaps data of two nodes
-void swap(struct Node *a, struct Node *b) {
-    int temp = a->data;
-    a->data = b->data;
-    b->data = temp;
-}
 
 20. Compare linked list
 

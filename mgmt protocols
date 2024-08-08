@@ -1,21 +1,27 @@
 
 Management Protocols: The Cornerstones of Network Operations
 
-In the realm of network management, SNMP (Simple Network Management Protocol), NETCONF (Network Configuration Protocol), and RESTCONF (Representational State Transfer Configuration Protocol) are 
+In the realm of network management, SNMP (Simple Network Management Protocol), NETCONF (Network Configuration Protocol), and RESTCONF 
+(Representational State Transfer Configuration Protocol) are 
 fundamental tools that streamline how we monitor, control, and configure network devices and services.
 
-SNMP: This workhorse is widely used for gathering performance metrics (e.g., bandwidth, CPU usage) and basic device information. SNMP agents residing on devices respond to queries from a central manager.
-NETCONF: Leveraging XML-based data exchange, NETCONF enables complex configuration changes and operational commands on network devices. It's designed for modern, automated environments.
-RESTCONF: Building on the familiar REST architecture, RESTCONF offers a more web-friendly approach to configuring devices and accessing data using HTTP methods (GET, POST, PUT, DELETE).
+SNMP: This workhorse is widely used for gathering performance metrics (e.g., bandwidth, CPU usage) and basic device information. SNMP agents residing on devices 
+respond to queries from a central manager.
+NETCONF: Leveraging XML-based data exchange, NETCONF enables complex configuration changes and operational commands on network devices. It's designed for modern, 
+automated environments.
+RESTCONF: Building on the familiar REST architecture, RESTCONF offers a more web-friendly approach to configuring devices and accessing data using HTTP methods 
+(GET, POST, PUT, DELETE).
 
 
 SNMP (Simple Network Management Protocol)
 
 What is SNMP?
-SNMP is a protocol for network management. It allows administrators to monitor and manage network devices remotely. It works on a manager-agent model, where a central manager communicates with agents on devices.
+SNMP is a protocol for network management. It allows administrators to monitor and manage network devices remotely. It works on a manager-agent model, 
+where a central manager communicates with agents on devices.
 
 Explain the SNMP Manager-Agent Model.
-The SNMP manager sends requests to the SNMP agent running on a network device. The agent then responds with information about the device's status, performance metrics, or other requested data.
+The SNMP manager sends requests to the SNMP agent running on a network device. The agent then responds with information about the device's status, 
+performance metrics, or other requested data.
 
 What are the basic components of an SNMP message?
 
@@ -28,7 +34,8 @@ GET: Retrieves data from the agent.
 SET: Modifies configuration data on the agent.
 TRAP: An unsolicited message from the agent to the manager, usually indicating an event or alarm.
 What is an SNMP MIB?
-MIB (Management Information Base) is a hierarchical database that defines the objects (variables) that can be managed on a device. It provides a standardized way to access and interpret SNMP data.
+MIB (Management Information Base) is a hierarchical database that defines the objects (variables) that can be managed on a device. It provides a 
+standardized way to access and interpret SNMP data.
 
 Why is SNMP v3 considered more secure than v1 and v2c?
 SNMP v3 introduces authentication and encryption, protecting data integrity and confidentiality, while v1 and v2c rely on a less secure community string mechanism.
@@ -92,10 +99,12 @@ POST: Creates or updates data on the device.
 PUT: Replaces or creates data on the device.
 DELETE: Removes data from the device.
 Explain the concept of a RESTCONF resource.
-A resource represents a manageable entity on the device, identified by a URI (Uniform Resource Identifier). It can be a configuration element, operational data, or any other manageable aspect.
+A resource represents a manageable entity on the device, identified by a URI (Uniform Resource Identifier). It can be a configuration element, 
+operational data, or any other manageable aspect.
 
 How is YANG used in RESTCONF?
-YANG data models are used to define the structure and semantics of resources in RESTCONF. The YANG models guide how data is represented and manipulated using REST operations.
+YANG data models are used to define the structure and semantics of resources in RESTCONF. The YANG models guide how data is represented and 
+manipulated using REST operations.
 
 
 How They Work Together

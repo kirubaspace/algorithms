@@ -1,0 +1,141 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define TABLE_SIZE 10 // Adjust as needed
+
+// Define a structure for a linked list node
+struct Node {
+    char *key; // String key to store in the hash table
+    int value; // Integer value associated with the key
+    struct Node *next; // Pointer to the next node in the list
+};
+
+// Define a structure for the hash table
+struct HashTable {
+    struct Node *table[TABLE_SIZE]; // Array of pointers to linked lists
+};
+
+// Hash function to calculate the index for a given key
+unsigned int hash(char *key) {
+    unsigned int hashVal = 0;
+    for (int i = 0; key[i] != '\0'; i++) {
+        hashVal = 37 * hashVal + key[i]; // Simple hash function
+    }
+    return hashVal % TABLE_SIZE; // Ensure the index is within table bounds
+}
+
+// Create a new node for the linked list
+struct Node *createNode(char *key, int value) {
+    struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
+    if (newNode == NULL) {
+        printf("Memory allocation failed!\n");
+        exit(1); // Exit the program if memory allocation fails
+    }
+    newNode->key = strdup(key); // Copy the key string
+    newNode->value = value;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Insert a key-value pair into the hash table
+void insert(struct HashTable *ht, char *key, int value) {
+    unsigned int index = hash(key); // Calculate the hash index
+    struct Node *newNode = createNode(key, value);
+
+    // If the list at this index is empty, insert the new node directly
+    if (ht->table[index] == NULL) {
+        ht->table[index] = newNode;
+    } else {
+        // Otherwise, traverse the list to find the end and append the new node
+        struct Node *temp = ht->table[index];
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+    }
+}
+
+// Search for a key in the hash table and return its value
+int search(struct HashTable *ht, char *key) {
+    unsigned int index = hash(key); // Calculate the hash index
+    struct Node *temp = ht->table[index];
+
+    // Traverse the list at the calculated index to find the key
+    while (temp != NULL) {
+        if (strcmp(temp->key, key) == 0) {
+            return temp->value; // Return the value if the key is found
+        }
+        temp = temp->next;
+    }
+    return -1; // Return -1 if the key is not found
+}
+
+// Delete a key-value pair from the hash table
+void delete(struct HashTable *ht, char *key) {
+    unsigned int index = hash(key); // Calculate the hash index
+    struct Node *temp = ht->table[index];
+    struct Node *prev = NULL;
+
+    // Traverse the list to find the key and keep track of the previous node
+    while (temp != NULL) {
+        if (strcmp(temp->key, key) == 0) {
+            if (prev == NULL) {
+                // If the key is the first node in the list, update the head
+                ht->table[index] = temp->next;
+            } else {
+                // Otherwise, adjust the links to remove the node
+                prev->next = temp->next;
+            }
+            free(temp->key); // Free the memory allocated for the key string
+            free(temp); // Free the memory allocated for the node
+            return;
+        }
+        prev = temp;
+        temp = temp->next;
+    }
+}
+
+// Display the contents of the hash table
+void display(struct HashTable *ht) {
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        printf("Index %d: ", i);
+        struct Node *temp = ht->table[i];
+        while (temp != NULL) {
+            printf("(%s, %d) -> ", temp->key, temp->value);
+            temp = temp->next;
+        }
+        printf("NULL\n");
+    }
+}
+
+int main() {
+    struct HashTable *ht = (struct HashTable *)malloc(sizeof(struct HashTable));
+    // Initialize all pointers in the table to NULL
+    for (int i = 0; i < TABLE_SIZE; i++) {
+        ht->table[i] = NULL;
+    }
+
+    insert(ht, "apple", 1);
+    insert(ht, "banana", 2);
+    insert(ht, "grape", 3);
+    // Add more insertions as needed
+
+    display(ht);
+
+    int value = search(ht, "banana");
+    if (value != -1) {
+        printf("Value for 'banana': %d\n", value);
+    } else {
+        printf("Key 'banana' not found\n");
+    }
+
+    delete(ht, "grape");
+    // Add more deletions as needed
+
+    display(ht);
+
+    free(ht); // Free the memory allocated for the hash table
+
+    return 0;
+}

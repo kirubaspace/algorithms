@@ -30,15 +30,20 @@ void BFS(struct Node *root) {
 
 3. Symmetric Tree: Check whether a binary tree is a mirror of itself (i.e., symmetric around its center).
 
-bool isSymmetric(TreeNode* root) {
-    return root == NULL || isMirror(root->left, root->right);
+bool isMirror(struct TreeNode* t1, struct TreeNode* t2) {
+    // Base cases: both null (mirror), one null (not mirror)
+    if (t1 == NULL && t2 == NULL) return true;
+    if (t1 == NULL || t2 == NULL) return false;
+
+    // Check values and mirror of subtrees
+    return (t1->val == t2->val) &&
+           isMirror(t1->left, t2->right) &&
+           isMirror(t1->right, t2->left);
 }
 
-bool isMirror(TreeNode* t1, TreeNode* t2) {
-    if (t1 == NULL || t2 == NULL) return t1 == t2;
-    return (t1->val == t2->val)
-        && isMirror(t1->right, t2->left)
-        && isMirror(t1->left, t2->right);
+bool isSymmetric(struct TreeNode* root) {
+    // Empty tree is symmetric
+    return root == NULL || isMirror(root->left, root->right);
 }
 
 4. Path Sum: Given a binary tree and a sum, determine if the tree has a root-to-leaf path such that adding up all the values along the path equals the given sum.

@@ -191,3 +191,154 @@ int minValue(struct node* node)
     return(current->data);
 }
 
+12. Insert node into binary tree, print and do symmetric check
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure for the binary tree
+struct Node {
+    int data;
+    struct Node *left;
+    struct Node *right;
+};
+
+// Function to create a new node
+struct Node* newNode(int data) {
+    struct Node* node = (struct Node*)malloc(sizeof(struct Node));
+    node->data = data;
+    node->left = node->right = NULL;
+    return node;
+}
+
+// Recursive insertion function
+struct Node* insert(struct Node* root, int data) {
+    // If the tree is empty, return a new node
+    if (root == NULL) 
+        return newNode(data);
+
+    // Otherwise, recur down the tree
+    if (data < root->data)
+        root->left = insert(root->left, data);
+    else if (data > root->data)
+        root->right = insert(root->right, data);
+
+    // Return the (unchanged) node pointer
+    return root;
+}
+
+// Function to print the tree in inorder traversal
+void inorder(struct Node* root) {
+    if (root != NULL) {
+        inorder(root->left);
+        printf("%d ", root->data);
+        inorder(root->right);
+    }
+}
+
+void printTree(struct Node* root) {
+    if (root != NULL) {
+        printTree(root->left);
+        printf("%d ", root->data);
+        printTree(root->right);
+    }
+}
+
+// Helper function to check if two trees are mirror images
+bool isMirror(struct Node* root1, struct Node* root2) {
+    if (root1 == NULL && root2 == NULL)
+        return true;
+
+    if (root1 != NULL && root2 != NULL && root1->data == root2->data)
+        return   
+ isMirror(root1->left, root2->right) && isMirror(root1->right, root2->left);
+
+    return false;   
+
+}
+
+// Function to check if the tree is symmetric
+bool isSymmetric(struct Node* root) {
+    return isMirror(root, root);
+}
+
+int main() {
+    printf("Inorder traversal (printTree): \n");
+    printTree(root);
+    printf("\n");
+
+    if (isSymmetric(root))
+        printf("The tree is symmetric.\n");
+    else
+        printf("The tree is not symmetric.\n");
+
+    return 0;
+}
+
+13.2) Two binary trees with the same structure but different values in their nodes are called structurally identical binary trees or structurally equivalent binary trees.
+
+These trees have identical shapes or forms, meaning they have the same arrangement of nodes and edges, but the values stored in the nodes may differ between the two trees.
+
+Write a function to check if L & R sub-trees for root node of array are structurally identical.
+e.g.
+
+    10
+   /  \
+  5    20
+ / \   / \
+3  7  14  30
+(True - Same sub-trees structures ignoring element values)
+
+   10
+  /  \
+ 5   20
+  \    \
+   7   30
+(True : Same sub-trees structures)
+
+    10
+   /  \
+  5    20
+   \   /
+   7   14
+(False : Different sub-trees structures)
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+// ... (Node structure, newNode, insert, printTree, isMirror, isSymmetric remain the same)
+
+// Function to check if two trees are structurally identical
+bool isStructurallyIdentical(struct Node* a, struct Node* b) {
+    // Both trees are empty
+    if (a == NULL && b == NULL)
+        return true;
+
+    // Both trees are non-empty and have the same structure
+    if (a != NULL && b != NULL)
+        return isStructurallyIdentical(a->left, b->left) && 
+               isStructurallyIdentical(a->right, b->right);
+
+    // Otherwise, they are not structurally identical
+    return false;
+}
+
+// Function to check if left and right subtrees of a node are structurally identical
+bool areSubtreesIdentical(struct Node* root) {
+    if (root == NULL)
+        return true;
+
+    return isStructurallyIdentical(root->left, root->right);
+}
+
+int main() {
+    // ... (Tree creation and insertion)
+
+    if (areSubtreesIdentical(root))
+        printf("Left and right subtrees of the root are structurally identical.\n");
+    else
+        printf("Left and right subtrees of the root are not structurally identical.\n");
+
+    return 0;
+}

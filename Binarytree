@@ -86,18 +86,22 @@ TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
 
 7. Binary Tree Maximum Path Sum: Find the maximum path sum in a binary tree. The path may start and end at any node in the tree.
 
-int maxPathSum(TreeNode* root) {
+int maxPathSum(struct TreeNode* root) {
     int maxSum = INT_MIN;
-    pathSum(root, maxSum);
-    return maxSum;
-}
 
-int pathSum(TreeNode* node, int& maxSum) {
-    if (!node) return 0;
-    int left = max(0, pathSum(node->left, maxSum));
-    int right = max(0, pathSum(node->right, maxSum));
-    maxSum = max(maxSum, left + right + node->val);
-    return max(left, right) + node->val;
+    int pathSumHelper(struct TreeNode* node) {
+        if (!node) return 0;
+
+        int leftGain = fmax(0, pathSumHelper(node->left));
+        int rightGain = fmax(0, pathSumHelper(node->right));
+
+        maxSum = fmax(maxSum, leftGain + rightGain + node->val); 
+
+        return fmax(leftGain, rightGain) + node->val; 
+    }
+
+    pathSumHelper(root);
+    return maxSum;
 }
 
 8. Serialize and Deserialize Binary Tree: Design an algorithm to serialize and deserialize a binary tree into a string and vice versa.

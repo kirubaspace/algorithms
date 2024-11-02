@@ -1,0 +1,28 @@
+1. Retry Pattern:
+
+Problem: Transient failures (e.g., network blips, temporary service unavailability) can occur in cloud environments.
+Solution: Implement retries with exponential backoff to handle these failures gracefully. This involves retrying failed requests with increasing delays between attempts, allowing the system to recover and preventing cascading failures.
+2. Circuit Breaker Pattern:
+
+Problem: Repeatedly calling a failing service can degrade performance and lead to resource exhaustion.
+Solution: Introduce a "circuit breaker" that monitors service calls. If failures exceed a threshold, the circuit breaker trips, preventing further calls to the failing service. After a timeout period, the circuit breaker allows limited calls to check if the service has recovered.
+3. Throttling Pattern:
+
+Problem: Sudden spikes in traffic can overwhelm cloud resources.
+Solution: Limit the rate of requests to prevent overload and ensure fair resource usage. This can be achieved through various techniques like rate limiting, token buckets, or leaky buckets.
+4. Cache-Aside Pattern:
+
+Problem: Frequent data retrieval from databases can be slow and expensive.
+Solution: Store frequently accessed data in a cache (e.g., Redis, Memcached). When data is needed, check the cache first. If not found, retrieve it from the database and store it in the cache for future requests.
+5. Queue-Based Load Leveling Pattern:
+
+Problem: Fluctuating workloads can lead to uneven resource utilization and potential bottlenecks.
+Solution: Introduce a queue between components to decouple them and handle varying workloads. This allows components to operate at different speeds, smoothing out traffic spikes and ensuring consistent performance.
+6. Event Sourcing Pattern:
+
+Problem: Traditional data storage with updates can lead to data loss and make it difficult to track changes over time.
+Solution: Capture all changes to application state as a sequence of events. This provides an audit trail, enables replaying events to reconstruct past states, and supports building event-driven architectures.
+7. CQRS (Command Query Responsibility Segregation) Pattern:
+
+Problem: Complex applications with both read and write operations can suffer from performance and scalability issues.
+Solution: Separate read and write operations into different models. This allows for optimized data structures and query paths for each type of operation, improving performance and scalability.

@@ -71,7 +71,40 @@ Optional fields used for things like security, routing, and timestamps.
 
 The actual content (data) being transmitted, such as a TCP segment or a UDP datagram.
 
+IP Fragmentation
 
+IP fragmentation happens when an IP packet is larger than the Maximum Transmission Unit (MTU) of a network link it needs to traverse. 
+The MTU is the largest size of packet that can be transmitted over a network link.   
+
+Here's how you can identify IP fragmentation from an IP packet:
+
+1. Flags:
+
+More Fragments (MF) flag: This flag is set to 1 in all fragments except the last one. The last fragment has this flag set to 0.   
+Don't Fragment (DF) flag: If this flag is set to 1, the packet cannot be fragmented. If the packet exceeds the MTU, it will be dropped.   
+2. Fragment Offset:
+
+This field indicates where the fragment belongs in the original IP packet. It's measured in units of 8 bytes. The first fragment has an offset of 0.   
+3. Identification:
+
+This field is used to identify all fragments of the same original IP packet. All fragments of the same packet will have the same Identification value.   
+Example:
+
+Imagine an IP packet with a size of 4000 bytes needs to be sent over a network link with an MTU of 1500 bytes. This packet will be fragmented 
+into three fragments:
+
+Fragment 1:
+MF flag: 1
+Fragment Offset: 0
+Identification: (some unique value)
+Fragment 2:
+MF flag: 1
+Fragment Offset: 185 (1500 bytes / 8 = 187.5, rounded down to 185)
+Identification: (same as Fragment 1)
+Fragment 3:
+MF flag: 0
+Fragment Offset: 370 (3000 bytes / 8 = 375, rounded down to 370)
+Identification: (same as Fragment 1)
 
 
            Ethernet packet

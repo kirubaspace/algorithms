@@ -1,0 +1,195 @@
+Process Management
+Q1: Explain the fork() system call and copy-on-write mechanism
+Fork() creates a child process by duplicating the parent
+Uses copy-on-write to optimize memory usage
+Child gets a copy of parent's page tables but physical pages are shared until modified
+
+Q2: What happens during context switching?
+Saves current process state (registers, stack pointer, program counter)
+Updates scheduling queues
+Loads new process state
+Switches memory mapping (TLB flush if needed)
+Resumes execution of new process
+
+Q3: Explain the difference between threads and processes
+Processes have separate memory spaces
+Threads share memory space within same process
+Threads are lighter weight with faster context switches
+Threads share file descriptors and other resources
+
+Memory Management
+Q4: How does the buddy memory allocation system work?
+Divides physical memory into power-of-2 sized blocks
+Maintains free lists for each block size
+Splits larger blocks when needed
+Merges adjacent free blocks of same size
+
+Q5: Explain page fault handling in Linux
+CPU raises page fault exception
+Kernel checks if address is valid
+Allocates physical frame if needed
+Reads page from disk if necessary
+Updates page tables and resumes execution
+
+Q6: What is TLB and how does it improve performance?
+Translation Lookaside Buffer caches virtual-to-physical address translations
+Reduces memory access time by avoiding page table walks
+Managed by MMU hardware
+Flushed during context switches
+File Systems
+
+Q7: Explain the VFS layer in Linux
+Virtual File System provides common interface for different filesystems
+Defines common file operations
+Manages file descriptors and inode cache
+Allows mounting multiple filesystem types
+
+Q8: How does journaling work in ext4?
+Logs changes before committing to disk
+Ensures filesystem consistency after crashes
+Maintains journal of pending transactions
+Supports different journaling modes (data, ordered, writeback)
+
+Q9: What is the difference between hard and soft links?
+Hard links share same inode
+Soft links contain path to target file
+Hard links must be on same filesystem
+Soft links can cross filesystem boundaries
+
+Networking
+
+Q10: Explain the network namespace isolation
+Provides isolated network stack per namespace
+Separate routing tables, interfaces, and firewall rules
+Used for container networking
+Managed through ip netns commands
+
+Q11: How does the TCP/IP stack handle incoming packets?
+NIC receives packet and raises interrupt
+Driver processes interrupt and copies to ring buffer
+Network stack processes protocols bottom-up
+Delivers data to appropriate socket
+
+Q12: What is NAPI and how does it improve network performance?
+New API for network drivers
+Reduces interrupt overhead under high load
+Switches between interrupt and polling modes
+Improves throughput and CPU utilization
+System Calls
+
+Q13: Explain the system call implementation in Linux
+User programs use syscall instruction
+CPU switches to kernel mode
+Kernel validates parameters
+Executes system call handler
+Returns result to user space
+
+Q14: What happens during exec() system call?
+Replaces current process image
+Loads new program into memory
+Initializes stack and heap
+Sets up argument list
+Begins execution at entry point
+
+Q15: How does signal handling work in Linux?
+Signals interrupt normal execution flow
+Kernel delivers signals to processes
+Processes can handle or ignore signals
+Signal handlers run in user space
+Device Drivers
+
+Q16: Explain the role of udev in device management
+Manages device nodes dynamically
+Handles device hotplug events
+Applies persistent naming rules
+Loads appropriate drivers
+
+Q17: What are character devices vs block devices?
+Character devices provide byte-stream access
+Block devices handle fixed-size blocks
+Block devices have request queues
+Character devices are for sequential access
+
+Q18: How does DMA improve I/O performance?
+Direct Memory Access bypasses CPU
+Hardware transfers data directly to/from memory
+Reduces CPU overhead
+Supports scatter-gather operations
+
+Security
+
+Q19: Explain Linux capabilities
+Fine-grained privileges instead of root/non-root
+Allows specific privileged operations
+Reduces need for setuid binaries
+Managed through cap_set_proc()
+
+Q20: How does SELinux provide access control?
+Mandatory Access Control framework
+Labels processes and resources
+Enforces security policies
+Supports different enforcement modes
+
+Performance
+Q21: What tools would you use to diagnose high CPU usage?
+top/htop for process overview
+perf for CPU profiling
+strace for system call tracing
+ftrace for kernel function tracing
+
+Q22: How would you investigate memory leaks?
+valgrind for user space
+kmemleak for kernel space
+/proc/meminfo analysis
+slab allocator statistics
+Boot Process
+
+Q23: Explain the Linux boot sequence
+BIOS/UEFI loads bootloader
+Bootloader loads kernel
+Kernel initializes hardware
+Starts init/systemd
+Mounts root filesystem
+
+Q24: What is initramfs and why is it needed?
+Initial RAM filesystem
+Contains essential drivers and tools
+Mounts root filesystem
+Handles early boot requirements
+
+Advanced Concepts
+Q25: Explain how eBPF works
+Extended Berkeley Packet Filter
+In-kernel virtual machine
+Safe program execution
+Used for tracing and networking
+
+Q26: How does Copy-on-Write (CoW) optimize fork()?
+Shares memory pages between parent/child
+Only copies when modified
+Reduces memory usage
+Improves fork performance
+
+Q27: What is the page cache?
+Caches file data in memory
+Reduces disk I/O
+Implements read-ahead
+Handles write-back
+
+Q28: Explain the completely fair scheduler
+Based on red-black tree
+Tracks process runtime
+Provides fair CPU distribution
+Supports different scheduling classes
+
+Q29: How does NUMA affect process scheduling?
+Non-Uniform Memory Access
+Memory access time varies by location
+Scheduler considers memory locality
+Affects process placement decisions
+
+Q30: What is kprobes and how is it used?
+Dynamic instrumentation system
+Inserts breakpoints in kernel
+Used for debugging and tracing
+Minimal performance impact

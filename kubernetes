@@ -1,0 +1,123 @@
+What is Kubernetes?
+Kubernetes is an open-source container orchestration platform that automates the deployment, scaling, and management of containerized applications. 
+It provides a robust set of APIs for managing clusters of containers, making it easier to manage and scale applications in a consistent and reliable manner.
+
+Explain the architecture of Kubernetes.
+Kubernetes architecture consists of a control plane and worker nodes:
+Control Plane: Manages the Kubernetes cluster and includes components like the API Server, Scheduler, Controller Manager, and etcd.
+Worker Nodes: Run the containerized applications and include components such as Kubelet, Kube-Proxy, and the container runtime2.
+
+What are Pods in Kubernetes?
+Pods are the smallest deployable units in Kubernetes. They encapsulate one or more containers, their storage resources, and a unique network IP. 
+Pods enable containers to share storage and networking and are managed as a single entity.
+
+What is a ReplicaSet?
+A ReplicaSet is a Kubernetes controller that ensures a specified number of pod replicas are running at any given time. It automatically replaces pods that fail or are deleted, 
+maintaining the desired number of replicas2.
+Explain the concept of Deployments in Kubernetes.
+A Deployment is a Kubernetes resource that manages the deployment of pods and ReplicaSets. It provides declarative updates to applications, enabling rolling updates and rollbacks. 
+Deployments ensure that the desired state of an application is maintained
+
+What are Services in Kubernetes?
+Services in Kubernetes provide a stable endpoint for accessing a set of pods. They enable communication between different parts of an application and between applications. 
+Services can be of different types, such as ClusterIP, NodePort, LoadBalancer, and ExternalName.
+
+What is a Namespace in Kubernetes?
+A Namespace is a logical partition within a Kubernetes cluster that allows for the organization and isolation of resources. 
+It enables multiple teams or projects to share a single cluster while keeping their resources separated2.
+Explain the concept of Ingress in Kubernetes.
+Ingress is an API object that manages external access to services within a Kubernetes cluster. It provides HTTP and HTTPS routing rules to direct traffic to different services based on the request URL or host.
+What are Network Policies in Kubernetes?
+Network Policies are used to control the network traffic between pods in a Kubernetes cluster. They define rules for allowing or denying traffic based on pod labels and network endpoints, enhancing security 
+and traffic management.
+
+Storage and Configuration
+Explain ConfigMaps in Kubernetes.
+ConfigMaps are used to store configuration data in key-value pairs that can be consumed by pods and containers. They allow for the separation of configuration from application code, enabling 
+dynamic updates without rebuilding containers.
+
+What is a Secret in Kubernetes?
+Secrets are used to store sensitive information, such as passwords, OAuth tokens, and SSH keys, securely within Kubernetes. Secrets are encoded and can be used by pods to access confidential 
+data without hardcoding it into application code.
+
+Describe Persistent Volumes (PVs) and Persistent Volume Claims (PVCs).
+Persistent Volumes (PVs) are storage resources in Kubernetes that provide persistent storage for pods. Persistent Volume Claims (PVCs) are requests for storage made by users or applications. 
+PVCs are bound to PVs, ensuring that storage is allocated and managed as needed2.
+Workload Management
+
+What is a StatefulSet?
+StatefulSets are a Kubernetes resource designed for managing stateful applications. They provide guarantees about the ordering and uniqueness of pods, making them suitable for applications that require 
+stable network identities and persistent storage.
+
+What is a DaemonSet?
+A DaemonSet ensures that a specific pod runs on all or a subset of nodes in a Kubernetes cluster. It is useful for deploying background services or agents, such as log collectors or monitoring tools, 
+that need to run on every node.
+
+What is a Job in Kubernetes?
+A Job is a Kubernetes resource that ensures one or more pods complete a specified task. Jobs are used for running batch processes or tasks that need to be completed once, such as database migrations or 
+data processing jobs.
+Control Plane Components
+
+Explain the role of the Kubernetes API Server.
+The Kubernetes API Server is the central component of the control plane that exposes the Kubernetes API. It handles API requests from users and components, validates and processes them, and updates the 
+cluster state accordingly.
+
+What is etcd in Kubernetes?
+etcd is a distributed key-value store used by Kubernetes to store the cluster's configuration data and state. It provides a reliable and consistent way to store and retrieve metadata about the 
+cluster and its resources.
+
+What is a kubelet?
+A kubelet is an agent that runs on each worker node in a Kubernetes cluster. It is responsible for managing the containers on its node, ensuring they are running as expected, and reporting their status to the 
+control plane.
+
+What is a kube-proxy?
+kube-proxy is a network proxy that runs on each worker node and is responsible for maintaining network rules. It manages network communication between services and pods, 
+implementing load balancing and service discovery.
+Scaling and High Availability
+
+Explain Kubernetes Horizontal Pod Autoscaling.
+Horizontal Pod Autoscaling (HPA) automatically adjusts the number of pod replicas in a deployment or ReplicaSet based on metrics such as CPU utilization or custom metrics. 
+It helps maintain application performance and resource efficiency.
+
+What is Vertical Pod Autoscaling?
+Vertical Pod Autoscaling (VPA) adjusts the CPU and memory resources allocated to a pod based on its resource usage. It helps ensure that pods have the appropriate resources to handle their workloads, 
+improving performance and stability.
+
+Describe the role of the Kubernetes Controller Manager.
+The Kubernetes Controller Manager is a component of the control plane that manages controllers, which are responsible for maintaining the desired state of the cluster. 
+Controllers monitor the cluster's state and make adjustments to ensure resources match their intended configuration.
+
+
+What are Custom Resource Definitions (CRDs)?
+Custom Resource Definitions (CRDs) allow users to define their own custom resources in Kubernetes. CRDs extend Kubernetes' capabilities by enabling the creation of resources beyond the default set 
+provided by Kubernetes.
+
+What is a Kubernetes Operator?
+A Kubernetes Operator is a method for packaging, deploying, and managing Kubernetes applications. Operators use custom resources and controllers to automate complex tasks and manage stateful 
+applications within Kubernetes clusters.
+
+Explain the concept of a Kubernetes Service Account.
+A Kubernetes Service Account provides an identity for processes running in a pod to interact with the Kubernetes API. Service Accounts are used to manage permissions and access control for applications and services within the cluster2.
+Advanced Concepts
+
+What are Taints and Tolerations in Kubernetes?
+Taints and Tolerations are mechanisms for controlling which pods can be scheduled on particular nodes. Taints are applied to nodes to repel certain pods, while Tolerations are applied to pods to 
+allow them to be scheduled on tainted nodes.
+
+What is the purpose of the Kubernetes Dashboard?
+The Kubernetes Dashboard is a web-based user interface that allows users to manage and monitor Kubernetes clusters. It provides a visual representation of cluster resources, 
+enabling users to perform administrative tasks and view metrics.
+
+What is a Kubernetes Volume?
+A Kubernetes Volume is a storage resource that provides persistent storage for pods. Volumes are mounted into pods and can be used to store data that needs to persist beyond the life of individual containers.
+
+What is Helm in the context of Kubernetes?
+Helm is a package manager for Kubernetes that simplifies the deployment and management of applications using charts. Charts are pre-configured templates that define the resources needed for an application, 
+making it easier to deploy and manage complex applications.
+
+What is Kubernetes RBAC (Role-Based Access Control)?
+Kubernetes RBAC is a mechanism for controlling access to resources in a Kubernetes cluster based on user roles. It allows administrators to define roles and assign permissions to users or groups, 
+controlling what actions they can perform on various resources2.
+Monitoring and Logging
+How does Kubernetes handle logging?
+Kubernetes handles logging by collecting and aggregating logs from containers and pods. Logs can be accessed through logging agents like Fluentd, Logstash, or sidecar containers, and stored in centralized logging systems such as elastic, splunk

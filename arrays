@@ -70,13 +70,20 @@ vector<int> twoNumberSum(vector<int> array, int targetSum) {
 
 5. Rotate Array: Rotate an array to the right by k steps, where k is non-negative.
 
-void rotate(vector<int>& nums, int k) {
-    k %= nums.size();
-    reverse(nums.begin(), nums.end());
-    reverse(nums.begin(), nums.begin() + k);
-    reverse(nums.begin() + k, nums.end());
+func rotate(nums []int, k int) {
+    k = k % len(nums)
+    reverse(nums, 0, len(nums)-1)
+    reverse(nums, 0, k-1)
+    reverse(nums, k, len(nums)-1)
 }
 
+func reverse(nums []int, start, end int) {
+    for start < end {
+        nums[start], nums[end] = nums[end], nums[start]
+        start++
+        end--
+    }
+}
 6. Spiral Matrix: Given a matrix of m x n elements (m rows, n columns), return all elements of the matrix in spiral order.
 
 vector<int> spiralOrder(vector<vector<int>>& matrix) {
@@ -219,29 +226,150 @@ int removeDuplicates(int arr[], int n) {
     return i + 1;
 }
 
-12. Find the size of struct without sizeof operator
+12. Contains Duplicate - Check if array has duplicate elements
 
-struct MyStruct
-{
- int i;
- int j;
-};
-int main()
-{
- struct MyStruct *p=0;
- int size = ((char*)(p+1))-((char*)p);
- printf("\nSIZE : [%d]\nSIZE : [%d]\n", size);
- return 0;
-} 
-
-13. Sum of a number
-
-    while (num > 0) {  // Continue as long as 'num' has digits
-        sum = sum + (num % 10); // Extract the last digit and add it to the sum
-        num = num / 10;        // Remove the last digit from the number
+func containsDuplicate(nums []int) bool {
+    seen := make(map[int]bool)
+    for _, num := range nums {
+        if seen[num] {
+            return true
+        }
+        seen[num] = true
     }
+    return false
+}
 
-    printf("\nSum = [%d]\n", sum);
+
+13. Find Missing Number - Find missing number in range [0,n]
+
+func missingNumber(nums []int) int {
+    n := len(nums)
+    expected := n * (n + 1) / 2
+    actual := 0
+    for _, num := range nums {
+        actual += num
+    }
+    return expected - actual
+}
+
+14. Merge Sorted Arrays: Merges from end to avoid overwriting. Time O(m+n), Space O(1)
+
+func merge(nums1 []int, m int, nums2 []int, n int) {
+    p1 := m - 1
+    p2 := n - 1
+    p := m + n - 1
+    
+    for p2 >= 0 {
+        if p1 >= 0 && nums1[p1] > nums2[p2] {
+            nums1[p] = nums1[p1]
+            p1--
+        } else {
+            nums1[p] = nums2[p2]
+            p2--
+        }
+        p--
+    }
+}
+
+15. Move Zeroes - Move all zeroes to end maintaining order
+func moveZeroes(nums []int) {
+    nonZero := 0
+    for i := 0; i < len(nums); i++ {
+        if nums[i] != 0 {
+            nums[nonZero], nums[i] = nums[i], nums[nonZero]
+            nonZero++
+        }
+    }
+}
+
+16. Intersection of Two Arrays - Find common elements
+
+func intersection(nums1 []int, nums2 []int) []int {
+    set1 := make(map[int]bool)
+    for _, num := range nums1 {
+        set1[num] = true
+    }
+    
+    result := make([]int, 0)
+    seen := make(map[int]bool)
+    for _, num := range nums2 {
+        if set1[num] && !seen[num] {
+            result = append(result, num)
+            seen[num] = true
+        }
+    }
+    return result
+}
+
+
+17. Given a large integer represented as an array of digits, the task is to add 1 to the number and return the resulting array. 
+Each element in the array represents a single digit, and the digits are arranged from most significant to least significant.
+
+func removeDuplicates(nums []int) int {
+    if len(nums) == 0 {
+        return 0
+    }
+    k := 1
+    for i := 1; i < len(nums); i++ {
+        if nums[i] != nums[i-1] {
+            nums[k] = nums[i]
+            k++
+        }
+    }
+    return k
+}
+
+
+18. Problem: Given an array with only 0s, 1s, and 2s in any order, sort them in-place. Think of these as three colors (red, white, blue) 
+that need to be arranged in the correct order.
+
+func sortColors(nums []int) {
+    low, mid, high := 0, 0, len(nums)-1
+    
+    for mid <= high {
+        switch nums[mid] {
+        case 0:
+            nums[low], nums[mid] = nums[mid], nums[low]
+            low++
+            mid++
+        case 1:
+            mid++
+        case 2:
+            nums[mid], nums[high] = nums[high], nums[mid]
+            high--
+        }
+    }
+}
+
+19. Intersection: Uses hashmap to track common elements. Time O(n+m), Space O(n)
+
+func intersection(nums1 []int, nums2 []int) []int {
+    set1 := make(map[int]bool)
+    for _, num := range nums1 {
+        set1[num] = true
+    }
+    
+    result := make([]int, 0)
+    seen := make(map[int]bool)
+    for _, num := range nums2 {
+        if set1[num] && !seen[num] {
+            result = append(result, num)
+            seen[num] = true
+        }
+    }
+    return result
+}
+
+20. Find element that appears once while others appear twice.
+
+func singleNumber(nums []int) int {
+    result := 0
+    for _, num := range nums {
+        result ^= num
+    }
+    return result
+}
+
 
 
 

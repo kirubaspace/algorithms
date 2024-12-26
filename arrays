@@ -423,18 +423,15 @@ func intersection(nums1 []int, nums2 []int) []int {
 17. Given a large integer represented as an array of digits, the task is to add 1 to the number and return the resulting array. 
 Each element in the array represents a single digit, and the digits are arranged from most significant to least significant.
 
-func removeDuplicates(nums []int) int {
-    if len(nums) == 0 {
-        return 0
-    }
-    k := 1
-    for i := 1; i < len(nums); i++ {
-        if nums[i] != nums[i-1] {
-            nums[k] = nums[i]
-            k++
+func plusOne(digits []int) []int {
+    for i := len(digits) - 1; i >= 0; i-- {
+        if digits[i] < 9 {
+            digits[i]++
+            return digits
         }
+        digits[i] = 0
     }
-    return k
+    return append([]int{1}, digits...)
 }
 
 

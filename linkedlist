@@ -1,111 +1,118 @@
 1. Reverse a Linked List: Implement a function to reverse a linked list. Can you do it iteratively and recursively?
 
-ListNode* reverseList(ListNode* head) {
-    ListNode *prev = nullptr, *curr = head, *next = nullptr;
-    while (curr) {
-        next = curr->next;
-        curr->next = prev;
-        prev = curr;
-        curr = next;
+func reverseList(head *ListNode) *ListNode {
+    var prev *ListNode
+    curr := head
+    for curr != nil {
+        next := curr.Next
+        curr.Next = prev
+        prev = curr
+        curr = next
     }
-    return prev;
-}
-
-ListNode* reverseListRecursive(ListNode* head) {
-    if (!head || !head->next) return head;
-    ListNode* rest = reverseListRecursive(head->next);
-    head->next->next = head;
-    head->next = nullptr;
-    return rest;
+    return prev
 }
 
 
 2. Detect Cycle in a Linked List: Write a program to detect a cycle in a linked list.
 
-bool hasCycle(ListNode *head) {
-    ListNode *slow = head, *fast = head;
-    while (fast && fast->next) {
-        slow = slow->next;
-        fast = fast->next->next;
-        if (slow == fast) return true;
+func hasCycle(head *ListNode) bool {
+    if head == nil {
+        return false
     }
-    return false;
+    slow, fast := head, head
+    for fast != nil && fast.Next != nil {
+        slow = slow.Next
+        fast = fast.Next.Next
+        if slow == fast {
+            return true
+        }
+    }
+    return false
 }
 
 
 3. Merge Two Sorted Lists: Merge two sorted linked lists into one sorted linked list.
 
-ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
-    if (!l1) return l2;
-    if (!l2) return l1;
-    if (l1->val < l2->val) {
-        l1->next = mergeTwoLists(l1->next, l2);
-        return l1;
-    } else {
-        l2->next = mergeTwoLists(l1, l2->next);
-        return l2;
-    }
+func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
+        if list1 == nil {
+                return list2
+        }
+        if list2 == nil {
+                return list1
+        }
+        if list1.Val < list2.Val {
+                list1.Next = mergeTwoLists(list1.Next, list2)
+                return list1
+        } else {
+                list2.Next = mergeTwoLists(list1, list2.Next)
+                return list2
+        }
 }
 
 4. Remove Nth Node From End of List: Given a linked list, remove the n-th node from the end of the list.
 
-ListNode* removeNthFromEnd(ListNode* head, int n) {
-    ListNode *dummy = new ListNode(0);
-    dummy->next = head;
-    ListNode *first = dummy, *second = dummy;
-    for (int i = 1; i <= n + 1; i++) {
-        first = first->next;
+func removeNthFromEnd(head *ListNode, n int) *ListNode {
+    dummy := &ListNode{Next: head}
+    first, second := dummy, dummy
+    for i := 0; i <= n; i++ {
+        first = first.Next
     }
-    while (first) {
-        first = first->next;
-        second = second->next;
+    for first != nil {
+        first = first.Next
+        second = second.Next
     }
-    second->next = second->next->next;
-    return dummy->next;
+    second.Next = second.Next.Next
+    return dummy.Next
 }
+
 
 5. Intersection of Two Linked Lists: Find the node at which the intersection of two singly linked lists begins.
 
-ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
-    ListNode *a = headA, *b = headB;
-    while (a != b) {
-        a = a ? a->next : headB;
-        b = b ? b->next : headA;
+func findMiddle(head *ListNode) *ListNode {
+    if head == nil {
+        return nil
     }
-    return a;
+    slow, fast := head, head
+    for fast != nil && fast.Next != nil {
+        slow = slow.Next
+        fast = fast.Next.Next
+    }
+    return slow
 }
+
 
 6. Linked List Cycle II: Given a linked list, return the node where the cycle begins. If there is no cycle, return null.
 
-ListNode *detectCycle(ListNode *head) {
-    ListNode *slow = head, *fast = head;
-    while (fast && fast->next) {
-        slow = slow->next;
-        fast = fast->next->next;
-        if (slow == fast) {
-            ListNode *ptr = head;
-            while (ptr != slow) {
-                ptr = ptr->next;
-                slow = slow->next;
+func detectCycle(head *ListNode) *ListNode {
+    slow, fast := head, head
+    for fast != nil && fast.Next != nil {
+        slow = slow.Next
+        fast = fast.Next.Next
+        if slow == fast {
+            ptr := head
+            for ptr != slow {
+                ptr = ptr.Next
+                slow = slow.Next
             }
-            return ptr;
+            return ptr
         }
     }
-    return nullptr;
+    return nil
 }
+
 
 7. Remove Duplicates from Sorted List: Write a function to delete all duplicates such that each element appears only once in a sorted linked list.
 
-ListNode* deleteDuplicates(ListNode* head) {
-    ListNode *current = head;
-    while (current && current->next) {
-        if (current->val == current->next->val) {
-            current->next = current->next->next;
+func deleteDuplicates(head *ListNode) *ListNode {
+    current := head
+    for current != nil && current.Next != nil {
+        if current.Val == current.Next.Val {
+            current.Next = current.Next.Next
         } else {
-            current = current->next;
+            current = current.Next
         }
     }
-    return head;
+    return head
 }
 
 8. Palindrome Linked List: Check if a singly linked list is a palindrome.

@@ -1,57 +1,131 @@
 1. Find the Duplicate Number: Given an array containing n+1 integers where each integer is between 1 and n (inclusive), 
 prove that at least one duplicate number must exist. Assume that there is only one duplicate number, find the duplicate one.
 
-int findDuplicate(vector<int>& nums) {
-    int slow = nums[0];
-    int fast = nums[0];
-    do {
-        slow = nums[slow];
-        fast = nums[nums[fast]];
-    } while (slow != fast);
-    fast = nums[0];
-    while (slow != fast) {
-        slow = nums[slow];
-        fast = nums[fast];
+func findDuplicate(nums []int) int {
+    // Initialize both pointers to first element
+    slow := nums[0]
+    fast := nums[0]
+    
+    // Phase 1: Find intersection point of slow and fast pointers
+    for {
+        slow = nums[slow]           // Move one step
+        fast = nums[nums[fast]]     // Move two steps
+        if slow == fast {
+            break
+        }
     }
-    return slow;
+    
+    // Phase 2: Find entrance to the cycle
+    fast = nums[0]
+    for slow != fast {
+        slow = nums[slow]
+        fast = nums[fast]
+    }
+    
+    return slow
 }
-
 
 
 2. Merge Intervals: Given a collection of intervals, merge all overlapping intervals.
 
-std::vector<std::vector<int>> intervals = {{1, 3}, {2, 6}, {8, 10}, {15, 18}};
-Output: {{1, 6}, {8, 10}, {15, 18}}
-
-
-vector<vector<int>> merge(vector<vector<int>>& intervals) {
-    if (intervals.empty()) return {};
-    sort(intervals.begin(), intervals.end());
-    vector<vector<int>> merged;
-    for (auto& interval : intervals) {
-        if (merged.empty() || merged.back()[1] < interval[0]) {
-            merged.push_back(interval);
+func merge(intervals [][]int) [][]int {
+    // Handle empty input
+    if len(intervals) == 0 {
+        return [][]int{}
+    }
+    
+    // Sort intervals based on start time
+    sort.Slice(intervals, func(i, j int) bool {
+        return intervals[i][0] < intervals[j][0]
+    })
+    
+    // Initialize merged slice with first interval
+    merged := make([][]int, 0)
+    merged = append(merged, intervals[0])
+    
+    // Iterate through remaining intervals
+    for i := 1; i < len(intervals); i++ {
+        current := intervals[i]
+        lastMerged := merged[len(merged)-1]
+        
+        // If current interval overlaps with last merged interval
+        if current[0] <= lastMerged[1] {
+            // Update end time of last merged interval
+            lastMerged[1] = max(lastMerged[1], current[1])
         } else {
-            merged.back()[1] = max(merged.back()[1], interval[1]);
+            // Add new interval to merged slice
+            merged = append(merged, current)
         }
     }
-    return merged;
+    
+    return merged
 }
+
+// Helper function to find maximum of two integers
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+
+func main() {
+    // Test cases
+    intervals := [][]int{{1, 3}, {2, 6}, {8, 10}, {15, 18}}
+    fmt.Println("Original intervals:", intervals)
+    fmt.Println("Merged intervals:", merge(intervals))
+    
+    intervals2 := [][]int{{1, 4}, {4, 5}}
+    fmt.Println("\nOriginal intervals:", intervals2)
+    fmt.Println("Merged intervals:", merge(intervals2))
+}
+
 
 3. Maximum Subarray: Find the contiguous subarray within an array (containing at least one number) which has the largest sum.
 
-std::vector<int> nums = {-2, 1, -3, 4, -1, 2, 1, -5, 4};
-Output: 6 [4, -1, 2, 1]
-
-
-int maxSubArray(vector<int>& nums) {
-    int maxSum = nums[0], currentSum = nums[0];
-    for (int i = 1; i < nums.size(); i++) {
-        currentSum = max(nums[i], currentSum + nums[i]);
-        maxSum = max(maxSum, currentSum);
+func maxSubArray(nums []int) int {
+    // Handle empty array case
+    if len(nums) == 0 {
+        return 0
     }
-    return maxSum;
+    
+    maxSum := nums[0]
+    currentSum := nums[0]
+    
+    // Iterate through array starting from second element
+    for i := 1; i < len(nums); i++ {
+        // Either start new subarray or extend existing one
+        currentSum = max(nums[i], currentSum + nums[i])
+        // Update maximum sum if current sum is larger
+        maxSum = max(maxSum, currentSum)
+    }
+    
+    return maxSum
 }
+
+// Helper function to find maximum of two integers
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+
+func main() {
+    // Test cases
+    nums := []int{-2, 1, -3, 4, -1, 2, 1, -5, 4}
+    result := maxSubArray(nums)
+    
+    fmt.Printf("Input array: %v\n", nums)
+    fmt.Printf("Maximum subarray sum: %d\n", result)
+    
+    // Additional test case
+    nums2 := []int{5, 4, -1, 7, 8}
+    result2 := maxSubArray(nums2)
+    fmt.Printf("\nInput array: %v\n", nums2)
+    fmt.Printf("Maximum subarray sum: %d\n", result2)
+}
+
 
 4. Two Sum: Given an array of integers, return indices of the two numbers such that they add up to a specific target.
 
@@ -88,27 +162,83 @@ func reverse(nums []int, start, end int) {
 }
 6. Spiral Matrix: Given a matrix of m x n elements (m rows, n columns), return all elements of the matrix in spiral order.
 
-vector<int> spiralOrder(vector<vector<int>>& matrix) {
-    vector<int> result;
-    if (matrix.empty()) return result;
-    int rowBegin = 0, rowEnd = matrix.size() - 1;
-    int colBegin = 0, colEnd = matrix[0].size() - 1;
-    while (rowBegin <= rowEnd && colBegin <= colEnd) {
-        for (int j = colBegin; j <= colEnd; j++) result.push_back(matrix[rowBegin][j]);
-        rowBegin++;
-        for (int i = rowBegin; i <= rowEnd; i++) result.push_back(matrix[i][colEnd]);
-        colEnd--;
-        if (rowBegin <= rowEnd) {
-            for (int j = colEnd; j >= colBegin; j--) result.push_back(matrix[rowEnd][j]);
-            rowEnd--;
+func spiralOrder(matrix [][]int) []int {
+    // Handle empty matrix
+    if len(matrix) == 0 {
+        return []int{}
+    }
+    
+    // Initialize result slice and boundaries
+    result := make([]int, 0)
+    rowBegin := 0
+    rowEnd := len(matrix) - 1
+    colBegin := 0
+    colEnd := len(matrix[0]) - 1
+    
+    // Traverse in spiral order
+    for rowBegin <= rowEnd && colBegin <= colEnd {
+        // Traverse right
+        for j := colBegin; j <= colEnd; j++ {
+            result = append(result, matrix[rowBegin][j])
         }
-        if (colBegin <= colEnd) {
-            for (int i = rowEnd; i >= rowBegin; i--) result.push_back(matrix[i][colBegin]);
-            colBegin++;
+        rowBegin++
+        
+        // Traverse down
+        for i := rowBegin; i <= rowEnd; i++ {
+            result = append(result, matrix[i][colEnd])
+        }
+        colEnd--
+        
+        // Traverse left
+        if rowBegin <= rowEnd {
+            for j := colEnd; j >= colBegin; j-- {
+                result = append(result, matrix[rowEnd][j])
+            }
+            rowEnd--
+        }
+        
+        // Traverse up
+        if colBegin <= colEnd {
+            for i := rowEnd; i >= rowBegin; i-- {
+                result = append(result, matrix[i][colBegin])
+            }
+            colBegin++
         }
     }
-    return result;
+    
+    return result
 }
+
+func main() {
+    // Test cases
+    matrix1 := [][]int{
+        {1, 2, 3},
+        {4, 5, 6},
+        {7, 8, 9},
+    }
+    
+    matrix2 := [][]int{
+        {1, 2, 3, 4},
+        {5, 6, 7, 8},
+        {9, 10, 11, 12},
+    }
+    
+    fmt.Printf("Matrix 1:\n")
+    printMatrix(matrix1)
+    fmt.Printf("Spiral order: %v\n\n", spiralOrder(matrix1))
+    
+    fmt.Printf("Matrix 2:\n")
+    printMatrix(matrix2)
+    fmt.Printf("Spiral order: %v\n", spiralOrder(matrix2))
+}
+
+// Helper function to print matrix
+func printMatrix(matrix [][]int) {
+    for _, row := range matrix {
+        fmt.Println(row)
+    }
+}
+
 
 7. First Missing Positive: Given an unsorted integer array, find the smallest missing positive integer.
 

@@ -61,26 +61,6 @@ func merge(intervals [][]int) [][]int {
     return merged
 }
 
-// Helper function to find maximum of two integers
-func max(a, b int) int {
-    if a > b {
-        return a
-    }
-    return b
-}
-
-func main() {
-    // Test cases
-    intervals := [][]int{{1, 3}, {2, 6}, {8, 10}, {15, 18}}
-    fmt.Println("Original intervals:", intervals)
-    fmt.Println("Merged intervals:", merge(intervals))
-    
-    intervals2 := [][]int{{1, 4}, {4, 5}}
-    fmt.Println("\nOriginal intervals:", intervals2)
-    fmt.Println("Merged intervals:", merge(intervals2))
-}
-
-
 3. Maximum Subarray: Find the contiguous subarray within an array (containing at least one number) which has the largest sum.
 
 func maxSubArray(nums []int) int {
@@ -242,121 +222,127 @@ func printMatrix(matrix [][]int) {
 
 7. First Missing Positive: Given an unsorted integer array, find the smallest missing positive integer.
 
-int firstMissingPositive(vector<int>& nums) {
-    int n = nums.size();
-    for (int i = 0; i < n; i++) {
-        while (nums[i] > 0 && nums[i] <= n && nums[nums[i] - 1] != nums[i]) {
-            swap(nums[i], nums[nums[i] - 1]);
+func firstMissingPositive(nums []int) int {
+        n := len(nums)
+        for i := 0; i < n; i++ {
+                for nums[i] > 0 && nums[i] <= n && nums[nums[i]-1] != nums[i] {
+                        nums[i], nums[nums[i]-1] = nums[nums[i]-1], nums[i] 
+                }
         }
-    }
-    for (int i = 0; i < n; i++) {
-        if (nums[i] != i + 1) return i + 1;
-    }
-    return n + 1;
+        for i := 0; i < n; i++ {
+                if nums[i] != i+1 {
+                        return i + 1
+                }
+        }
+        return n + 1
 }
 
 alternative
 -----------
 
-int firstMissingPositive(int nums[], int n) {
-    qsort(nums, n, sizeof(int), 
-          (int (*)(const void *, const void *)) &strcmp); // Sort the array (assumes strcmp works for comparing integers)
+func firstMissingPositive(nums []int, n int) int {
+        // Sort the array in ascending order
+        sort.Ints(nums)
 
-    int missing = 1;
-    for (int i = 0; i < n; i++) {
-        if (nums[i] == missing) { // Found the next expected positive
-            missing++;
-        } else if (nums[i] > missing) { // Reached a number greater than expected
-            return missing;
+        missing := 1
+        for i := 0; i < n; i++ {
+                if nums[i] == missing { 
+                        missing++ 
+                } else if nums[i] > missing { 
+                        return missing
+                }
         }
-    }
-    return missing; // If all positive numbers from 1 to n are present
+        return missing
 }
 
 8. Product of Array Except Self: Given an array nums of n integers where n > 1, return an array output such that output[i] is equal to the product of all the elements of nums except nums[i].
 
-vector<int> productExceptSelf(vector<int>& nums) {
-    int n = nums.size();
-    vector<int> output(n, 1);
+func productExceptSelf(nums []int) []int {
+        n := len(nums)
+        output := make([]int, n)
 
-    // Calculate prefix products
-    int prefix = 1;
-    for (int i = 0; i < n; i++) {
-        output[i] = prefix;
-        prefix *= nums[i];
-    }
+        // Calculate prefix products
+        prefix := 1
+        for i := 0; i < n; i++ {
+                output[i] = prefix
+                prefix *= nums[i]
+        }
 
-    // Calculate suffix products (from the right)
-    int suffix = 1;
-    for (int i = n - 1; i >= 0; i--) {
-        output[i] *= suffix;
-        suffix *= nums[i];
-    }
+        // Calculate suffix products (from the right)
+        suffix := 1
+        for i := n - 1; i >= 0; i-- {
+                output[i] *= suffix
+                suffix *= nums[i]
+        }
 
-    return output;
+        return output
 }
 
 9. Longest Consecutive Sequence: Given an unsorted array of integers, find the length of the longest consecutive elements sequence.
 
-int arr[] = {100, 4, 200, 1, 3, 2};
-int n = 6;
+func longestConsecutive(nums []int) int {
+        longest := 0
+        numSet := make(map[int]bool)
 
-output : 4 ([1, 2, 3, 4])
-
-int longestConsecutive(int arr[], int n) {
-    int longest = 0; 
-
-    for (int i = 0; i < n; i++) {
-        int currentNum = arr[i];
-        int currentStreak = 1;
-
-        // Keep checking for consecutive numbers
-        while (currentNum + 1 == arr[i + currentStreak]) { 
-            currentStreak++;
+        // Add all numbers to the set
+        for _, num := range nums {
+                numSet[num] = true
         }
 
-        // Update longest streak if needed
-        if (currentStreak > longest) {
-            longest = currentStreak;
+        for _, num := range nums {
+                // If current number is the start of a sequence
+                if !numSet[num-1] { 
+                        currentNum := num
+                        currentStreak := 1
+
+                        // Check for consecutive numbers
+                        for numSet[currentNum+1] {
+                                currentNum++
+                                currentStreak++
+                        }
+
+                        // Update longest streak if needed
+                        if currentStreak > longest {
+                                longest = currentStreak
+                        }
+                }
         }
-    }
-    return longest;
+
+        return longest
 }
 
 10. Jump Game: Given an array of non-negative integers, you are initially positioned at the first index of the array. Each element in the array represents your maximum jump length at that position. 
 Determine if you are able to reach the last index.
 
-bool canJump(vector<int>& nums) {
-    int lastPos = nums.size() - 1;
-    for (int i = nums.size() - 1; i >= 0; i--) {
-        if (i + nums[i] >= lastPos) {
-            lastPos = i;
+func canJump(nums []int) bool {
+        lastPos := len(nums) - 1
+        for i := len(nums) - 1; i >= 0; i-- {
+                if i+nums[i] >= lastPos {
+                        lastPos = i
+                }
         }
-    }
-    return lastPos == 0;
+        return lastPos == 0
 }
+
 
 11. remove duplicates in sorted array
 
-int removeDuplicates(int arr[], int n) {
-    if (n==0 || n==1) {
-        return n;
-    }
-
-    // `i` is the slow-runner, `j` is the fast-runner
-    int i = 0;
-    for (int j = 1; j < n; j++) {
-        // If the current element is not equal to the next element, move `i` forward
-        // and replace the element at `i` with the current element
-        if (arr[j] != arr[i]) {
-            i++;
-            arr[i] = arr[j];
+func removeDuplicates(nums []int) int {
+        if len(nums) <= 1 {
+                return len(nums)
         }
-    }
 
-    // The new length is `i + 1` because `i` is zero-based
-    return i + 1;
+        i := 0
+        for j := 1; j < len(nums); j++ {
+                if nums[j] != nums[i] {
+                        i++
+                        nums[i] = nums[j]
+                }
+        }
+
+        return i + 1
 }
+
 
 12. Contains Duplicate - Check if array has duplicate elements
 

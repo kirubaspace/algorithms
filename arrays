@@ -1,4 +1,5 @@
-1. Find the Duplicate Number: Given an array containing n+1 integers where each integer is between 1 and n (inclusive), prove that at least one duplicate number must exist. Assume that there is only one duplicate number, find the duplicate one.
+1. Find the Duplicate Number: Given an array containing n+1 integers where each integer is between 1 and n (inclusive), 
+prove that at least one duplicate number must exist. Assume that there is only one duplicate number, find the duplicate one.
 
 int findDuplicate(vector<int>& nums) {
     int slow = nums[0];
@@ -54,19 +55,20 @@ int maxSubArray(vector<int>& nums) {
 
 4. Two Sum: Given an array of integers, return indices of the two numbers such that they add up to a specific target.
 
-vector<int> twoNumberSum(vector<int> array, int targetSum) {
-  set<int> nums;
+func twoSum(nums []int, target int) []int {
+        m := make(map[int]int)
 
-  for (int num : array){
-    int potential = targetSum - num;
-    if (nums.find(potential) != nums.end()){
-      return vector<int>{potential, num};
-    } else {
-      nums.insert(num);
-    }
-  }
-  return {};
+        for i, num := range nums {
+                complement := target - num
+
+                if j, ok := m[complement]; ok {
+                        return []int{j, i}
+                }
+                m[num] = i
+        }
+        return []int{}
 }
+
 
 5. Rotate Array: Rotate an array to the right by k steps, where k is non-negative.
 

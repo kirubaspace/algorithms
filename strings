@@ -1,47 +1,67 @@
 1. Reverse a String: Write a function to reverse a string. Can you do it without using built-in methods?
 
-void reverseString(string& s) {
-    int i = 0, j = s.length() - 1;
-    while (i < j) {
-        swap(s[i++], s[j--]);
+func reverseString(s string) string {
+    runes := []rune(s)
+    i, j := 0, len(runes)-1
+    for i < j {
+        runes[i], runes[j] = runes[j], runes[i]
+        i++
+        j--
     }
+    return string(runes)
 }
+
 
 2. Check for Palindrome: Determine if a given string is a palindrome (reads the same backward as forward).
 
-bool isPalindrome(string s) {
-    int i = 0, j = s.length() - 1;
-    while (i < j) {
-        if (s[i++] != s[j--]) return false;
+func isPalindrome(s string) bool {
+    runes := []rune(s)
+    i, j := 0, len(runes)-1
+    for i < j {
+        if runes[i] != runes[j] {
+            return false
+        }
+        i++
+        j--
     }
-    return true;
+    return true
 }
 
 3. Anagram Check: Write a method to check if two strings are anagrams of each other (contain the same letters in a different order).
 
-bool isAnagram(string s, string t) {
-    if (s.length() != t.length()) return false;
-    int count[256] = {0};
-    for (int i = 0; i < s.length(); i++) {
-        count[s[i]]++;
-        count[t[i]]--;
+func isAnagram(s string, t string) bool {
+    if len(s) != len(t) {
+        return false
     }
-    for (int c : count) {
-        if (c != 0) return false;
+    count := make(map[rune]int)
+    for _, c := range s {
+        count[c]++
     }
-    return true;
+    for _, c := range t {
+        count[c]--
+    }
+    for _, v := range count {
+        if v != 0 {
+            return false
+        }
+    }
+    return true
 }
 
 
 4. Find the First Non-Repeated Character: In a string, find the first character that does not repeat itself.
 
-int firstUniqChar(string s) {
-    int count[256] = {0};
-    for (char c : s) count[c]++;
-    for (int i = 0; i < s.length(); i++) {
-        if (count[s[i]] == 1) return i;
+func firstUniqChar(s string) int {
+    count := make(map[rune]int)
+    for _, c := range s {
+        count[c]++
     }
-    return -1;
+    for i, c := range s {
+        if count[c] == 1 {
+            return i
+        }
+    }
+    return -1
 }
 
 5. String to Integer (atoi): Implement a function that converts a string to an integer, handling possible edge cases (like invalid input or overflow).

@@ -151,84 +151,89 @@ bool isValid(string s) {
 5. Implementation of stack using linked list 
 
 
-#include <stdio.h>
-#include <stdlib.h>
+package main
 
-// Define the node structure for the linked list
-typedef struct Node {
-    int data;
-    struct Node* next;
-} Node;
+import (
+	"errors"
+	"fmt"
+)
 
-// Define the stack structure
-typedef struct Stack {
-    Node* top;
-} Stack;
-
-// Function to create a new node
-Node* createNode(int data) {
-    Node* newNode = (Node*)malloc(sizeof(Node));
-    if (!newNode) {
-        printf("Heap overflow\n");
-        exit(0);
-    }
-    newNode->data = data;
-    newNode->next = NULL;
-    return newNode;
+// Node represents a node in the linked list
+type Node struct {
+	data int
+	next *Node
 }
 
-// Initialize the stack
-void initStack(Stack* stack) {
-    stack->top = NULL;
+// Stack represents the stack data structure
+type Stack struct {
+	top *Node
 }
 
-// Check if the stack is empty
-int isEmpty(Stack* stack) {
-    return stack->top == NULL;
+// createNode creates a new node with the given data
+func createNode(data int) *Node {
+	return &Node{data: data, next: nil}
 }
 
-// Push an element onto the stack
-void push(Stack* stack, int data) {
-    Node* newNode = createNode(data);
-    newNode->next = stack->top;
-    stack->top = newNode;
-    printf("%d pushed to stack\n", data);
+// initStack initializes the stack
+func initStack(stack *Stack) {
+	stack.top = nil
 }
 
-// Pop an element from the stack
-int pop(Stack* stack) {
-    if (isEmpty(stack)) {
-        printf("Stack underflow\n");
-        return -1;
-    }
-    Node* temp = stack->top;
-    int popped = temp->data;
-    stack->top = temp->next;
-    free(temp);
-    return popped;
+// isEmpty checks if the stack is empty
+func isEmpty(stack *Stack) bool {
+	return stack.top == nil
 }
 
-// Peek at the top element of the stack
-int peek(Stack* stack) {
-    if (isEmpty(stack)) {
-        printf("Stack is empty\n");
-        return -1;
-    }
-    return stack->top->data;
+// push adds an element to the top of the stack
+func push(stack *Stack, data int) {
+	newNode := createNode(data)
+	newNode.next = stack.top
+	stack.top = newNode
+	fmt.Printf("%d pushed to stack\n", data)
 }
 
-// Main function to demonstrate stack operations
-int main() {
-    Stack stack;
-    initStack(&stack);
-
-    push(&stack, 10);
-    push(&stack, 20);
-    push(&stack, 30);
-
-    printf("%d popped from stack\n", pop(&stack));
-    printf("Top element is %d\n", peek(&stack));
-
-    return 0;
+// pop removes and returns the top element from the stack
+func pop(stack *Stack) (int, error) {
+	if isEmpty(stack) {
+		return -1, errors.New("Stack underflow")
+	}
+	temp := stack.top
+	popped := temp.data
+	stack.top = temp.next
+	temp = nil // Go's garbage collector will handle freeing memory
+	return popped, nil
 }
 
+// peek returns the top element of the stack without removing it
+func peek(stack *Stack) (int, error) {
+	if isEmpty(stack) {
+		return -1, errors.New("Stack is empty")
+	}
+	return stack.top.data, nil
+}
+
+func main() {
+	var stack Stack
+	initStack(&stack)
+
+	push(&stack, 10)
+	push(&stack, 20)
+	push(&stack, 30)
+
+	popped, err := pop(&stack)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Printf("%d popped from stack\n", popped)
+	}
+
+	topElement, err := peek(&stack)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Printf("Top element is %d\n", topElement)
+	}
+}
+
+
+    

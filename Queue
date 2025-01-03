@@ -130,33 +130,37 @@ bool isEmpty() {
 
 7. Implement queue through linked list
 
-struct Node {
-    int data;
-    struct Node* next;
-};
-
-struct Node *front = NULL, *rear = NULL;
-
-void enqueue(int data) {
-    struct Node* temp = (struct Node*)malloc(sizeof(struct Node));
-    temp->data = data;
-    temp->next = NULL;
-    if (rear == NULL) {  // Empty queue
-        front = rear = temp;
-    } else {
-        rear->next = temp;
-        rear = temp;
-    }
+type Node struct {
+	data int
+	next *Node
 }
 
-int dequeue() {
-    if (front == NULL) {
-        printf("Queue Underflow\n");
-        return -1;
-    }
-    struct Node* temp = front;
-    int data = front->data;
-    front = front->next;
-    free(temp);
-    return data;
+var front *Node = nil
+var rear *Node = nil
+
+// Enqueue adds an element to the rear of the queue
+func enqueue(data int) {
+	temp := &Node{data: data, next: nil}
+	if rear == nil { // Empty queue
+		front = temp
+		rear = temp
+	} else {
+		rear.next = temp
+		rear = temp
+	}
+}
+
+// Dequeue removes and returns the element from the front of the queue
+func dequeue() (int, error) {
+	if front == nil {
+		return -1, errors.New("Queue Underflow")
+	}
+	temp := front
+	data := front.data
+	front = front.next
+	if front == nil { // If the queue becomes empty after dequeue
+		rear = nil
+	}
+	temp = nil // Go's garbage collector will handle freeing memory
+	return data, nil
 }

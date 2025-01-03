@@ -68,16 +68,33 @@ func removeNthFromEnd(head *ListNode, n int) *ListNode {
 
 5. Intersection of Two Linked Lists: Find the node at which the intersection of two singly linked lists begins.
 
-func findMiddle(head *ListNode) *ListNode {
-    if head == nil {
-        return nil
-    }
-    slow, fast := head, head
-    for fast != nil && fast.Next != nil {
-        slow = slow.Next
-        fast = fast.Next.Next
-    }
-    return slow
+func getIntersectionNode(headA, headB *ListNode) *ListNode {
+	if headA == nil || headB == nil {
+		return nil
+	}
+
+	// Initialize two pointers for both lists
+	a, b := headA, headB
+
+	// Traverse both lists until they meet or reach the end
+	for a != b {
+		// If a reaches the end, switch to headB
+		if a == nil {
+			a = headB
+		} else {
+			a = a.Next
+		}
+
+		// If b reaches the end, switch to headA
+		if b == nil {
+			b = headA
+		} else {
+			b = b.Next
+		}
+	}
+
+	// Return the intersection node (or nil if no intersection)
+	return a
 }
 
 

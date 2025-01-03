@@ -7,24 +7,41 @@ int maxDepth(TreeNode* root) {
 
 2. Breadth First Search (BFS) of a tree
 
-void BFS(struct Node *root) {
-    if (root == NULL) return;
+func BFS(root *Node) {
+	if root == nil {
+		return
+	}
 
-    struct Node *queue[100];   
-  // Assuming a max tree size for simplicity
-    int front = 0, rear = 0;
-    queue[rear++] = root;    
+	// Create a queue with a fixed size (100 in this case, as in the C code)
+	queue := make([]*Node, 100)
+	front := 0
+	rear := 0
 
-    while (front != rear) {
-        struct Node *current = queue[front++];
-        printf("%d ", current->data);
+	// Enqueue the root node
+	queue[rear] = root
+	rear++
 
-        if (current->left)   
- 		queue[rear++] = current->left;
-        if (current->right) 
-		queue[rear++] = current->right;   
+	// Perform BFS
+	for front != rear {
+		// Dequeue the front node
+		current := queue[front]
+		front++
 
-    }
+		// Process the current node
+		fmt.Printf("%d ", current.data)
+
+		// Enqueue the left child if it exists
+		if current.left != nil {
+			queue[rear] = current.left
+			rear++
+		}
+
+		// Enqueue the right child if it exists
+		if current.right != nil {
+			queue[rear] = current.right
+			rear++
+		}
+	}
 }
 
 
@@ -194,23 +211,23 @@ void postorderTraversal(Node* root) {
 
 12. Implement DFS traversal 
 
-// Structure to represent a graph node
-struct Node {
-    int data;
-    vector<Node*> neighbors;
-};
+type Node struct {
+	data      int
+	neighbors []*Node
+}
 
 // DFS traversal function (recursive)
-void DFS_recursive(Node* node, bool visited[]) {
-    visited[node->data] = true;
-    cout << node->data << " ";
+func DFS_recursive(node *Node, visited map[int]bool) {
+	// Mark the current node as visited
+	visited[node.data] = true
+	fmt.Printf("%d ", node.data)
 
-    // Recursively visit all unvisited neighbors
-    for (Node* neighbor : node->neighbors) {
-        if (!visited[neighbor->data]) {
-            DFS_recursive(neighbor, visited);
-        }
-    }
+	// Recursively visit all unvisited neighbors
+	for _, neighbor := range node.neighbors {
+		if !visited[neighbor.data] {
+			DFS_recursive(neighbor, visited)
+		}
+	}
 }
 
 13. implement binary search algorithm

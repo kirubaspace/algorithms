@@ -469,4 +469,23 @@ func lengthOfLongestSubstring(s string) int {
     return maxLen
 }
 
+26. Check an ip address is valid
 
+func isIpValid(ip string)string{
+    split := strings.Split(ip, ".")
+    
+    if len(split) != 4{
+        return "failure"
+    }
+    
+    for _, value := range split{
+        if value[0] <= 0{
+            return "failure"
+        }
+        num, err := strconv.Atoi(value)
+        if err != nil || num < 0 || num > 255{
+            return "failure"
+        }
+    }
+    return "success"
+}

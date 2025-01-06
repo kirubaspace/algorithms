@@ -487,4 +487,646 @@ func singleNumber(nums []int) int {
 
 
 
+=======
+
+
+C++ programs
+
+1. Find the duplicate number
+
+#include <vector>
+#include <iostream>
+
+int findDuplicate(std::vector<int>& nums) {
+    // Initialize both pointers to first element
+    int slow = nums[0];
+    int fast = nums[0];
+    
+    // Phase 1: Find intersection point of slow and fast pointers
+    do {
+        slow = nums[slow];
+        fast = nums[nums[fast]];
+    } while (slow != fast);
+    
+    // Phase 2: Find entrance to the cycle
+    fast = nums[0];
+    while (slow != fast) {
+        slow = nums[slow];
+        fast = nums[fast];
+    }
+    
+    return slow;
+}
+
+int main() {
+    std::vector<int> nums = {1, 3, 4, 2, 2};
+    std::cout << "Duplicate number: " << findDuplicate(nums) << std::endl;
+    return 0;
+}
+
+2. Merge intervals
+
+#include <vector>
+#include <algorithm>
+#include <iostream>
+
+std::vector<std::vector<int>> mergeIntervals(std::vector<std::vector<int>>& intervals) {
+    if (intervals.empty()) return {};
+    
+    // Sort intervals based on start time
+    std::sort(intervals.begin(), intervals.end(), 
+              [](const std::vector<int>& a, const std::vector<int>& b) {
+                  return a[0] < b[0];
+              });
+    
+    std::vector<std::vector<int>> merged;
+    merged.emplace_back(intervals[0]);
+    
+    for (size_t i = 1; i < intervals.size(); ++i) {
+        std::vector<int>& last = merged.back();
+        if (intervals[i][0] <= last[1]) {
+            last[1] = std::max(last[1], intervals[i][1]);
+        } else {
+            merged.emplace_back(intervals[i]);
+        }
+    }
+    
+    return merged;
+}
+
+int main() {
+    std::vector<std::vector<int>> intervals = {{1,3}, {2,6}, {8,10}, {15,18}};
+    auto merged = mergeIntervals(intervals);
+    std::cout << "Merged intervals:" << std::endl;
+    for (const auto& interval : merged) {
+        std::cout << "[" << interval[0] << "," << interval[1] << "] ";
+    }
+    std::cout << std::endl;
+    return 0;
+}
+
+
+3. Maximum subarray
+
+#include <vector>
+#include <algorithm>
+#include <iostream>
+
+int maxSubArray(std::vector<int>& nums) {
+    if (nums.empty()) return 0;
+    
+    int maxSum = nums[0];
+    int currentSum = nums[0];
+    
+    for (size_t i = 1; i < nums.size(); ++i) {
+        currentSum = std::max(nums[i], currentSum + nums[i]);
+        maxSum = std::max(maxSum, currentSum);
+    }
+    
+    return maxSum;
+}
+
+int main() {
+    std::vector<int> nums = {-2,1,-3,4,-1,2,1,-5,4};
+    std::cout << "Maximum subarray sum: " << maxSubArray(nums) << std::endl;
+    
+    std::vector<int> nums2 = {5,4,-1,7,8};
+    std::cout << "Maximum subarray sum: " << maxSubArray(nums2) << std::endl;
+    return 0;
+}
+
+4. Two sum
+
+#include <vector>
+#include <unordered_map>
+#include <iostream>
+
+std::vector<int> twoSum(std::vector<int>& nums, int target) {
+    std::unordered_map<int, int> m;
+    for (size_t i = 0; i < nums.size(); ++i) {
+        int complement = target - nums[i];
+        if (m.find(complement) != m.end()) {
+            return {static_cast<int>(m[complement]), static_cast<int>(i)};
+        }
+        m[nums[i]] = i;
+    }
+    return {};
+}
+
+int main() {
+    std::vector<int> nums = {2,7,11,15};
+    int target = 9;
+    auto indices = twoSum(nums, target);
+    std::cout << "Indices: [" << indices[0] << ", " << indices[1] << "]" << std::endl;
+    return 0;
+}
+
+
+5. Rotate array
+
+#include <vector>
+#include <algorithm>
+#include <iostream>
+
+void reverseArray(std::vector<int>& nums, int start, int end){
+    while(start < end){
+        std::swap(nums[start], nums[end]);
+        start++;
+        end--;
+    }
+}
+
+void rotate(std::vector<int>& nums, int k) {
+    if(nums.empty()) return;
+    k = k % nums.size();
+    reverseArray(nums, 0, nums.size()-1);
+    reverseArray(nums, 0, k-1);
+    reverseArray(nums, k, nums.size()-1);
+}
+
+int main(){
+    std::vector<int> nums = {1,2,3,4,5,6,7};
+    int k = 3;
+    rotate(nums, k);
+    std::cout << "Rotated array: ";
+    for(auto num : nums) std::cout << num << " ";
+    std::cout << std::endl;
+    return 0;
+}
+
+
+6. Spiral matrix
+
+#include <vector>
+#include <iostream>
+
+std::vector<int> spiralOrder(std::vector<std::vector<int>>& matrix) {
+    if(matrix.empty()) return {};
+    
+    std::vector<int> result;
+    int rowBegin = 0, rowEnd = matrix.size() -1;
+    int colBegin = 0, colEnd = matrix[0].size() -1;
+    
+    while(rowBegin <= rowEnd && colBegin <= colEnd){
+        // Traverse Right
+        for(int j = colBegin; j <= colEnd; ++j){
+            result.push_back(matrix[rowBegin][j]);
+        }
+        rowBegin++;
+        
+        // Traverse Down
+        for(int i = rowBegin; i <= rowEnd; ++i){
+            result.push_back(matrix[i][colEnd]);
+        }
+        colEnd--;
+        
+        // Traverse Left
+        if(rowBegin <= rowEnd){
+            for(int j = colEnd; j >= colBegin; --j){
+                result.push_back(matrix[rowEnd][j]);
+            }
+            rowEnd--;
+        }
+        
+        // Traverse Up
+        if(colBegin <= colEnd){
+            for(int i = rowEnd; i >= rowBegin; --i){
+                result.push_back(matrix[i][colBegin]);
+            }
+            colBegin++;
+        }
+    }
+    
+    return result;
+}
+
+int main(){
+    std::vector<std::vector<int>> matrix1 = {
+        {1,2,3},
+        {4,5,6},
+        {7,8,9}
+    };
+    auto spiral1 = spiralOrder(matrix1);
+    std::cout << "Spiral order of matrix1: ";
+    for(auto num : spiral1) std::cout << num << " ";
+    std::cout << std::endl;
+    
+    std::vector<std::vector<int>> matrix2 = {
+        {1,2,3,4},
+        {5,6,7,8},
+        {9,10,11,12}
+    };
+    auto spiral2 = spiralOrder(matrix2);
+    std::cout << "Spiral order of matrix2: ";
+    for(auto num : spiral2) std::cout << num << " ";
+    std::cout << std::endl;
+    return 0;
+}
+
+7. First missing positive
+
+#include <vector>
+#include <algorithm>
+#include <iostream>
+
+int firstMissingPositive(std::vector<int>& nums) {
+    int n = nums.size();
+    for(int i =0; i < n; ++i){
+        while(nums[i] >0 && nums[i] <= n && nums[nums[i]-1] != nums[i]){
+            std::swap(nums[i], nums[nums[i]-1]);
+        }
+    }
+    for(int i =0; i < n; ++i){
+        if(nums[i] != i+1){
+            return i+1;
+        }
+    }
+    return n+1;
+}
+
+int main(){
+    std::vector<int> nums = {3,4,-1,1};
+    std::cout << "First missing positive: " << firstMissingPositive(nums) << std::endl;
+    
+    std::vector<int> nums2 = {1,2,0};
+    std::cout << "First missing positive: " << firstMissingPositive(nums2) << std::endl;
+    return 0;
+}
+
+8. Product of array except itself
+
+#include <vector>
+#include <iostream>
+
+std::vector<int> productExceptSelf(std::vector<int>& nums) {
+    int n = nums.size();
+    std::vector<int> output(n, 1);
+    
+    // Calculate prefix products
+    int prefix = 1;
+    for(int i =0; i < n; ++i){
+        output[i] = prefix;
+        prefix *= nums[i];
+    }
+    
+    // Calculate suffix products and multiply
+    int suffix = 1;
+    for(int i = n-1; i >=0; --i){
+        output[i] *= suffix;
+        suffix *= nums[i];
+    }
+    
+    return output;
+}
+
+int main(){
+    std::vector<int> nums = {1,2,3,4};
+    auto output = productExceptSelf(nums);
+    std::cout << "Product except self: ";
+    for(auto num : output) std::cout << num << " ";
+    std::cout << std::endl;
+    return 0;
+}
+
+
+9. Longest consequence sequence
+
+#include <vector>
+#include <unordered_set>
+#include <algorithm>
+#include <iostream>
+
+int longestConsecutive(std::vector<int>& nums) {
+    std::unordered_set<int> numSet(nums.begin(), nums.end());
+    int longest = 0;
+    
+    for(auto num : nums){
+        if(numSet.find(num -1) == numSet.end()){
+            int currentNum = num;
+            int currentStreak =1;
+            
+            while(numSet.find(currentNum +1) != numSet.end()){
+                currentNum++;
+                currentStreak++;
+            }
+            
+            longest = std::max(longest, currentStreak);
+        }
+    }
+    
+    return longest;
+}
+
+int main(){
+    std::vector<int> nums = {100,4,200,1,3,2};
+    std::cout << "Longest consecutive sequence length: " << longestConsecutive(nums) << std::endl;
+    return 0;
+}
+
+10. Jump game
+
+#include <vector>
+#include <iostream>
+
+bool canJump(std::vector<int>& nums) {
+    int lastPos = nums.size() -1;
+    for(int i = nums.size()-1; i >=0; --i){
+        if(i + nums[i] >= lastPos){
+            lastPos = i;
+        }
+    }
+    return lastPos == 0;
+}
+
+int main(){
+    std::vector<int> nums1 = {2,3,1,1,4};
+    std::cout << "Can jump: " << (canJump(nums1) ? "True" : "False") << std::endl;
+    
+    std::vector<int> nums2 = {3,2,1,0,4};
+    std::cout << "Can jump: " << (canJump(nums2) ? "True" : "False") << std::endl;
+    return 0;
+}
+
+11. Remove duplicates in sorted array
+
+#include <vector>
+#include <iostream>
+
+int removeDuplicates(std::vector<int>& nums) {
+    if(nums.empty()) return 0;
+    int i =0;
+    for(int j =1; j < nums.size(); ++j){
+        if(nums[j] != nums[i]){
+            i++;
+            nums[i] = nums[j];
+        }
+    }
+    return i +1;
+}
+
+int main(){
+    std::vector<int> nums = {1,1,2};
+    int length = removeDuplicates(nums);
+    std::cout << "Array after removing duplicates: ";
+    for(int i =0; i < length; ++i) std::cout << nums[i] << " ";
+    std::cout << "\nLength: " << length << std::endl;
+    return 0;
+}
+
+
+12. contains duplicate
+
+#include <vector>
+#include <unordered_set>
+#include <iostream>
+
+bool containsDuplicate(std::vector<int>& nums) {
+    std::unordered_set<int> seen;
+    for(auto num : nums){
+        if(seen.find(num) != seen.end()) return true;
+        seen.insert(num);
+    }
+    return false;
+}
+
+int main(){
+    std::vector<int> nums1 = {1,2,3,1};
+    std::cout << "Contains duplicate: " << (containsDuplicate(nums1) ? "True" : "False") << std::endl;
+    
+    std::vector<int> nums2 = {1,2,3,4};
+    std::cout << "Contains duplicate: " << (containsDuplicate(nums2) ? "True" : "False") << std::endl;
+    return 0;
+}
+
+13. Find missing number
+
+#include <vector>
+#include <iostream>
+
+int missingNumber(std::vector<int>& nums) {
+    int n = nums.size();
+    int expected = n * (n +1) /2;
+    int actual =0;
+    for(auto num : nums){
+        actual += num;
+    }
+    return expected - actual;
+}
+
+int main(){
+    std::vector<int> nums = {3,0,1};
+    std::cout << "Missing number: " << missingNumber(nums) << std::endl;
+    
+    std::vector<int> nums2 = {0,1};
+    std::cout << "Missing number: " << missingNumber(nums2) << std::endl;
+    return 0;
+}
+
+
+14. Merge sorted arrays
+
+#include <vector>
+#include <iostream>
+
+void merge(std::vector<int>& nums1, int m, std::vector<int>& nums2, int n) {
+    int p1 = m -1, p2 = n -1, p = m + n -1;
+    while(p2 >=0){
+        if(p1 >=0 && nums1[p1] > nums2[p2]){
+            nums1[p] = nums1[p1];
+            p1--;
+        }
+        else{
+            nums1[p] = nums2[p2];
+            p2--;
+        }
+        p--;
+    }
+}
+
+int main(){
+    std::vector<int> nums1 = {1,2,3,0,0,0};
+    int m =3;
+    std::vector<int> nums2 = {2,5,6};
+    int n =3;
+    merge(nums1, m, nums2, n);
+    std::cout << "Merged array: ";
+    for(auto num : nums1) std::cout << num << " ";
+    std::cout << std::endl;
+    return 0;
+}
+
+15. Move zeroes
+
+#include <vector>
+#include <iostream>
+
+void moveZeroes(std::vector<int>& nums) {
+    int nonZero =0;
+    for(int i =0; i < nums.size(); ++i){
+        if(nums[i] !=0){
+            std::swap(nums[nonZero], nums[i]);
+            nonZero++;
+        }
+    }
+}
+
+int main(){
+    std::vector<int> nums = {0,1,0,3,12};
+    moveZeroes(nums);
+    std::cout << "Array after moving zeroes: ";
+    for(auto num : nums) std::cout << num << " ";
+    std::cout << std::endl;
+    return 0;
+}
+
+16. Intersection of two arrays
+
+#include <vector>
+#include <unordered_set>
+#include <iostream>
+
+std::vector<int> intersection(std::vector<int>& nums1, std::vector<int>& nums2) {
+    std::unordered_set<int> set1(nums1.begin(), nums1.end());
+    std::unordered_set<int> seen;
+    std::vector<int> result;
+    
+    for(auto num : nums2){
+        if(set1.find(num) != set1.end() && seen.find(num) == seen.end()){
+            result.push_back(num);
+            seen.insert(num);
+        }
+    }
+    
+    return result;
+}
+
+int main(){
+    std::vector<int> nums1 = {1,2,2,1};
+    std::vector<int> nums2 = {2,2};
+    auto intersect = intersection(nums1, nums2);
+    std::cout << "Intersection: ";
+    for(auto num : intersect) std::cout << num << " ";
+    std::cout << std::endl;
+    return 0;
+}
+
+17. Plus one
+
+#include <vector>
+#include <iostream>
+
+std::vector<int> plusOne(std::vector<int>& digits) {
+    for(int i = digits.size()-1; i >=0; --i){
+        if(digits[i] <9){
+            digits[i]++;
+            return digits;
+        }
+        digits[i] =0;
+    }
+    digits.insert(digits.begin(), 1);
+    return digits;
+}
+
+int main(){
+    std::vector<int> digits = {1,2,3};
+    auto result = plusOne(digits);
+    std::cout << "After plus one: ";
+    for(auto num : result) std::cout << num << " ";
+    std::cout << std::endl;
+    
+    std::vector<int> digits2 = {9,9,9};
+    auto result2 = plusOne(digits2);
+    std::cout << "After plus one: ";
+    for(auto num : result2) std::cout << num << " ";
+    std::cout << std::endl;
+    return 0;
+}
+
+18. Sort colors
+
+#include <vector>
+#include <iostream>
+
+void sortColors(std::vector<int>& nums) {
+    int low =0, mid =0, high = nums.size()-1;
+    while(mid <= high){
+        switch(nums[mid]){
+            case 0:
+                std::swap(nums[low], nums[mid]);
+                low++;
+                mid++;
+                break;
+            case 1:
+                mid++;
+                break;
+            case 2:
+                std::swap(nums[mid], nums[high]);
+                high--;
+                break;
+        }
+    }
+}
+
+int main(){
+    std::vector<int> nums = {2,0,2,1,1,0};
+    sortColors(nums);
+    std::cout << "Sorted colors: ";
+    for(auto num : nums) std::cout << num << " ";
+    std::cout << std::endl;
+    return 0;
+}
+
+19. Intersection similar to 16
+
+#include <vector>
+#include <unordered_set>
+#include <iostream>
+
+std::vector<int> intersectionDuplicate(std::vector<int>& nums1, std::vector<int>& nums2) {
+    std::unordered_set<int> set1(nums1.begin(), nums1.end());
+    std::unordered_set<int> seen;
+    std::vector<int> result;
+    
+    for(auto num : nums2){
+        if(set1.find(num) != set1.end() && seen.find(num) == seen.end()){
+            result.push_back(num);
+            seen.insert(num);
+        }
+    }
+    
+    return result;
+}
+
+int main(){
+    std::vector<int> nums1 = {4,9,5};
+    std::vector<int> nums2 = {9,4,9,8,4};
+    auto intersect = intersectionDuplicate(nums1, nums2);
+    std::cout << "Intersection: ";
+    for(auto num : intersect) std::cout << num << " ";
+    std::cout << std::endl;
+    return 0;
+}
+
+20. Single number
+
+#include <vector>
+#include <iostream>
+
+int singleNumber(std::vector<int>& nums) {
+    int result =0;
+    for(auto num : nums){
+        result ^= num;
+    }
+    return result;
+}
+
+int main(){
+    std::vector<int> nums = {2,2,1};
+    std::cout << "Single number: " << singleNumber(nums) << std::endl;
+    
+    std::vector<int> nums2 = {4,1,2,1,2};
+    std::cout << "Single number: " << singleNumber(nums2) << std::endl;
+    return 0;
+}
+
 

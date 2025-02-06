@@ -170,6 +170,34 @@ bool isValid(string s) {
     return st.empty();
 }
 
+golang
+------
+func isValid(s string) bool {
+	// Use a stack to keep track of opening brackets
+	stack := []rune{}
+
+	// Map to match closing brackets to their corresponding opening brackets
+	bracketMap := map[rune]rune{
+		')': '(',
+		'}': '{',
+		']': '[',
+	}
+
+	for _, char := range s {
+		// If the character is a closing bracket
+		if openBracket, exists := bracketMap[char]; exists {
+			// Check if the stack is empty or the top of the stack doesn't match
+			if len(stack) == 0 || stack[len(stack)-1] != openBracket {
+				return false
+			}
+			// Pop the top of the stack
+			stack = stack[:len(stack)-1]
+		} else {
+			// If it's an opening bracket, push it onto the stack
+			stack = append(stack, char)
+		}
+	}
+
 10. String Compression: Implement a method to perform basic string compression using the counts of repeated characters. For example, the string "aabcccccaaa" would become "a2b1c5a3". 
 If the "compressed" string would not become smaller than the original string, your method should return the original string.
 
